@@ -24,6 +24,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+// Enable trust proxy for reverse proxies like Render / NGINX / Cloudflare
+// Prevents express-rate-limit ERR_ERL_UNEXPECTED_X_FORWARDED_FOR error
+app.set('trust proxy', 1);
+
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/medico_overseas';
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -243,7 +247,9 @@ const initEmailTransporter = () => {
 
   if (smtpUser.includes('@') && smtpPass.length >= 16 && !smtpPass.includes('your_') && !smtpPass.includes('app_password')) {
     gmailTransporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
       auth: {
         user: smtpUser,
         pass: smtpPass
@@ -254,10 +260,11 @@ const initEmailTransporter = () => {
     });
     console.log(`[Email Dispatcher] ✅ Real Gmail SMTP configured for ${smtpUser}`);
     gmailTransporter.verify()
-      .then(() => console.log('✅ [Email Dispatcher] Gmail SMTP connected & verified successfully! Push notifications are ACTIVE for all logged-in devices.'))
-      .catch(err => console.error('⚠️ [Email Dispatcher] SMTP verification error:', err.message));
+      .then(() => console.log('✅ [Email Dispatcher] Gmail SMTP connected & verified successfully! Real email alerts are ACTIVE.'))
+      .catch(err => console.error('⚠️ [Email Dispatcher] Gmail SMTP connection failed:', err.message));
   } else {
-    console.log('[Email Dispatcher] ⚠️ No real SMTP password found in .env. Falling back to test preview mode.');
+    console.log('[Email Dispatcher] ⚠️ CRITICAL: SMTP_PASS is missing or invalid in Render Environment Variables!');
+    console.log('[Email Dispatcher] ⚠️ Real emails cannot be delivered until SMTP_USER and SMTP_PASS (16-char Gmail App Password) are added in Render Dashboard -> Environment Variables.');
   }
 };
 
