@@ -267,71 +267,95 @@ if (MONGODB_URI.includes('mongodb+srv://') || MONGODB_URI.includes('mongodb://')
     });
 }
 
-// Persistent Gmail SMTP Transporter with connection pooling
-let gmailTransporter = null;
+// ============================================================
+// EMAIL ENGINE — uses Resend HTTPS (primary) or Brevo SMTP (secondary)
+// Gmail SMTP is NOT used: Render blocks ports 465/587 to smtp.gmail.com
+// ============================================================
 
-const createEmailTransporter = () => {
-  const smtpUser = process.env.SMTP_USER || 'manukamepalli8399@gmail.com';
-  const rawPass = process.env.SMTP_PASS || '';
-  const smtpPass = rawPass.replace(/\s+/g, '');
+// Log email provider status at startup
+const logEmailProviderStatus = () => {
+  const resendKey = process.env.RESEND_API_KEY;
+  const brevoUser = process.env.BREVO_SMTP_USER;
+  const brevoPass = process.env.BREVO_SMTP_PASS;
 
-  if (smtpUser.includes('@') && smtpPass.length >= 16 && !smtpPass.includes('your_') && !smtpPass.includes('app_password')) {
-    return nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: smtpUser,
-        pass: smtpPass
-      }
-    });
-  }
-  return null;
-};
-
-const initEmailTransporter = () => {
-  const transporter = createEmailTransporter();
-  if (transporter) {
-    console.log(`[Email Dispatcher] ✅ Real Gmail SMTP configured for ${process.env.SMTP_USER || 'manukamepalli8399@gmail.com'}`);
-    transporter.verify()
-      .then(() => console.log('✅ [Email Dispatcher] Gmail SMTP connected & verified successfully! Real email alerts are ACTIVE.'))
-      .catch(err => console.error('⚠️ [Email Dispatcher] Gmail SMTP connection failed:', err.message));
+  if (resendKey) {
+    console.log('[Email Engine] ✅ PRIMARY: Resend HTTPS API configured (recommended for Render)');
   } else {
-    console.log('[Email Dispatcher] ⚠️ CRITICAL: SMTP_PASS is missing or invalid in Render Environment Variables!');
-    console.log('[Email Dispatcher] ⚠️ Real emails cannot be delivered until SMTP_USER and SMTP_PASS (16-char Gmail App Password) are added in Render Dashboard -> Environment Variables.');
+    console.log('[Email Engine] ⚠️  Resend API key not set. Add RESEND_API_KEY in Render → Environment.');
+  }
+  if (brevoUser && brevoPass) {
+    console.log('[Email Engine] ✅ SECONDARY: Brevo SMTP configured as fallback');
+  } else {
+    console.log('[Email Engine] ℹ️  Brevo SMTP not configured (optional fallback). Add BREVO_SMTP_USER + BREVO_SMTP_PASS in Render.');
   }
 };
 
-initEmailTransporter();
+logEmailProviderStatus();
 
+// --- Resend HTTPS API (works on Render, no SMTP ports needed) ---
 const sendViaResend = async (to, subject, html) => {
   const resendKey = process.env.RESEND_API_KEY;
   if (!resendKey) return null;
-
   try {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${resendKey}`,
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         from: 'Medico Overseas <onboarding@resend.dev>',
         to: Array.isArray(to) ? to : [to],
-        subject: subject,
-        html: html
+        subject,
+        html
       })
     });
     const data = await res.json();
     if (res.ok) {
-      console.log(`[Resend HTTPS API] ✅ Email sent to ${to} | ID: ${data.id}`);
+      console.log(`[Resend] ✅ Delivered to ${Array.isArray(to) ? to.join(', ') : to} | ID: ${data.id}`);
       return { success: true, messageId: data.id };
-    } else {
-      console.error(`[Resend HTTPS API] ❌ API error:`, data);
-      return null;
     }
+    console.error('[Resend] ❌ API error:', JSON.stringify(data));
+    return null;
   } catch (err) {
-    console.error(`[Resend HTTPS API] ❌ Network error:`, err.message);
+    console.error('[Resend] ❌ Network error:', err.message);
     return null;
   }
+};
+
+// --- Brevo SMTP (port 587 works on Render, unlike Gmail SMTP) ---
+const sendViaBrevo = async (to, subject, html) => {
+  const brevoUser = process.env.BREVO_SMTP_USER;
+  const brevoPass = process.env.BREVO_SMTP_PASS;
+  if (!brevoUser || !brevoPass) return null;
+  try {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp-relay.brevo.com',
+      port: 587,
+      secure: false,
+      auth: { user: brevoUser, pass: brevoPass }
+    });
+    const info = await transporter.sendMail({
+      from: `"Medico Overseas" <${brevoUser}>`,
+      to: Array.isArray(to) ? to.join(', ') : to,
+      subject,
+      html
+    });
+    console.log(`[Brevo] ✅ Delivered to ${Array.isArray(to) ? to.join(', ') : to} | MessageId: ${info.messageId}`);
+    return { success: true, messageId: info.messageId };
+  } catch (err) {
+    console.error('[Brevo] ❌ Send error:', err.message);
+    return null;
+  }
+};
+
+// --- Master dispatcher: tries Resend → Brevo → logs failure ---
+const dispatchEmail = async (to, subject, html) => {
+  const resendResult = await sendViaResend(to, subject, html);
+  if (resendResult?.success) return resendResult;
+
+  const brevoResult = await sendViaBrevo(to, subject, html);
+  if (brevoResult?.success) return brevoResult;
+
+  console.error('[Email Engine] ❌ All providers failed. Add RESEND_API_KEY or BREVO_SMTP_USER/PASS in Render Environment Variables.');
+  return { success: false, error: 'All email providers failed' };
 };
 
 // Send lead notification email to admin email list (with High Priority for instant phone push alerts)
@@ -379,79 +403,7 @@ const sendLeadEmail = async (inquiry) => {
     </div>
   `;
 
-  // Try HTTPS API first if configured
-  const resendResult = await sendViaResend(recipients, subject, html);
-  if (resendResult && resendResult.success) return resendResult;
-
-  try {
-    const smtpUser = process.env.SMTP_USER || 'manukamepalli8399@gmail.com';
-    let transporter = createEmailTransporter();
-    let senderAddress = `"Medico Overseas Leads" <${smtpUser}>`;
-
-    if (!transporter) {
-      const testAccount = await nodemailer.createTestAccount();
-      transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        secure: false,
-        auth: { user: testAccount.user, pass: testAccount.pass }
-      });
-      senderAddress = `"Medico Overseas Test" <${testAccount.user}>`;
-    }
-
-    const submittedAt = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-    const cleanPhone = (inquiry.phone || '').replace(/[^0-9]/g, '');
-
-    const info = await transporter.sendMail({
-      from: senderAddress,
-      to: recipients.join(', '),
-      subject: `🚨 [NEW MBBS LEAD] ${inquiry.name} — ${inquiry.country} (${inquiry.phone})`,
-      priority: 'high',
-      headers: {
-        'X-Priority': '1',
-        'X-MSMail-Priority': 'High',
-        'Importance': 'High'
-      },
-      html: `
-        <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 620px; margin: 0 auto; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.12); border: 1px solid #e2e8f0;">
-          <div style="background: linear-gradient(135deg, #0b132b, #1f3864); padding: 26px 30px; color: #ffffff;">
-            <div style="display: flex; align-items: center; justify-content: space-between;">
-              <h2 style="margin: 0; font-size: 22px; font-weight: 800; color: #ffffff;">🎓 New MBBS Lead Alert</h2>
-              <span style="background: #ef4444; color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase;">HOT LEAD</span>
-            </div>
-            <p style="margin: 8px 0 0; color: #93c5fd; font-size: 13px;">Received at ${submittedAt} IST via Medico Overseas Website</p>
-          </div>
-          <div style="padding: 26px 30px; background: #ffffff; color: #0f172a;">
-            <table style="width: 100%; border-collapse: collapse; font-size: 15px;">
-              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b; width: 36%;">👤 Student Name</td><td style="padding: 11px 6px; font-weight: 800; color: #0f172a; font-size: 16px;">${inquiry.name}</td></tr>
-              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">📱 Phone Number</td><td style="padding: 11px 6px;"><a href="tel:${inquiry.phone}" style="color: #2563eb; font-weight: 800; text-decoration: none; font-size: 16px;">${inquiry.phone}</a></td></tr>
-              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">💬 WhatsApp Link</td><td style="padding: 11px 6px;"><a href="https://wa.me/91${cleanPhone.slice(-10)}?text=Hello%20${encodeURIComponent(inquiry.name)}%2C%20greetings%20from%20Medico%20Overseas!" style="background: #22c55e; color: #ffffff; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-weight: 700; font-size: 13px; display: inline-block;">💬 Chat on WhatsApp</a></td></tr>
-              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">📧 Email Address</td><td style="padding: 11px 6px;"><a href="mailto:${inquiry.email}" style="color: #2563eb; text-decoration: none; font-weight: 600;">${inquiry.email || 'Not provided'}</a></td></tr>
-              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">🏙️ City / State</td><td style="padding: 11px 6px; font-weight: 600;">${inquiry.city || 'Not specified'}</td></tr>
-              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">🌍 Preferred Country</td><td style="padding: 11px 6px;"><span style="background: #dbeafe; color: #1e40af; padding: 4px 12px; border-radius: 20px; font-weight: 800;">${inquiry.country}</span></td></tr>
-              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">🩺 NEET Score</td><td style="padding: 11px 6px; font-weight: 800; color: #059669;">${inquiry.neetScore ? inquiry.neetScore + ' Marks' : 'Not provided'}</td></tr>
-              <tr><td style="padding: 11px 6px; color: #64748b; vertical-align: top;">💬 Message</td><td style="padding: 11px 6px; color: #334155; line-height: 1.5;">${inquiry.message || '—'}</td></tr>
-            </table>
-          </div>
-          <div style="background: #f8fafc; padding: 14px 30px; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0;">
-            📍 Source: <strong>${inquiry.sourcePage || 'Website'}</strong> &nbsp;|&nbsp; Sent instantly to <strong>${recipients.join(', ')}</strong>
-          </div>
-        </div>
-      `
-    });
-
-    const previewUrl = nodemailer.getTestMessageUrl(info);
-    if (previewUrl) {
-      console.log(`[Email Dispatcher] ✉️ Ethereal preview URL: ${previewUrl}`);
-    } else {
-      console.log(`[Email Dispatcher] ✅ Real Gmail alert delivered to ${recipients.join(', ')} | MessageId: ${info.messageId}`);
-    }
-
-    return { success: true, messageId: info.messageId, recipients };
-  } catch (err) {
-    console.error('[Email Dispatcher] ❌ Send Error:', err.message);
-    return { success: false, error: err.message, recipients };
-  }
+  return await dispatchEmail(recipients, subject, html);
 };
 
 const sendStudentConfirmationEmail = async (inquiry) => {
@@ -551,19 +503,12 @@ const sendStudentConfirmationEmail = async (inquiry) => {
         </div>
   `;
 
-  // Try HTTPS API first if configured
-  const resendResult = await sendViaResend(inquiry.email, subject, html);
-  if (resendResult && resendResult.success) return resendResult;
+  return await dispatchEmail(inquiry.email, subject, html);
+};
 
-  try {
-    const smtpUser = process.env.SMTP_USER || 'manukamepalli8399@gmail.com';
-    let transporter = createEmailTransporter();
-    let senderAddress = `"Medico Overseas Counseling" <${smtpUser}>`;
-
-    if (!transporter) {
-      console.log('[Student Email] No real SMTP transporter available. Skipping student auto-responder.');
-      return;
-    }
+const _unusedStudentEmailHelper = async (inquiry) => {
+  // placeholder to avoid further old code parsing
+  if (false) {
 
     console.log(`[Student Email] 🚀 Sending polite confirmation email to student: ${inquiry.email}`);
 
@@ -633,48 +578,8 @@ const sendStudentConfirmationEmail = async (inquiry) => {
               </ul>
             </div>
 
-            <!-- Direct Helpline / WhatsApp Connect -->
-            <div style="background: linear-gradient(135deg, rgba(37, 211, 102, 0.08) 0%, rgba(59, 130, 246, 0.08) 100%); border: 1px solid rgba(37, 211, 102, 0.3); border-radius: 14px; padding: 24px; text-align: center; margin: 32px 0;">
-              <div style="font-weight: 800; color: #166534; font-size: 15px; margin-bottom: 6px;">
-                Would you or your parents like to speak with us right away?
-              </div>
-              <p style="margin: 0 0 16px; font-size: 13px; color: #4b5563;">
-                Feel free to message or call our senior counseling team directly:
-              </p>
-              <div style="text-align: center;">
-                <a href="https://wa.me/919876543210?text=Hello%20Medico%20Overseas%2C%20I%20am%20${encodeURIComponent(inquiry.name)}.%20I%20registered%20for%20MBBS%20guidance%20for%20${encodeURIComponent(inquiry.country)}." style="display: inline-block; background: #22c55e; color: #ffffff; padding: 12px 28px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 14px; box-shadow: 0 4px 14px rgba(34,197,94,0.35);">
-                  💬 Chat on WhatsApp (+91 98765 43210)
-                </a>
-              </div>
-            </div>
-
-            <p style="color: #64748b; font-size: 13px; line-height: 1.6; border-top: 1px solid #f1f5f9; padding-top: 20px; margin-bottom: 0;">
-              We look forward to speaking with you and guiding you toward a fulfilling medical career.<br/><br/>
-              Warmest regards,<br/>
-              <strong style="color: #1f3864; font-size: 14px;">Senior Counseling & Admissions Board</strong><br/>
-              <span style="color: #64748b;">Medico Overseas Educational Consultancy</span><br/>
-              <span style="color: #94a3b8; font-size: 12px;">Official Admissions Partner for Premier Global Medical Universities</span>
-            </p>
-          </div>
-
-          <!-- Footer -->
-          <div style="background: #f8fafc; padding: 18px 32px; text-align: center; font-size: 12px; color: #94a3b8; border-top: 1px solid #e2e8f0;">
-            © 2026 Medico Overseas Educational Consultancy. All rights reserved.<br/>
-            Regional Counseling Centers: New Delhi | Mumbai | Hyderabad | Bangalore | Vijayawada
-          </div>
-        </div>
-      `
-    });
-
-    console.log(`[Student Email] ✅ Polite confirmation email delivered to ${inquiry.email} | MessageId: ${info.messageId}`);
-    return { success: true, messageId: info.messageId };
-  } catch (err) {
-    console.error(`[Student Email] ❌ Failed to send to ${inquiry.email}:`, err.message);
-    return { success: false, error: err.message };
-  }
-};
-
 // API ROUTES
+
 
 // Health check
 app.get('/api/health', (req, res) => {
