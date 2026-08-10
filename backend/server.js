@@ -268,42 +268,71 @@ if (MONGODB_URI.includes('mongodb+srv://') || MONGODB_URI.includes('mongodb://')
 }
 
 // ============================================================
-// EMAIL ENGINE — uses Resend HTTPS (primary) or Brevo SMTP (secondary)
-// Gmail SMTP is NOT used: Render blocks ports 465/587 to smtp.gmail.com
+// EMAIL ENGINE
+// Priority: Gmail App Password → Resend HTTPS → Brevo SMTP
 // ============================================================
 
-// Log email provider status at startup
-const logEmailProviderStatus = () => {
-  const resendKey = process.env.RESEND_API_KEY;
-  const brevoUser = process.env.BREVO_SMTP_USER;
-  const brevoPass = process.env.BREVO_SMTP_PASS;
+const SMTP_USER = process.env.SMTP_USER || 'manukamepalli8399@gmail.com';
+const SMTP_PASS = (process.env.SMTP_PASS || '').replace(/\s+/g, '');
 
-  if (resendKey) {
-    console.log('[Email Engine] ✅ PRIMARY: Resend HTTPS API configured (recommended for Render)');
+const logEmailProviderStatus = () => {
+  if (SMTP_PASS.length >= 16) {
+    console.log(`[Email Engine] ✅ PRIMARY: Gmail App Password configured for ${SMTP_USER}`);
   } else {
-    console.log('[Email Engine] ⚠️  Resend API key not set. Add RESEND_API_KEY in Render → Environment.');
+    console.log('[Email Engine] ⚠️  Gmail App Password not set. Add SMTP_PASS (16-char Google App Password) in Render → Environment.');
   }
-  if (brevoUser && brevoPass) {
-    console.log('[Email Engine] ✅ SECONDARY: Brevo SMTP configured as fallback');
-  } else {
-    console.log('[Email Engine] ℹ️  Brevo SMTP not configured (optional fallback). Add BREVO_SMTP_USER + BREVO_SMTP_PASS in Render.');
+  if (process.env.RESEND_API_KEY) {
+    console.log('[Email Engine] ✅ FALLBACK-1: Resend HTTPS API configured');
+  }
+  if (process.env.BREVO_SMTP_USER) {
+    console.log('[Email Engine] ✅ FALLBACK-2: Brevo SMTP configured');
   }
 };
 
 logEmailProviderStatus();
 
-// --- Resend HTTPS API (works on Render, no SMTP ports needed) ---
+// --- PRIMARY: Gmail App Password (fresh connection per send, no verify()) ---
+const sendViaGmail = async (to, subject, html) => {
+  if (SMTP_PASS.length < 16) return null;
+  try {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: { user: SMTP_USER, pass: SMTP_PASS },
+      connectionTimeout: 30000,
+      socketTimeout: 30000,
+      greetingTimeout: 20000,
+      tls: { rejectUnauthorized: false }
+    });
+    const info = await transporter.sendMail({
+      from: `"Medico Overseas" <${SMTP_USER}>`,
+      to: Array.isArray(to) ? to.join(', ') : to,
+      subject,
+      html,
+      priority: 'high',
+      headers: { 'X-Priority': '1', 'Importance': 'High' }
+    });
+    transporter.close();
+    console.log(`[Gmail] ✅ Delivered FROM ${SMTP_USER} TO ${Array.isArray(to) ? to.join(', ') : to} | ID: ${info.messageId}`);
+    return { success: true, messageId: info.messageId };
+  } catch (err) {
+    console.error('[Gmail] ❌ Send error:', err.message);
+    return null;
+  }
+};
+
+// --- FALLBACK-1: Resend HTTPS API (works even if SMTP ports are blocked) ---
 const sendViaResend = async (to, subject, html) => {
   const resendKey = process.env.RESEND_API_KEY;
   if (!resendKey) return null;
-  const senderEmail = process.env.BREVO_SENDER_EMAIL || 'manukamepalli8399@gmail.com';
   try {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         from: 'Medico Overseas <onboarding@resend.dev>',
-        reply_to: senderEmail,
+        reply_to: SMTP_USER,
         to: Array.isArray(to) ? to : [to],
         subject,
         html
@@ -311,7 +340,7 @@ const sendViaResend = async (to, subject, html) => {
     });
     const data = await res.json();
     if (res.ok) {
-      console.log(`[Resend] ✅ Delivered to ${Array.isArray(to) ? to.join(', ') : to} | ReplyTo: ${senderEmail} | ID: ${data.id}`);
+      console.log(`[Resend] ✅ Delivered to ${Array.isArray(to) ? to.join(', ') : to} | ReplyTo: ${SMTP_USER} | ID: ${data.id}`);
       return { success: true, messageId: data.id };
     }
     console.error('[Resend] ❌ API error:', JSON.stringify(data));
@@ -322,14 +351,12 @@ const sendViaResend = async (to, subject, html) => {
   }
 };
 
-// --- Brevo SMTP (port 587 works on Render, unlike Gmail SMTP) ---
-// Sends FROM your verified Gmail address via Brevo's mail relay
+// --- FALLBACK-2: Brevo SMTP (sends FROM Gmail after Brevo sender verification) ---
 const sendViaBrevo = async (to, subject, html) => {
   const brevoUser = process.env.BREVO_SMTP_USER;
   const brevoPass = process.env.BREVO_SMTP_PASS;
   if (!brevoUser || !brevoPass) return null;
-  // BREVO_SENDER_EMAIL = the verified Gmail you added in Brevo dashboard
-  const senderEmail = process.env.BREVO_SENDER_EMAIL || 'manukamepalli8399@gmail.com';
+  const senderEmail = process.env.BREVO_SENDER_EMAIL || SMTP_USER;
   try {
     const transporter = nodemailer.createTransport({
       host: 'smtp-relay.brevo.com',
@@ -351,15 +378,18 @@ const sendViaBrevo = async (to, subject, html) => {
   }
 };
 
-// --- Master dispatcher: tries Resend → Brevo → logs failure ---
+// --- Master dispatcher: Gmail App Password → Resend → Brevo ---
 const dispatchEmail = async (to, subject, html) => {
+  const gmailResult = await sendViaGmail(to, subject, html);
+  if (gmailResult?.success) return gmailResult;
+
   const resendResult = await sendViaResend(to, subject, html);
   if (resendResult?.success) return resendResult;
 
   const brevoResult = await sendViaBrevo(to, subject, html);
   if (brevoResult?.success) return brevoResult;
 
-  console.error('[Email Engine] ❌ All providers failed. Add RESEND_API_KEY or BREVO_SMTP_USER/PASS in Render Environment Variables.');
+  console.error('[Email Engine] ❌ All providers failed. Configure SMTP_PASS (Gmail App Password) in Render Environment Variables.');
   return { success: false, error: 'All email providers failed' };
 };
 
