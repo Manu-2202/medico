@@ -190,11 +190,16 @@ const Chatbot = ({ isOpen, setIsOpen, onRequestCounselling }) => {
         const response = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: userText, history: messages.slice(-8) })
+          body: JSON.stringify({ 
+            message: userText, 
+            history: messages.slice(-8),
+            pageUrl: window.location.pathname,
+            pageTitle: document.title
+          })
         });
         const data = await response.json();
 
-        const responseText = data.aiAvailable && data.reply
+        const responseText = data.reply
           ? data.reply
           : getScriptedFallback(userText);
 

@@ -7,7 +7,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import jwt from 'jsonwebtoken';
 import rateLimit from 'express-rate-limit';
-import { buildSystemPrompt } from './aiKnowledgeBase.js';
+import { buildSystemPrompt, getKnowledgeAnswer } from './aiKnowledgeBase.js';
 
 import Inquiry from './models/Inquiry.js';
 import Blog from './models/Blog.js';
@@ -893,7 +893,7 @@ app.delete('/api/inquiries/:id', requireAdmin, async (req, res) => {
 // ==========================================
 app.post('/api/chat', chatLimiter, async (req, res) => {
   try {
-    const { message, history } = req.body;
+    const { message, history, pageUrl, pageTitle } = req.body;
 
     if (!message || typeof message !== 'string' || !message.trim()) {
       return res.status(400).json({ success: false, message: 'A message is required.' });
@@ -904,13 +904,13 @@ app.post('/api/chat', chatLimiter, async (req, res) => {
 
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
-      // Graceful fallback signal — the frontend widget shows its scripted flow instead
-      // of a broken/blank chat when no key is configured yet.
+      // Fall back intelligently to our page-aware knowledge engine
+      const knowledgeReply = getKnowledgeAnswer(message, pageUrl);
       return res.json({
         success: true,
-        aiAvailable: false,
-        reply: null,
-        message: 'AI chat is not configured yet on this server.'
+        aiAvailable: true,
+        reply: knowledgeReply,
+        source: 'knowledge-base'
       });
     }
 
@@ -931,9 +931,9 @@ app.post('/api/chat', chatLimiter, async (req, res) => {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
+        model: 'claude-3-5-sonnet-20241022',
         max_tokens: 400,
-        system: buildSystemPrompt(),
+        system: buildSystemPrompt(pageUrl, pageTitle),
         messages
       })
     });
@@ -941,11 +941,12 @@ app.post('/api/chat', chatLimiter, async (req, res) => {
     if (!response.ok) {
       const errText = await response.text();
       console.error('[AI Chat] Anthropic API error:', response.status, errText);
+      const fallbackReply = getKnowledgeAnswer(message, pageUrl);
       return res.json({
         success: true,
-        aiAvailable: false,
-        reply: null,
-        message: 'The AI assistant is temporarily unavailable.'
+        aiAvailable: true,
+        reply: fallbackReply,
+        source: 'knowledge-base-fallback'
       });
     }
 
@@ -959,15 +960,17 @@ app.post('/api/chat', chatLimiter, async (req, res) => {
     res.json({
       success: true,
       aiAvailable: true,
-      reply: replyText || "I'm not sure how to answer that — would you like me to connect you with a counsellor?"
+      reply: replyText || getKnowledgeAnswer(message, pageUrl),
+      source: 'llm'
     });
   } catch (error) {
     console.error('[AI Chat] Error:', error);
+    const fallbackReply = getKnowledgeAnswer(req.body ? req.body.message : '', req.body ? req.body.pageUrl : '');
     res.json({
       success: true,
-      aiAvailable: false,
-      reply: null,
-      message: 'The AI assistant hit an error — please try again or request a counsellor.'
+      aiAvailable: true,
+      reply: fallbackReply,
+      source: 'knowledge-base-error-fallback'
     });
   }
 });
@@ -1167,9 +1170,9 @@ app.get('/api/track-admission/:query', async (req, res) => {
     }
 
     if (!lead) {
-      lead = memoryInquiries.find(i => 
-        (i.phone && i.phone.toLowerCase().includes(q)) || 
-        (i.email && i.email.toLowerCase().includes(q)) || 
+      lead = memoryInquiries.find(i =>
+        (i.phone && i.phone.toLowerCase().includes(q)) ||
+        (i.email && i.email.toLowerCase().includes(q)) ||
         i._id === q
       );
     }
