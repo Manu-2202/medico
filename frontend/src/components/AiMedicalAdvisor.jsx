@@ -66,8 +66,8 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
         onClick={() => setIsOpen(!isOpen)}
         style={{
           position: 'fixed',
-          bottom: '24px',
-          left: '24px',
+          bottom: '94px',
+          right: '24px',
           zIndex: 999,
           background: 'linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%)',
           color: '#ffffff',
@@ -90,7 +90,7 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
 
       {/* AI Chat Window */}
       {isOpen && (
-        <div style={{ position: 'fixed', bottom: '86px', left: '24px', zIndex: 9999, width: '380px', maxWidth: 'calc(100vw - 32px)', height: '520px', background: '#0b0f19', border: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '24px', boxShadow: '0 20px 50px rgba(0,0,0,0.6)', display: 'flex', flexDirection: 'column', overflow: 'hidden', fontFamily: "'Inter', sans-serif" }}>
+        <div style={{ position: 'fixed', bottom: '160px', right: '24px', zIndex: 9999, width: '380px', maxWidth: 'calc(100vw - 32px)', height: '520px', background: '#0b0f19', border: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '24px', boxShadow: '0 20px 50px rgba(0,0,0,0.6)', display: 'flex', flexDirection: 'column', overflow: 'hidden', fontFamily: "'Inter', sans-serif" }}>
           
           {/* Header */}
           <div style={{ padding: '16px 20px', background: '#111827', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
