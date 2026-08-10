@@ -230,7 +230,7 @@ mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 5000 })
 
     try {
       const count = await Inquiry.countDocuments();
-      if (count === 0) {
+      if (count < 24) {
         const seedInquiries = [
           { name: 'Aarav Sharma', phone: '+91 98765 43210', email: 'aarav.s@gmail.com', city: 'Delhi', country: 'Russia', status: 'New', neetScore: 485, message: 'Interested in Bashkir State Medical University.' },
           { name: 'Priya Patel', phone: '+91 98123 45678', email: 'priya.p@gmail.com', city: 'Ahmedabad', country: 'Georgia', status: 'In Counseling', neetScore: 512, message: 'Want details about Tbilisi State Medical University.' },
@@ -257,8 +257,15 @@ mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 5000 })
           { name: 'Deepak Yadav', phone: '+91 77654 32109', email: 'deepak.y@gmail.com', city: 'Noida', country: 'Uzbekistan', status: 'New', neetScore: 395, message: 'Tashkent Medical Academy fee payment installment details.' },
           { name: 'Shreya Pillai', phone: '+91 76543 21098', email: 'shreya.p@gmail.com', city: 'Thiruvananthapuram', country: 'Russia', status: 'Contacted', neetScore: 470, message: 'First Moscow State Medical University eligibility.' }
         ];
-        await Inquiry.insertMany(seedInquiries);
-        console.log('✅ Seeded 24 initial sample inquiries into MongoDB database!');
+
+        for (const item of seedInquiries) {
+          await Inquiry.updateOne(
+            { email: item.email },
+            { $setOnInsert: item },
+            { upsert: true }
+          );
+        }
+        console.log('✅ Synchronized 24 initial student inquiries into MongoDB Atlas database!');
       }
     } catch (seedErr) {
       console.error('Seed error:', seedErr.message);
