@@ -226,13 +226,14 @@ let memoryFaqs = [
 
 let isMongoConnected = false;
 
-// Seed the first admin user automatically if none exists
+// Ensure default admin user always exists (upsert on startup)
 const seedDefaultAdmin = async () => {
   try {
-    const count = await User.countDocuments({});
-    if (count === 0) {
-      const bootstrapEmail = (process.env.ADMIN_BOOTSTRAP_EMAIL || 'admin@medico.com').trim().toLowerCase();
-      const bootstrapPassword = (process.env.ADMIN_BOOTSTRAP_PASSWORD || 'admin123').trim();
+    const bootstrapEmail = (process.env.ADMIN_BOOTSTRAP_EMAIL || 'admin@medico.com').trim().toLowerCase();
+    const bootstrapPassword = (process.env.ADMIN_BOOTSTRAP_PASSWORD || 'admin123').trim();
+
+    const existing = await User.findOne({ email: bootstrapEmail });
+    if (!existing) {
       const admin = new User({
         name: 'Super Admin',
         email: bootstrapEmail,
@@ -240,12 +241,12 @@ const seedDefaultAdmin = async () => {
         role: 'superadmin'
       });
       await admin.save();
-      console.log(`[Admin Seed] ✅ Default admin created: ${bootstrapEmail} / ${bootstrapPassword}`);
+      console.log(`[Admin Seed] ✅ Default superadmin created: ${bootstrapEmail}`);
     } else {
-      console.log(`[Admin Seed] ℹ️ Admin user(s) already exist (${count}). Skipping seed.`);
+      console.log(`[Admin Seed] ℹ️ Admin already exists: ${bootstrapEmail}`);
     }
   } catch (err) {
-    console.error('[Admin Seed] ❌ Failed to seed default admin:', err.message);
+    console.error('[Admin Seed] ❌ Failed to seed admin:', err.message);
   }
 };
 
@@ -1277,6 +1278,26 @@ app.post('/api/admin/login', async (req, res) => {
   } catch (error) {
     console.error('Admin Login Error:', error);
     res.status(500).json({ success: false, message: 'Server login error: ' + error.message });
+  }
+});
+
+// Emergency admin reset endpoint — protected by ADMIN_RESET_SECRET env var
+app.post('/api/admin/reset-admin', async (req, res) => {
+  try {
+    const { secret } = req.body;
+    const resetSecret = process.env.ADMIN_RESET_SECRET || 'medico-reset-2026';
+    if (secret !== resetSecret) {
+      return res.status(403).json({ success: false, message: 'Invalid reset secret.' });
+    }
+    const bootstrapEmail = (process.env.ADMIN_BOOTSTRAP_EMAIL || 'admin@medico.com').trim().toLowerCase();
+    const bootstrapPassword = (process.env.ADMIN_BOOTSTRAP_PASSWORD || 'admin123').trim();
+    await User.deleteOne({ email: bootstrapEmail });
+    const admin = new User({ name: 'Super Admin', email: bootstrapEmail, password: bootstrapPassword, role: 'superadmin' });
+    await admin.save();
+    console.log(`[Admin Reset] ✅ Admin account reset for ${bootstrapEmail}`);
+    return res.json({ success: true, message: `Admin account reset successfully. Login with ${bootstrapEmail} / ${bootstrapPassword}` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
 });
 

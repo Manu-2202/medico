@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bot, MessageCircle } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 
 const FloatingActionButtons = ({ onToggleChatbot, isChatbotOpen }) => {
   const whatsappNumber = '919876543210';
@@ -19,19 +19,19 @@ const FloatingActionButtons = ({ onToggleChatbot, isChatbotOpen }) => {
         gap: '12px' 
       }}
     >
-      {/* 1. WhatsApp Direct Chat Button (Replaced Phone Button) */}
+      {/* WhatsApp Direct Chat Button */}
       <a
         href={whatsappUrl}
         target="_blank"
         rel="noreferrer"
         aria-label="Chat on WhatsApp"
         style={{
-          width: '48px',
-          height: '48px',
+          width: '56px',
+          height: '56px',
           borderRadius: '50%',
           background: 'linear-gradient(135deg, #25D366, #128C7E)',
           color: '#ffffff',
-          border: '1.5px solid #ffffff',
+          border: '2px solid #ffffff',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -42,60 +42,9 @@ const FloatingActionButtons = ({ onToggleChatbot, isChatbotOpen }) => {
         }}
         className="floating-action-btn"
       >
-        <MessageCircle size={24} color="#ffffff" fill="#ffffff" />
+        <MessageCircle size={28} color="#ffffff" fill="#ffffff" />
         <span className="tooltip-label">Chat on WhatsApp</span>
       </a>
-
-      {/* 2. Primary AI Admissions Chatbot Button (with Notification Badge) */}
-      <button
-        onClick={onToggleChatbot}
-        aria-label="Open AI Admissions Assistant"
-        style={{
-          width: '56px',
-          height: '56px',
-          borderRadius: '50%',
-          background: 'linear-gradient(135deg, #1e40af, #2563eb)',
-          color: '#ffffff',
-          border: '2px solid #ffffff',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: '0 8px 24px rgba(37, 99, 235, 0.5)',
-          cursor: 'pointer',
-          transition: 'all 0.25s ease',
-          position: 'relative'
-        }}
-        className="floating-action-btn heartbeat-anim"
-      >
-        <Bot size={28} color="#ffffff" />
-        
-        {/* Pulsing Red Notification Badge */}
-        {!isChatbotOpen && (
-          <span
-            style={{
-              position: 'absolute',
-              top: '-3px',
-              right: '-3px',
-              background: '#ef4444',
-              color: '#ffffff',
-              fontSize: '11px',
-              fontWeight: '900',
-              width: '20px',
-              height: '20px',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '2px solid #ffffff',
-              boxShadow: '0 2px 8px rgba(239, 68, 68, 0.6)'
-            }}
-          >
-            1
-          </span>
-        )}
-
-        <span className="tooltip-label">AI Admissions Assistant (1 Message)</span>
-      </button>
 
       {/* Floating Tooltips Styling */}
       <style>{`
