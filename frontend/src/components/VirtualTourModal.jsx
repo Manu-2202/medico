@@ -88,20 +88,28 @@ const VirtualTourModal = ({ isOpen, onClose, countryName }) => {
           </div>
 
           {/* Category Tabs */}
-          <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
+          <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', paddingBottom: '8px', paddingTop: '4px' }}>
             {['All', 'Labs', 'Mess', 'Hostel', 'Library'].map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 style={{
-                  padding: '8px 16px',
-                  borderRadius: '12px',
-                  fontSize: '12px',
+                  height: '38px',
+                  padding: '0 20px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: '20px',
+                  fontSize: '13px',
                   fontWeight: '700',
-                  border: activeCategory === cat ? '1px solid #f97316' : '1px solid rgba(255, 255, 255, 0.1)',
-                  background: activeCategory === cat ? '#f97316' : 'rgba(255, 255, 255, 0.04)',
+                  lineHeight: '1',
+                  whiteSpace: 'nowrap',
+                  border: activeCategory === cat ? '1px solid #f97316' : '1px solid rgba(255, 255, 255, 0.15)',
+                  background: activeCategory === cat ? '#f97316' : 'rgba(255, 255, 255, 0.08)',
                   color: '#ffffff',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  boxShadow: activeCategory === cat ? '0 4px 14px rgba(249, 115, 22, 0.4)' : 'none',
+                  transition: 'all 0.2s ease'
                 }}
               >
                 {cat}

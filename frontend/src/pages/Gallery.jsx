@@ -42,10 +42,15 @@ const Gallery = ({ onRequestCounselling }) => {
               key={f}
               onClick={() => setActiveFilter(f)}
               style={{
-                padding: '8px 20px',
+                height: '38px',
+                padding: '0 20px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 borderRadius: '30px',
                 fontSize: '14px',
                 fontWeight: '700',
+                lineHeight: '1',
                 whiteSpace: 'nowrap',
                 background: activeFilter === f ? 'var(--coral-accent)' : '#f1f5f9',
                 color: activeFilter === f ? '#ffffff' : 'var(--navy-primary)',
