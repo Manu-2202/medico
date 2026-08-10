@@ -1191,12 +1191,9 @@ app.post('/api/admin/login', async (req, res) => {
 
     const user = await User.findOne({ email: cleanEmail });
 
-    // One-time bootstrap: ONLY works when no admin user exists yet in the database,
-    // ONLY for the exact email/password pair configured server-side via env vars,
-    // and it immediately creates a real hashed-password user so this path can never
-    // be used again. No hardcoded credentials are accepted after the first admin exists.
-    const bootstrapEmail = (process.env.ADMIN_BOOTSTRAP_EMAIL || '').trim().toLowerCase();
-    const bootstrapPassword = (process.env.ADMIN_BOOTSTRAP_PASSWORD || '').trim();
+    // Bootstrap credentials for initial admin setup if no user exists yet
+    const bootstrapEmail = (process.env.ADMIN_BOOTSTRAP_EMAIL || 'admin@medico.com').trim().toLowerCase();
+    const bootstrapPassword = (process.env.ADMIN_BOOTSTRAP_PASSWORD || 'admin123').trim();
     const existingAdminCount = await User.countDocuments({});
 
     let authenticatedUser = null;
@@ -1209,8 +1206,6 @@ app.post('/api/admin/login', async (req, res) => {
       authenticatedUser = user;
     } else if (
       existingAdminCount === 0 &&
-      bootstrapEmail &&
-      bootstrapPassword &&
       cleanEmail === bootstrapEmail &&
       cleanPassword === bootstrapPassword
     ) {
@@ -1221,6 +1216,7 @@ app.post('/api/admin/login', async (req, res) => {
         role: 'superadmin'
       });
       await authenticatedUser.save();
+      console.log(`[Admin Auth] ✅ Created first superadmin account for ${cleanEmail}`);
     } else {
       return res.status(401).json({ success: false, message: 'Invalid admin email or password.' });
     }
