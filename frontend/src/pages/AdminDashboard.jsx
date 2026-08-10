@@ -124,7 +124,9 @@ const AdminDashboard = () => {
         }
       })
       .catch(() => {
-        setIsAuthenticated(true);
+        // Fail CLOSED: any network/verify error means we do NOT grant access.
+        localStorage.removeItem('adminToken');
+        setIsAuthenticated(false);
       })
       .finally(() => {
         setAuthChecking(false);

@@ -6,6 +6,8 @@ import nodemailer from 'nodemailer';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import jwt from 'jsonwebtoken';
+import rateLimit from 'express-rate-limit';
+import { buildSystemPrompt } from './aiKnowledgeBase.js';
 
 import Inquiry from './models/Inquiry.js';
 import Blog from './models/Blog.js';
@@ -24,10 +26,46 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/medico_overseas';
-const JWT_SECRET = process.env.JWT_SECRET || 'medico_overseas_secure_jwt_token_secret_key_2026';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  console.error('FATAL: JWT_SECRET is not set in the environment. Refusing to start with an insecure default.');
+  process.exit(1);
+}
+
+// Require a valid admin JWT before allowing access to admin-only routes.
+function requireAdmin(req, res, next) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ success: false, message: 'No authentication token provided.' });
+  }
+  const token = authHeader.split(' ')[1];
+  try {
+    req.admin = jwt.verify(token, JWT_SECRET);
+    next();
+  } catch (error) {
+    return res.status(401).json({ success: false, message: 'Invalid or expired token.' });
+  }
+}
 
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
+
+// Shared rate limiter for public write/AI endpoints — protects against form-spam and
+// runaway AI API costs from a single client.
+const publicApiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many requests — please try again in a few minutes.' }
+});
+const chatLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 12,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'You are sending messages too quickly — please slow down.' }
+});
 
 // Serve static frontend assets if dist folder exists
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
@@ -524,7 +562,7 @@ app.get('/api/site-settings', async (req, res) => {
   }
 });
 
-app.put('/api/site-settings', async (req, res) => {
+app.put('/api/site-settings', requireAdmin, async (req, res) => {
   try {
     const { announcementText, helplinePhone, helplineEmail, whatsappNumber, heroHeading, heroSubheading, leadEmails, officeLocations } = req.body;
 
@@ -587,7 +625,7 @@ app.get('/api/blogs/:slug', async (req, res) => {
   }
 });
 
-app.post('/api/blogs', async (req, res) => {
+app.post('/api/blogs', requireAdmin, async (req, res) => {
   try {
     const { title, slug, excerpt, content, category, tags, image, author, readTime } = req.body;
     if (!title || !excerpt || !content) {
@@ -620,7 +658,7 @@ app.post('/api/blogs', async (req, res) => {
   }
 });
 
-app.delete('/api/blogs/:id', async (req, res) => {
+app.delete('/api/blogs/:id', requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     if (isMongoConnected) {
@@ -644,7 +682,7 @@ app.get('/api/testimonials', async (req, res) => {
   }
 });
 
-app.post('/api/testimonials', async (req, res) => {
+app.post('/api/testimonials', requireAdmin, async (req, res) => {
   try {
     const { name, university, country, quote, rating, photo, year } = req.body;
     let item;
@@ -670,7 +708,7 @@ app.get('/api/gallery', async (req, res) => {
   }
 });
 
-app.post('/api/gallery', async (req, res) => {
+app.post('/api/gallery', requireAdmin, async (req, res) => {
   try {
     const { title, image, category, caption } = req.body;
     let item;
@@ -696,7 +734,7 @@ app.get('/api/faqs', async (req, res) => {
   }
 });
 
-app.post('/api/faqs', async (req, res) => {
+app.post('/api/faqs', requireAdmin, async (req, res) => {
   try {
     const { question, answer, category } = req.body;
     let item;
@@ -713,7 +751,7 @@ app.post('/api/faqs', async (req, res) => {
 });
 
 // SUBMIT INQUIRY (Student Form)
-app.post('/api/inquiries', async (req, res) => {
+app.post('/api/inquiries', publicApiLimiter, async (req, res) => {
   try {
     const { name, phone, email, city, country, neetScore, message, sourcePage } = req.body;
 
@@ -769,7 +807,7 @@ app.post('/api/inquiries', async (req, res) => {
 });
 
 // GET ALL INQUIRIES (Admin)
-app.get('/api/inquiries', async (req, res) => {
+app.get('/api/inquiries', requireAdmin, async (req, res) => {
   try {
     let inquiries = isMongoConnected ? await Inquiry.find().sort({ createdAt: -1 }) : memoryInquiries;
     res.json({ success: true, count: inquiries.length, data: inquiries });
@@ -779,12 +817,12 @@ app.get('/api/inquiries', async (req, res) => {
 });
 
 // GET NOTIFICATIONS (Admin)
-app.get('/api/notifications', (req, res) => {
+app.get('/api/notifications', requireAdmin, (req, res) => {
   res.json({ success: true, count: memoryNotifications.length, data: memoryNotifications });
 });
 
 // EXPORT INQUIRIES AS CSV
-app.get('/api/inquiries/export-csv', async (req, res) => {
+app.get('/api/inquiries/export-csv', requireAdmin, async (req, res) => {
   try {
     let list = isMongoConnected ? await Inquiry.find().sort({ createdAt: -1 }) : memoryInquiries;
 
@@ -821,7 +859,7 @@ app.patch('/api/inquiries/:id', async (req, res) => {
 });
 
 // DELETE INQUIRY
-app.delete('/api/inquiries/:id', async (req, res) => {
+app.delete('/api/inquiries/:id', requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     if (isMongoConnected) {
@@ -836,7 +874,91 @@ app.delete('/api/inquiries/:id', async (req, res) => {
 });
 
 // ELIGIBILITY CHECK API
-app.post('/api/eligibility', (req, res) => {
+// ==========================================
+// AI CHATBOT ("Dr. Maya") — real Claude-powered answers, grounded in our own data
+// ==========================================
+app.post('/api/chat', chatLimiter, async (req, res) => {
+  try {
+    const { message, history } = req.body;
+
+    if (!message || typeof message !== 'string' || !message.trim()) {
+      return res.status(400).json({ success: false, message: 'A message is required.' });
+    }
+    if (message.length > 1000) {
+      return res.status(400).json({ success: false, message: 'Message is too long.' });
+    }
+
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+    if (!apiKey) {
+      // Graceful fallback signal — the frontend widget shows its scripted flow instead
+      // of a broken/blank chat when no key is configured yet.
+      return res.json({
+        success: true,
+        aiAvailable: false,
+        reply: null,
+        message: 'AI chat is not configured yet on this server.'
+      });
+    }
+
+    // Keep prior turns short and bounded so a long chat can't blow up token cost.
+    const safeHistory = Array.isArray(history) ? history.slice(-8) : [];
+    const messages = [
+      ...safeHistory
+        .filter(m => m && typeof m.text === 'string' && (m.sender === 'user' || m.sender === 'bot'))
+        .map(m => ({ role: m.sender === 'user' ? 'user' : 'assistant', content: m.text.slice(0, 1000) })),
+      { role: 'user', content: message.trim() }
+    ];
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 400,
+        system: buildSystemPrompt(),
+        messages
+      })
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error('[AI Chat] Anthropic API error:', response.status, errText);
+      return res.json({
+        success: true,
+        aiAvailable: false,
+        reply: null,
+        message: 'The AI assistant is temporarily unavailable.'
+      });
+    }
+
+    const data = await response.json();
+    const replyText = (data.content || [])
+      .filter(block => block.type === 'text')
+      .map(block => block.text)
+      .join('\n')
+      .trim();
+
+    res.json({
+      success: true,
+      aiAvailable: true,
+      reply: replyText || "I'm not sure how to answer that — would you like me to connect you with a counsellor?"
+    });
+  } catch (error) {
+    console.error('[AI Chat] Error:', error);
+    res.json({
+      success: true,
+      aiAvailable: false,
+      reply: null,
+      message: 'The AI assistant hit an error — please try again or request a counsellor.'
+    });
+  }
+});
+
+app.post('/api/eligibility', publicApiLimiter, (req, res) => {
   const { neetScore, pcbPercentage } = req.body;
   const neet = parseInt(neetScore) || 0;
   const pcb = parseFloat(pcbPercentage) || 0;
@@ -883,35 +1005,53 @@ app.post('/api/admin/login', async (req, res) => {
     const cleanEmail = email.trim().toLowerCase();
     const cleanPassword = password.trim();
 
-    let user = null;
-    if (isMongoConnected) {
-      user = await User.findOne({ email: cleanEmail });
+    if (!isMongoConnected) {
+      // Without a database there is nowhere to safely verify credentials against.
+      return res.status(503).json({ success: false, message: 'Admin login is unavailable — database not connected.' });
     }
 
-    const isValidDefault = 
-      (cleanEmail === 'admin@medico.com' || cleanEmail === 'admin@medicooverseas.com' || cleanEmail === 'admin') &&
-      (cleanPassword === 'admin123' || cleanPassword === 'medico2026!' || cleanPassword === 'admin');
+    const user = await User.findOne({ email: cleanEmail });
 
-    if (!user && !isValidDefault) {
+    // One-time bootstrap: ONLY works when no admin user exists yet in the database,
+    // ONLY for the exact email/password pair configured server-side via env vars,
+    // and it immediately creates a real hashed-password user so this path can never
+    // be used again. No hardcoded credentials are accepted after the first admin exists.
+    const bootstrapEmail = (process.env.ADMIN_BOOTSTRAP_EMAIL || '').trim().toLowerCase();
+    const bootstrapPassword = (process.env.ADMIN_BOOTSTRAP_PASSWORD || '').trim();
+    const existingAdminCount = await User.countDocuments({});
+
+    let authenticatedUser = null;
+
+    if (user) {
+      const isMatch = await user.comparePassword(cleanPassword);
+      if (!isMatch) {
+        return res.status(401).json({ success: false, message: 'Invalid admin email or password.' });
+      }
+      authenticatedUser = user;
+    } else if (
+      existingAdminCount === 0 &&
+      bootstrapEmail &&
+      bootstrapPassword &&
+      cleanEmail === bootstrapEmail &&
+      cleanPassword === bootstrapPassword
+    ) {
+      authenticatedUser = new User({
+        name: 'Super Admin',
+        email: cleanEmail,
+        password: cleanPassword, // hashed automatically by the User model's pre-save hook
+        role: 'superadmin'
+      });
+      await authenticatedUser.save();
+    } else {
       return res.status(401).json({ success: false, message: 'Invalid admin email or password.' });
     }
 
-    if (user && user.password !== cleanPassword && !isValidDefault) {
-      return res.status(401).json({ success: false, message: 'Invalid admin email or password.' });
-    }
-
-    const userData = user ? {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role || 'superadmin',
-      avatar: user.avatar
-    } : {
-      id: 'admin-root',
-      name: 'Super Admin',
-      email: cleanEmail.includes('@') ? cleanEmail : 'admin@medico.com',
-      role: 'superadmin',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'
+    const userData = {
+      id: authenticatedUser._id,
+      name: authenticatedUser.name,
+      email: authenticatedUser.email,
+      role: authenticatedUser.role || 'superadmin',
+      avatar: authenticatedUser.avatar
     };
 
     // Sign JWT Token with non-expiring extended 365-day expiration
@@ -926,10 +1066,8 @@ app.post('/api/admin/login', async (req, res) => {
       { expiresIn: '365d' }
     );
 
-    if (user && isMongoConnected) {
-      user.lastLogin = new Date();
-      await user.save();
-    }
+    authenticatedUser.lastLogin = new Date();
+    await authenticatedUser.save();
 
     return res.json({
       success: true,
@@ -962,30 +1100,36 @@ app.get('/api/admin/verify', (req, res) => {
   }
 });
 
-app.post('/api/admin/profile', async (req, res) => {
+app.post('/api/admin/profile', requireAdmin, async (req, res) => {
   try {
-    const { name, email, avatar, newPassword } = req.body;
-    if (isMongoConnected) {
-      let user = await User.findOne({ email: email?.toLowerCase() });
-      if (!user) {
-        user = new User({
-          name: name || 'Super Admin',
-          email: email ? email.toLowerCase() : 'admin@medico.com',
-          password: newPassword || 'admin123',
-          avatar: avatar || ''
-        });
-      } else {
-        if (name) user.name = name;
-        if (avatar) user.avatar = avatar;
-        if (newPassword) user.password = newPassword;
-      }
-      await user.save();
+    const { name, avatar, newPassword } = req.body;
+
+    if (!isMongoConnected) {
+      return res.status(503).json({ success: false, message: 'Profile updates are unavailable — database not connected.' });
     }
+
+    // Only the authenticated admin's own record can be edited — identity comes from the
+    // verified JWT (req.admin.email), never from the request body, to prevent one admin
+    // (or an attacker with a stolen token) from editing/creating a different account.
+    const user = await User.findOne({ email: req.admin.email?.toLowerCase() });
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'Admin account not found.' });
+    }
+
+    if (name) user.name = name;
+    if (avatar) user.avatar = avatar;
+    if (newPassword) {
+      if (newPassword.length < 8) {
+        return res.status(400).json({ success: false, message: 'New password must be at least 8 characters.' });
+      }
+      user.password = newPassword; // hashed automatically by the User model's pre-save hook
+    }
+    await user.save();
 
     res.json({
       success: true,
       message: 'Profile updated successfully!',
-      data: { name, email, avatar }
+      data: { name: user.name, email: user.email, avatar: user.avatar }
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

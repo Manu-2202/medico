@@ -24,11 +24,36 @@ const Chatbot = ({ isOpen, setIsOpen, onRequestCounselling }) => {
   const [inputMessage, setInputMessage] = useState('');
   const [leadStep, setLeadStep] = useState(null); // 'name' | 'phone' | null
   const [leadData, setLeadData] = useState({ name: '', phone: '', country: 'Russia' });
+  const [isAiThinking, setIsAiThinking] = useState(false);
   const chatEndRef = useRef(null);
+
+  // Local scripted fallback — used only if the real AI backend isn't configured
+  // or a request fails, so free-text chat never just goes silent.
+  const getScriptedFallback = (userText) => {
+    const lowerText = userText.toLowerCase();
+    if (lowerText.match(/\b(hi|hello|hey|greetings|hola)\b/)) {
+      return '👋 Hello! I am Dr. Maya, your Admissions Specialist. I can help you check MBBS fees, choose universities, or book a free counselling session. What would you like to know?';
+    } else if (lowerText.includes('fee') || lowerText.includes('cost') || lowerText.includes('budget') || lowerText.includes('lakh')) {
+      return '💰 Total 6-year MBBS cost ranges from ₹14 Lakhs to ₹30 Lakhs total depending on university & country (Russia, Georgia, Central Asia). Zero hidden charges!';
+    } else if (lowerText.includes('neet') || lowerText.includes('eligible') || lowerText.includes('mark')) {
+      return '📋 NMC Guidelines require NEET Qualification (50th percentile for General, 40th percentile for SC/ST/OBC) and 50% marks in 12th Physics, Chemistry, & Biology.';
+    } else if (lowerText.includes('hostel') || lowerText.includes('food') || lowerText.includes('mess')) {
+      return '🍲 On-campus hostels offer 24/7 CCTV security, central heating, and North & South Indian cooked meals prepared by Indian chefs daily.';
+    } else if (lowerText.includes('who are you') || lowerText.includes('your name') || lowerText.includes('doctor maya')) {
+      return '🤖 I am Dr. Maya, your Admissions Specialist at Medico Overseas. I am here to help you guide through the foreign MBBS admission process!';
+    } else if (lowerText.includes('country') || lowerText.includes('countries') || lowerText.includes('where') || lowerText.includes('place')) {
+      return '🌍 We place students in NMC-approved government state universities across Russia 🇷🇺, Georgia 🇬🇪, Uzbekistan 🇺🇿, Kyrgyzstan 🇰🇬, Armenia 🇦🇲, and Vietnam 🇻🇳.';
+    } else if (lowerText.includes('admit') || lowerText.includes('admission') || lowerText.includes('apply') || lowerText.includes('process') || lowerText.includes('step')) {
+      return '📝 The admission process is 100% online & hassle-free: \n1. Share your 10th & 12th marks to verify eligibility. \n2. Choose an NMC-compliant government university. \n3. We handle embassy visa stamping & apostille. \n4. Fly in a group with our on-ground escort!';
+    } else if (lowerText.includes('contact') || lowerText.includes('phone') || lowerText.includes('office') || lowerText.includes('branch') || lowerText.includes('address') || lowerText.includes('location')) {
+      return '📍 Our head office is in New Delhi (Connaught Place), with branch offices in Hyderabad (Ameerpet) and Mumbai (BKC).';
+    }
+    return 'Thank you for your message! Our senior counselors are online. Would you like to check fees or request a direct callback?';
+  };
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isOpen]);
+  }, [messages, isOpen, isAiThinking]);
 
   const handleOptionClick = (optionText) => {
     // Reset lead capturing state if they click an option
@@ -105,7 +130,7 @@ const Chatbot = ({ isOpen, setIsOpen, onRequestCounselling }) => {
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (!inputMessage.trim()) return;
+    if (!inputMessage.trim() || isAiThinking) return;
 
     const userText = inputMessage.trim();
     setInputMessage('');
@@ -157,28 +182,21 @@ const Chatbot = ({ isOpen, setIsOpen, onRequestCounselling }) => {
         ]);
       }, 600);
     } else {
-      // General intelligent assistant response logic
-      setTimeout(() => {
-        const lowerText = userText.toLowerCase();
-        let responseText = 'Thank you for your message! Our senior counselors are online. Would you like to check fees or request a direct callback?';
-        
-        if (lowerText.match(/\b(hi|hello|hey|greetings|hola)\b/)) {
-          responseText = '👋 Hello! I am Dr. Maya, your AI Admissions Specialist. I can help you check MBBS fees, choose universities, or book a free counselling session. What would you like to know?';
-        } else if (lowerText.includes('fee') || lowerText.includes('cost') || lowerText.includes('budget') || lowerText.includes('lakh')) {
-          responseText = '💰 Total 6-year MBBS cost ranges from ₹14 Lakhs to ₹30 Lakhs total depending on university & country (Russia, Georgia, Central Asia). Zero hidden charges!';
-        } else if (lowerText.includes('neet') || lowerText.includes('eligible') || lowerText.includes('mark')) {
-          responseText = '📋 NMC Guidelines require NEET Qualification (50th percentile for General, 40th percentile for SC/ST/OBC) and 50% marks in 12th Physics, Chemistry, & Biology.';
-        } else if (lowerText.includes('hostel') || lowerText.includes('food') || lowerText.includes('mess')) {
-          responseText = '🍲 On-campus hostels offer 24/7 CCTV security, central heating, and North & South Indian cooked meals prepared by Indian chefs daily.';
-        } else if (lowerText.includes('who are you') || lowerText.includes('your name') || lowerText.includes('doctor maya')) {
-          responseText = '🤖 I am Dr. Maya, your 24/7 AI Admissions Specialist at Medico Overseas. I am here to help you guide through the foreign MBBS admission process!';
-        } else if (lowerText.includes('country') || lowerText.includes('countries') || lowerText.includes('where') || lowerText.includes('place')) {
-          responseText = '🌍 We place students in NMC-approved government state universities across Russia 🇷🇺, Georgia 🇬🇪, Uzbekistan 🇺🇿, Kazakhstan 🇰🇿, Kyrgyzstan 🇰🇬, and Vietnam 🇻🇳.';
-        } else if (lowerText.includes('admit') || lowerText.includes('admission') || lowerText.includes('apply') || lowerText.includes('process') || lowerText.includes('step')) {
-          responseText = '📝 The admission process is 100% online & hassle-free: \n1. Share your 10th & 12th marks to verify eligibility. \n2. Choose NMC-compliant government university. \n3. We handle embassy visa stamping & apostille. \n4. Fly in a group with our on-ground escort!';
-        } else if (lowerText.includes('contact') || lowerText.includes('phone') || lowerText.includes('office') || lowerText.includes('branch') || lowerText.includes('address') || lowerText.includes('location')) {
-          responseText = '📍 Our head office is in New Delhi (Connaught Place), with branch offices in Hyderabad (Ameerpet) and Mumbai (BKC), as well as on-ground operations desks in Tashkent and Moscow.';
-        }
+      // Real AI response — calls the backend, which grounds Claude's answer in our
+      // actual country/exam data. Falls back to the scripted responses above if the
+      // AI backend isn't configured or the request fails, so chat never goes silent.
+      setIsAiThinking(true);
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: userText, history: messages.slice(-8) })
+        });
+        const data = await response.json();
+
+        const responseText = data.aiAvailable && data.reply
+          ? data.reply
+          : getScriptedFallback(userText);
 
         setMessages((prev) => [
           ...prev,
@@ -188,7 +206,18 @@ const Chatbot = ({ isOpen, setIsOpen, onRequestCounselling }) => {
             options: ['🎓 Check MBBS Fees & Budget', '📞 Request Call with Senior Counselor', '💬 Chat on WhatsApp Directly']
           }
         ]);
-      }, 600);
+      } catch (err) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            sender: 'bot',
+            text: getScriptedFallback(userText),
+            options: ['🎓 Check MBBS Fees & Budget', '📞 Request Call with Senior Counselor', '💬 Chat on WhatsApp Directly']
+          }
+        ]);
+      } finally {
+        setIsAiThinking(false);
+      }
     }
   };
 
@@ -315,6 +344,11 @@ const Chatbot = ({ isOpen, setIsOpen, onRequestCounselling }) => {
 
           </div>
         ))}
+        {isAiThinking && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#64748b', fontSize: '12px', padding: '4px 2px' }}>
+            <Bot size={14} /> Dr. Maya is typing…
+          </div>
+        )}
         <div ref={chatEndRef} />
       </div>
 
@@ -325,9 +359,10 @@ const Chatbot = ({ isOpen, setIsOpen, onRequestCounselling }) => {
           placeholder="Type your question..."
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
-          style={{ flexGrow: 1, padding: '10px 14px', borderRadius: '30px', border: '1px solid #cbd5e1', outline: 'none', fontSize: '13px' }}
+          disabled={isAiThinking}
+          style={{ flexGrow: 1, padding: '10px 14px', borderRadius: '30px', border: '1px solid #cbd5e1', outline: 'none', fontSize: '13px', opacity: isAiThinking ? 0.6 : 1 }}
         />
-        <button type="submit" style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'var(--coral-accent)', color: '#ffffff', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+        <button type="submit" disabled={isAiThinking} style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'var(--coral-accent)', color: '#ffffff', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: isAiThinking ? 'not-allowed' : 'pointer', opacity: isAiThinking ? 0.6 : 1 }}>
           <Send size={16} />
         </button>
       </form>
