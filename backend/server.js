@@ -244,21 +244,28 @@ const initEmailTransporter = () => {
   const smtpUser = process.env.SMTP_USER || 'manukamepalli8399@gmail.com';
   const rawPass = process.env.SMTP_PASS || '';
   const smtpPass = rawPass.replace(/\s+/g, '');
+  const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
+  const smtpPort = parseInt(process.env.SMTP_PORT || '587', 10);
+  const isSecure = smtpPort === 465;
 
   if (smtpUser.includes('@') && smtpPass.length >= 16 && !smtpPass.includes('your_') && !smtpPass.includes('app_password')) {
     gmailTransporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
+      host: smtpHost,
+      port: smtpPort,
+      secure: isSecure,
+      requireTLS: !isSecure,
       auth: {
         user: smtpUser,
         pass: smtpPass
       },
       pool: true,
       maxConnections: 5,
-      maxMessages: 100
+      maxMessages: 100,
+      tls: {
+        rejectUnauthorized: false
+      }
     });
-    console.log(`[Email Dispatcher] ✅ Real Gmail SMTP configured for ${smtpUser}`);
+    console.log(`[Email Dispatcher] ✅ Real SMTP configured for ${smtpUser} via ${smtpHost}:${smtpPort} (secure=${isSecure})`);
     gmailTransporter.verify()
       .then(() => console.log('✅ [Email Dispatcher] Gmail SMTP connected & verified successfully! Real email alerts are ACTIVE.'))
       .catch(err => console.error('⚠️ [Email Dispatcher] Gmail SMTP connection failed:', err.message));
