@@ -244,28 +244,19 @@ const initEmailTransporter = () => {
   const smtpUser = process.env.SMTP_USER || 'manukamepalli8399@gmail.com';
   const rawPass = process.env.SMTP_PASS || '';
   const smtpPass = rawPass.replace(/\s+/g, '');
-  const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
-  const smtpPort = parseInt(process.env.SMTP_PORT || '587', 10);
-  const isSecure = smtpPort === 465;
 
   if (smtpUser.includes('@') && smtpPass.length >= 16 && !smtpPass.includes('your_') && !smtpPass.includes('app_password')) {
     gmailTransporter = nodemailer.createTransport({
-      host: smtpHost,
-      port: smtpPort,
-      secure: isSecure,
-      requireTLS: !isSecure,
+      service: 'gmail',
       auth: {
         user: smtpUser,
         pass: smtpPass
       },
       pool: true,
       maxConnections: 5,
-      maxMessages: 100,
-      tls: {
-        rejectUnauthorized: false
-      }
+      maxMessages: 100
     });
-    console.log(`[Email Dispatcher] ✅ Real SMTP configured for ${smtpUser} via ${smtpHost}:${smtpPort} (secure=${isSecure})`);
+    console.log(`[Email Dispatcher] ✅ Real Gmail SMTP configured for ${smtpUser}`);
     gmailTransporter.verify()
       .then(() => console.log('✅ [Email Dispatcher] Gmail SMTP connected & verified successfully! Real email alerts are ACTIVE.'))
       .catch(err => console.error('⚠️ [Email Dispatcher] Gmail SMTP connection failed:', err.message));
@@ -807,10 +798,12 @@ app.post('/api/inquiries', publicApiLimiter, async (req, res) => {
     // 🚀 Dispatch emails in background asynchronously without blocking HTTP response
     setImmediate(async () => {
       try {
-        await Promise.allSettled([
+        console.log(`[Background Email Dispatch] Starting dispatch for lead: ${name} (${email})...`);
+        const results = await Promise.allSettled([
           sendLeadEmail(inquiry),
           sendStudentConfirmationEmail(inquiry)
         ]);
+        console.log(`[Background Email Dispatch] Results for ${name}:`, JSON.stringify(results, null, 2));
       } catch (err) {
         console.error('[Background Email Dispatch Error]:', err);
       }
