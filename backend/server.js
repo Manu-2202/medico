@@ -226,12 +226,36 @@ let memoryFaqs = [
 
 let isMongoConnected = false;
 
+// Seed the first admin user automatically if none exists
+const seedDefaultAdmin = async () => {
+  try {
+    const count = await User.countDocuments({});
+    if (count === 0) {
+      const bootstrapEmail = (process.env.ADMIN_BOOTSTRAP_EMAIL || 'admin@medico.com').trim().toLowerCase();
+      const bootstrapPassword = (process.env.ADMIN_BOOTSTRAP_PASSWORD || 'admin123').trim();
+      const admin = new User({
+        name: 'Super Admin',
+        email: bootstrapEmail,
+        password: bootstrapPassword,
+        role: 'superadmin'
+      });
+      await admin.save();
+      console.log(`[Admin Seed] ✅ Default admin created: ${bootstrapEmail} / ${bootstrapPassword}`);
+    } else {
+      console.log(`[Admin Seed] ℹ️ Admin user(s) already exist (${count}). Skipping seed.`);
+    }
+  } catch (err) {
+    console.error('[Admin Seed] ❌ Failed to seed default admin:', err.message);
+  }
+};
+
 // Connect to MongoDB
 if (MONGODB_URI.includes('mongodb+srv://') || MONGODB_URI.includes('mongodb://')) {
   mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 5000 })
-    .then(() => {
+    .then(async () => {
       isMongoConnected = true;
       console.log('✅ MongoDB Connected Successfully to Atlas Database');
+      await seedDefaultAdmin();
     })
     .catch(err => {
       console.error('⚠️ MongoDB connection warning (using in-memory DB fallback):', err.message);
