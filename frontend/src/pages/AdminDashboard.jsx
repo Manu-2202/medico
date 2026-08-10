@@ -616,13 +616,13 @@ const AdminDashboard = () => {
             {/* Quick Demo Credentials Helper */}
             <div style={{ background: 'rgba(59, 130, 246, 0.08)', border: '1px dashed rgba(59, 130, 246, 0.25)', borderRadius: '12px', padding: '10px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div style={{ fontSize: '12px', color: '#93c5fd' }}>
-                Quick Login: <strong>admin@medico.com</strong> / <strong>admin123</strong>
+                Quick Login: <strong>manukamepalli8399@gmail.com</strong> / <strong>Km@298399</strong>
               </div>
               <button
                 type="button"
                 onClick={() => {
-                  setLoginEmail('admin@medico.com');
-                  setLoginPassword('admin123');
+                  setLoginEmail('manukamepalli8399@gmail.com');
+                  setLoginPassword('Km@298399');
                 }}
                 style={{ background: '#3b82f6', color: '#ffffff', border: 'none', padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: '700', cursor: 'pointer' }}
               >
