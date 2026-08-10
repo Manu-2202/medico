@@ -3,11 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, Users, BarChart3, Mail, FileText, Globe, MessageSquare, Image as ImageIcon,
   Search, Bell, RefreshCw, Download, Plus, Trash2, Edit3, LogOut, User, Key, CheckCircle2, Clock, 
-  TrendingUp, Activity, Filter, ChevronLeft, ChevronRight, Printer, Shield, ArrowUpRight, Volume2, X
+  TrendingUp, Activity, Filter, ChevronLeft, ChevronRight, Printer, Shield, ArrowUpRight, Volume2, X,
+  Calculator
 } from 'lucide-react';
+import EligibilityCalculator from '../components/EligibilityCalculator';
 
 import { useLanguage } from '../utils/languageContext';
-import { playAlertSound, unlockAudio } from '../utils/soundNotification';
+import { playAlertSound, unlockAudio, triggerSystemNotification, requestNotificationPermission } from '../utils/soundNotification';
+import CmsHeader from '../components/CmsHeader';
+import CmsFooter from '../components/CmsFooter';
+import { showInAppNotificationBar } from '../components/TopNotificationBar';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -46,7 +51,7 @@ const AdminDashboard = () => {
     whatsappNumber: '919876543210',
     heroHeading: 'Your Trusted Gateway to NMC Approved MBBS Abroad',
     heroSubheading: 'Direct admissions in Top Government Medical Universities in Russia, Georgia, Kazakhstan, Uzbekistan, Philippines, Kyrgyzstan & Vietnam.',
-    leadEmails: 'manukamepalli8399@gmail.com'
+    leadEmails: 'info@medicooverseas.com'
   });
   const [settingsStatusMsg, setSettingsStatusMsg] = useState('');
 
@@ -275,24 +280,29 @@ const AdminDashboard = () => {
     }
   };
 
+  const getAdminHeaders = (extraHeaders = {}) => {
+    const token = localStorage.getItem('adminToken');
+    return {
+      ...extraHeaders,
+      'Authorization': token ? `Bearer ${token}` : ''
+    };
+  };
+
   const fetchInquiries = async (isPoll = false) => {
     if (!isPoll) setLoadingLeads(true);
     try {
-      const res = await fetch('/api/inquiries');
+      const res = await fetch('/api/inquiries', {
+        headers: getAdminHeaders()
+      });
       const data = await res.json();
       if (data.success && Array.isArray(data.data)) {
         if (lastInquiriesCountRef.current !== -1 && data.data.length > lastInquiriesCountRef.current) {
-          // Trigger audio chime and browser desktop alert on logged-in admin devices!
-          playNotificationSound();
           const latestLead = data.data[0];
-          if ('Notification' in window && Notification.permission === 'granted') {
-            try {
-              new Notification('🚨 New MBBS Lead Received!', {
-                body: `${latestLead.name} (${latestLead.phone}) applied for ${latestLead.country}`,
-                icon: '/logo.png'
-              });
-            } catch (e) {}
-          }
+          showInAppNotificationBar(
+            '🚨 NEW MBBS LEAD RECEIVED!',
+            `${latestLead.name} (${latestLead.phone}) applied for ${latestLead.country}`,
+            latestLead
+          );
         }
         lastInquiriesCountRef.current = data.data.length;
         setInquiries(data.data);
@@ -309,7 +319,9 @@ const AdminDashboard = () => {
 
   const fetchNotifications = async () => {
     try {
-      const res = await fetch('/api/notifications');
+      const res = await fetch('/api/notifications', {
+        headers: getAdminHeaders()
+      });
       const data = await res.json();
       if (data.success) setNotifications(data.data);
     } catch (err) {
@@ -323,7 +335,7 @@ const AdminDashboard = () => {
     try {
       const res = await fetch('/api/site-settings', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAdminHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify(siteSettings)
       });
       const data = await res.json();
@@ -343,7 +355,7 @@ const AdminDashboard = () => {
     try {
       const res = await fetch('/api/blogs', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAdminHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify(newBlog)
       });
       const data = await res.json();
@@ -362,7 +374,10 @@ const AdminDashboard = () => {
   const handleDeleteBlog = async (id) => {
     if (!window.confirm('Delete this blog post?')) return;
     try {
-      const res = await fetch(`/api/blogs/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/blogs/${id}`, {
+        method: 'DELETE',
+        headers: getAdminHeaders()
+      });
       const data = await res.json();
       if (data.success) fetchBlogs();
     } catch (err) {
@@ -375,7 +390,7 @@ const AdminDashboard = () => {
     try {
       const res = await fetch('/api/testimonials', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAdminHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify(newTestimonial)
       });
       const data = await res.json();
@@ -393,7 +408,7 @@ const AdminDashboard = () => {
     try {
       const res = await fetch('/api/gallery', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAdminHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify(newGallery)
       });
       const data = await res.json();
@@ -427,7 +442,10 @@ const AdminDashboard = () => {
   const handleDeleteInquiry = async (id) => {
     if (!window.confirm('Delete lead inquiry?')) return;
     try {
-      const res = await fetch(`/api/inquiries/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/inquiries/${id}`, {
+        method: 'DELETE',
+        headers: getAdminHeaders()
+      });
       const data = await res.json();
       if (data.success) {
         setInquiries(inquiries.filter(i => i._id !== id));
@@ -441,7 +459,7 @@ const AdminDashboard = () => {
     try {
       const res = await fetch(`/api/inquiries/${id}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAdminHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({ status: newStatus })
       });
       const data = await res.json();
@@ -616,13 +634,13 @@ const AdminDashboard = () => {
             {/* Quick Demo Credentials Helper */}
             <div style={{ background: 'rgba(59, 130, 246, 0.08)', border: '1px dashed rgba(59, 130, 246, 0.25)', borderRadius: '12px', padding: '10px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div style={{ fontSize: '12px', color: '#93c5fd' }}>
-                Quick Login: <strong>manukamepalli8399@gmail.com</strong> / <strong>Km@298399</strong>
+                Quick Login: <strong>admin@medico.com</strong> / <strong>admin123</strong>
               </div>
               <button
                 type="button"
                 onClick={() => {
-                  setLoginEmail('manukamepalli8399@gmail.com');
-                  setLoginPassword('Km@298399');
+                  setLoginEmail('admin@medico.com');
+                  setLoginPassword('admin123');
                 }}
                 style={{ background: '#3b82f6', color: '#ffffff', border: 'none', padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: '700', cursor: 'pointer' }}
               >
@@ -655,10 +673,10 @@ const AdminDashboard = () => {
 
   // 3. Authenticated CRM Dashboard
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#0b0f19', color: '#e2e8f0', fontFamily: "'Inter', sans-serif" }}>
+    <div className="admin-shell" style={{ display: 'flex', minHeight: '100vh', background: '#0b0f19', color: '#e2e8f0', fontFamily: "'Inter', sans-serif" }}>
       
       {/* 1. LEFT VERTICAL NAVIGATION SIDEBAR (Matching reference image) */}
-      <aside style={{ width: '260px', background: '#111827', borderRight: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
+      <aside className="admin-sidebar" style={{ width: '260px', background: '#111827', borderRight: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
         
         {/* Sidebar Header / Brand */}
         <div style={{ padding: '24px 20px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -680,7 +698,8 @@ const AdminDashboard = () => {
             { id: 'settings', label: t('tabSettings'), icon: Mail },
             { id: 'blogs', label: t('tabBlogs'), icon: FileText },
             { id: 'countries', label: t('tabCountries'), icon: Globe },
-            { id: 'testimonials', label: t('tabTestimonials'), icon: MessageSquare }
+            { id: 'testimonials', label: t('tabTestimonials'), icon: MessageSquare },
+            { id: 'calculator', label: 'Eligibility Calculator', icon: Calculator }
           ].map((item) => {
             const IconComponent = item.icon;
             const isActive = activeTab === item.id;
@@ -1140,7 +1159,7 @@ const AdminDashboard = () => {
                   <input
                     value={siteSettings.leadEmails || ''}
                     onChange={e => setSiteSettings({ ...siteSettings, leadEmails: e.target.value })}
-                    placeholder="info@medicooverseas.com, manukamepalli8399@gmail.com"
+                    placeholder="info@medicooverseas.com, counselor@medicooverseas.com"
                     style={{ width: '100%', background: '#0b0f19', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px 14px', color: '#fff', fontSize: '14px', outline: 'none' }}
                   />
                 </div>
@@ -1445,6 +1464,17 @@ const AdminDashboard = () => {
                 <textarea placeholder="Review quote..." required value={newTestimonial.quote} onChange={e => setNewTestimonial({...newTestimonial, quote: e.target.value})} style={{ background: '#0b0f19', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px', color: '#fff' }}></textarea>
                 <button type="submit" style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '12px 20px', borderRadius: '10px', fontWeight: '700', width: 'fit-content', cursor: 'pointer' }}>Add Testimonial</button>
               </form>
+            </div>
+          )}
+
+          {/* TAB 7: ELIGIBILITY & BUDGET CALCULATOR (moved here from the public site — internal counselling tool) */}
+          {activeTab === 'calculator' && (
+            <div style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '20px', padding: '28px' }}>
+              <h2 style={{ color: '#ffffff', fontSize: '22px', fontWeight: '800', marginBottom: '4px' }}>MBBS Abroad Eligibility & Budget Calculator</h2>
+              <p style={{ color: '#94a3b8', fontSize: '13px', marginBottom: '20px' }}>
+                Internal counselling tool — use this while on a call with a student/parent to instantly check NEET eligibility and shortlist countries by budget. This tool is admin-only and no longer appears on the public website.
+              </p>
+              <EligibilityCalculator onRequestCounselling={() => setActiveTab('leads')} />
             </div>
           )}
 

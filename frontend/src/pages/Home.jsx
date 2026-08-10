@@ -4,14 +4,12 @@ import {
   ShieldCheck, Shield, Award, GraduationCap, Users, Globe, Building2, Stethoscope,
   CheckCircle, ArrowRight, Star, Heart, FileText, Phone, Mail, Send, Clock, BookOpen, ChevronRight, ChevronLeft, Check, Quote, Sparkles, UserCheck, RefreshCw, MapPin, Navigation
 } from 'lucide-react';
-import EligibilityCalculator from '../components/EligibilityCalculator';
 import AdmissionTracker from '../components/AdmissionTracker';
-import FmgeQuizHub from '../components/FmgeQuizHub';
 import VirtualTourModal from '../components/VirtualTourModal';
 import VoiceAssistant from '../components/VoiceAssistant';
-
 import SEO from '../components/SEO';
 import TrustBar from '../components/TrustBar';
+import AnimatedCounter from '../components/AnimatedCounter';
 import { useLanguage } from '../utils/languageContext';
 import { playAlertSound } from '../utils/soundNotification';
 
@@ -826,17 +824,17 @@ const Home = ({ onRequestCounselling }) => {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
 
             {/* Card 1 */}
-            <div className="why-mbbs-card">
-              <div style={{ width: '50px', height: '50px', borderRadius: '14px', background: 'rgba(225, 91, 63, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--coral-accent)', marginBottom: '14px' }}>
-                <Award size={24} />
+            <div className="why-study-card theme-coral">
+              <div className="card-icon-box" style={{ background: '#fff4f1', color: '#e15b3f' }}>
+                <Award size={28} />
               </div>
-              <h3 style={{ fontSize: '18px', color: 'var(--navy-primary)', marginBottom: '8px', fontWeight: '700' }}>
+              <h3 className="card-title">
                 {lang === 'hi' ? 'विश्व स्तर पर मान्यता प्राप्त डिग्रियां' : 'Globally Recognized Degrees'}
               </h3>
-              <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.6' }}>
+              <p className="card-desc">
                 {lang === 'hi'
                   ? 'मेडिकल डिग्रियां (एमडी/एमबीबीएस) एनएमसी 2021 गजट के नियमों का पूरी तरह पालन करती हैं और डब्ल्यूएचओ में सूचीबद्ध हैं।'
                   : 'Medical degrees (MD/MBBS) strictly comply with NMC 2021 Gazette guidelines and are listed in WHO WDOMS, making graduates eligible for FMGE, NEXT, USMLE, and PLAB.'}
@@ -844,14 +842,14 @@ const Home = ({ onRequestCounselling }) => {
             </div>
 
             {/* Card 2 */}
-            <div className="why-mbbs-card">
-              <div style={{ width: '50px', height: '50px', borderRadius: '14px', background: 'rgba(2, 132, 199, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--cyan-info)', marginBottom: '14px' }}>
-                <Building2 size={24} />
+            <div className="why-study-card theme-blue">
+              <div className="card-icon-box" style={{ background: '#f0f9ff', color: '#0284c7' }}>
+                <Building2 size={28} />
               </div>
-              <h3 style={{ fontSize: '18px', color: 'var(--navy-primary)', marginBottom: '8px', fontWeight: '700' }}>
+              <h3 className="card-title">
                 {lang === 'hi' ? 'सस्ती ट्यूशन फीस और शून्य डोनेशन' : 'Affordable Tuition & Zero Capitation'}
               </h3>
-              <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.6' }}>
+              <p className="card-desc">
                 {lang === 'hi'
                   ? 'भारत के निजी मेडिकल कॉलेजों की तुलना में 70% तक बचत करें, बिना किसी डोनेशन या छिपे शुल्क के। कुल 6-वर्षीय खर्च ₹14 लाख से ₹30 लाख तक है।'
                   : 'Save up to 70% compared to private medical colleges in India with zero donation or hidden fees. Total 6-year tuition & hostel cost ranges from ₹14 Lakhs to ₹30 Lakhs.'}
@@ -859,14 +857,14 @@ const Home = ({ onRequestCounselling }) => {
             </div>
 
             {/* Card 3 */}
-            <div className="why-mbbs-card">
-              <div style={{ width: '50px', height: '50px', borderRadius: '14px', background: 'rgba(16, 185, 129, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--emerald-success)', marginBottom: '14px' }}>
-                <Globe size={24} />
+            <div className="why-study-card theme-emerald">
+              <div className="card-icon-box" style={{ background: '#ecfdf5', color: '#10b981' }}>
+                <Globe size={28} />
               </div>
-              <h3 style={{ fontSize: '18px', color: 'var(--navy-primary)', marginBottom: '8px', fontWeight: '700' }}>
+              <h3 className="card-title">
                 {lang === 'hi' ? '100% अंग्रेजी माध्यम पाठ्यक्रम' : '100% English Medium Curriculum'}
               </h3>
-              <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.6' }}>
+              <p className="card-desc">
                 {lang === 'hi'
                   ? 'सभी 6 साल की मेडिकल पढ़ाई (5 साल थ्योरी + 1 साल इंटर्नशिप) पूरी तरह से अंग्रेजी माध्यम में वरिष्ठ अंतरराष्ट्रीय प्रोफेसरों द्वारा कराई जाती है।'
                   : 'All 6 years of medical studies (5 years theory + 1 year clinical internship) are taught entirely in English by experienced European & international faculty.'}
@@ -874,14 +872,14 @@ const Home = ({ onRequestCounselling }) => {
             </div>
 
             {/* Card 4 */}
-            <div className="why-mbbs-card">
-              <div style={{ width: '50px', height: '50px', borderRadius: '14px', background: 'rgba(249, 115, 22, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f97316', marginBottom: '14px' }}>
-                <Stethoscope size={24} />
+            <div className="why-study-card theme-orange">
+              <div className="card-icon-box" style={{ background: '#fff7ed', color: '#f97316' }}>
+                <Stethoscope size={28} />
               </div>
-              <h3 style={{ fontSize: '18px', color: 'var(--navy-primary)', marginBottom: '8px', fontWeight: '700' }}>
+              <h3 className="card-title">
                 {lang === 'hi' ? 'उन्नत क्लिनिकल प्रशिक्षण और आधुनिक लैब' : 'Advanced Clinical Training & Labs'}
               </h3>
-              <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.6' }}>
+              <p className="card-desc">
                 {lang === 'hi'
                   ? 'उच्च रोगी प्रवाह वाले सरकारी अस्पतालों में व्यावहारिक बेडसाइड क्लिनिकल रोटेशन और आधुनिक सिमुलेशन लैब।'
                   : 'Practical bedside clinical rotations in government-affiliated hospitals with high patient flow, modern anatomical simulation labs, and diagnostic tools.'}
@@ -889,14 +887,14 @@ const Home = ({ onRequestCounselling }) => {
             </div>
 
             {/* Card 5 */}
-            <div className="why-mbbs-card">
-              <div style={{ width: '50px', height: '50px', borderRadius: '14px', background: 'rgba(124, 58, 237, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--purple-exam)', marginBottom: '14px' }}>
-                <BookOpen size={24} />
+            <div className="why-study-card theme-purple">
+              <div className="card-icon-box" style={{ background: '#faf5ff', color: '#7c3aed' }}>
+                <BookOpen size={28} />
               </div>
-              <h3 style={{ fontSize: '18px', color: 'var(--navy-primary)', marginBottom: '8px', fontWeight: '700' }}>
+              <h3 className="card-title">
                 {lang === 'hi' ? 'एकीकृत एफएमजीई और नेक्स्ट परीक्षा तैयारी' : 'Integrated FMGE & NEXT Exam Prep'}
               </h3>
-              <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.6' }}>
+              <p className="card-desc">
                 {lang === 'hi'
                   ? 'एमबीबीएस के पहले वर्ष से ही भारत के वरिष्ठ चिकित्सा प्रोफेसरों द्वारा लाइव ऑनलाइन कक्षाएं और विषयवार मॉक टेस्ट श्रृंखला।'
                   : 'Early licensing exam preparation starting from Year 1 with access to subject-wise question banks, live online faculty lectures, and FMGE mock test series.'}
@@ -904,14 +902,14 @@ const Home = ({ onRequestCounselling }) => {
             </div>
 
             {/* Card 6 */}
-            <div className="why-mbbs-card">
-              <div style={{ width: '50px', height: '50px', borderRadius: '14px', background: 'rgba(14, 165, 233, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0ea5e9', marginBottom: '14px' }}>
-                <ShieldCheck size={24} />
+            <div className="why-study-card theme-teal">
+              <div className="card-icon-box" style={{ background: '#f0fdfa', color: '#0d9488' }}>
+                <ShieldCheck size={28} />
               </div>
-              <h3 style={{ fontSize: '18px', color: 'var(--navy-primary)', marginBottom: '8px', fontWeight: '700' }}>
+              <h3 className="card-title">
                 {lang === 'hi' ? 'सीधा प्रवेश और 100% वीजा सहायता' : 'Direct Admission & Visa Support'}
               </h3>
-              <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.6' }}>
+              <p className="card-desc">
                 {lang === 'hi'
                   ? 'नीट योग्यता के आधार पर आधिकारिक सीट आवंटन, आसान वीजा स्वीकृति और विदेश में 6 वर्षों तक पूर्ण स्थानीय सहायता।'
                   : '100% transparent admission process with official university seat booking based on NEET qualification, hassle-free visa approval, and 6-year local student care.'}
@@ -1179,9 +1177,6 @@ const Home = ({ onRequestCounselling }) => {
             </button>
           </div>
 
-          {/* INTERACTIVE ELIGIBILITY & BUDGET CALCULATOR */}
-          <EligibilityCalculator onRequestCounselling={onRequestCounselling} />
-
           {/* LIVE STUDENT ADMISSION TRACKER */}
           <AdmissionTracker />
 
@@ -1349,9 +1344,6 @@ const Home = ({ onRequestCounselling }) => {
               </Link>
             </div>
           </div>
-
-          {/* FMGE & NEXT INTERACTIVE PRACTICE QUIZ MINI-HUB */}
-          <FmgeQuizHub />
 
         </div>
       </section>
@@ -1533,7 +1525,7 @@ const Home = ({ onRequestCounselling }) => {
 
           <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 32px auto' }}>
             <span className="badge-coral" style={{ marginBottom: '8px' }}>
-              {lang === 'hi' ? 'ज्ञान केंद्र' : 'Knowledge Hub'}
+              {lang === 'hi' ? 'ब्लॉग' : 'Blogs'}
             </span>
             <h2 style={{ fontSize: '32px', color: 'var(--navy-primary)', fontWeight: '800', marginBottom: '10px' }}>
               {lang === 'hi' ? 'नवीनतम मेडिकल मार्गदर्शन लेख' : 'Latest MBBS Guidance Articles'}
@@ -1592,31 +1584,30 @@ const Home = ({ onRequestCounselling }) => {
         <div style={{ position: 'absolute', bottom: '-120px', left: '-80px', width: '360px', height: '360px', background: 'radial-gradient(circle, rgba(59, 130, 246, 0.16) 0%, transparent 60%)', pointerEvents: 'none', filter: 'blur(40px)' }}></div>
         
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-          <div style={{ 
-            maxWidth: '860px', 
-            margin: '0 auto', 
-            background: '#ffffff', 
-            borderRadius: '24px', 
-            border: '1px solid #e2e8f0', 
-            boxShadow: '0 20px 45px -18px rgba(0, 0, 0, 0.1)',
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            overflow: 'hidden'
-          }}>
+          <div 
+            className="glass-card-container"
+            style={{ 
+              maxWidth: '880px', 
+              margin: '0 auto', 
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              overflow: 'hidden'
+            }}
+          >
             
             {/* Left Content Side */}
-            <div style={{ padding: '28px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
+            <div className="glass-panel-left" style={{ padding: '32px 28px', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
               
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(224, 82, 56, 0.14)', border: '1px solid rgba(224, 82, 56, 0.22)', padding: '6px 12px', borderRadius: '28px', color: '#e15b3f', fontSize: '11px', fontWeight: '700', marginBottom: '16px', width: 'fit-content' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(224, 82, 56, 0.14)', border: '1px solid rgba(224, 82, 56, 0.28)', padding: '6px 14px', borderRadius: '28px', color: '#e15b3f', fontSize: '11px', fontWeight: '800', marginBottom: '18px', width: 'fit-content', letterSpacing: '0.5px' }}>
                 <span style={{ display: 'inline-block', width: '8px', height: '8px', background: '#4ade80', borderRadius: '50%', boxShadow: '0 0 10px rgba(74, 222, 128, 0.8)' }}></span>
                 {lang === 'hi' ? '2026 सत्र के लिए आवेदन प्रारंभ' : 'ACCEPTING 2026 APPLICATIONS'}
               </div>
               
-              <h2 style={{ color: '#0f172a', fontSize: '26px', fontWeight: '800', lineHeight: '1.2', marginBottom: '14px', letterSpacing: '-0.4px' }}>
+              <h2 style={{ color: '#0f172a', fontSize: '28px', fontWeight: '800', lineHeight: '1.25', marginBottom: '14px', letterSpacing: '-0.4px' }}>
                 {lang === 'hi' ? (
-                  <>आज ही विदेश में अपनी <span style={{ color: '#ff6b4a' }}>एमबीबीएस सीट</span> सुरक्षित करें।</>
+                  <>आज ही विदेश में अपनी <span style={{ color: '#e15b3f' }}>एमबीबीएस सीट</span> सुरक्षित करें।</>
                 ) : (
-                  <>Secure Your <span style={{ color: '#ff6b4a' }}>MBBS Seat</span> Abroad Today.</>
+                  <>Secure Your <span style={{ color: '#e15b3f' }}>MBBS Seat</span> Abroad Today.</>
                 )}
               </h2>
               
@@ -1626,47 +1617,49 @@ const Home = ({ onRequestCounselling }) => {
                   : 'Get expert guidance on selecting the best MCI-approved university, fee structures, and the entire admission process—absolutely free.'}
               </p>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <div style={{ width: '30px', height: '30px', borderRadius: '8px', background: 'rgba(96, 165, 250, 0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#93c5fd' }}>
-                    <CheckCircle size={16} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '10px', background: 'rgba(37, 99, 235, 0.12)', border: '1px solid rgba(37, 99, 235, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb' }}>
+                    <CheckCircle size={18} />
                   </div>
-                  <span style={{ fontSize: '14px', color: '#475569', fontWeight: '500' }}>
+                  <span style={{ fontSize: '14px', color: '#334155', fontWeight: '600' }}>
                     {lang === 'hi' ? 'सीधा विश्वविद्यालय प्रवेश (शून्य छिपी फीस)' : 'Direct University Admissions (No Hidden Fees)'}
                   </span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <div style={{ width: '30px', height: '30px', borderRadius: '8px', background: 'rgba(96, 165, 250, 0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3b82f6' }}>
-                    <CheckCircle size={16} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '10px', background: 'rgba(37, 99, 235, 0.12)', border: '1px solid rgba(37, 99, 235, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb' }}>
+                    <CheckCircle size={18} />
                   </div>
-                  <span style={{ fontSize: '14px', color: '#475569', fontWeight: '500' }}>
+                  <span style={{ fontSize: '14px', color: '#334155', fontWeight: '600' }}>
                     {lang === 'hi' ? '100% वीजा और दस्तावेज़ सहायता' : 'Complete Visa & Documentation Support'}
                   </span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <div style={{ width: '30px', height: '30px', borderRadius: '8px', background: 'rgba(96, 165, 250, 0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3b82f6' }}>
-                    <CheckCircle size={16} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '10px', background: 'rgba(37, 99, 235, 0.12)', border: '1px solid rgba(37, 99, 235, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb' }}>
+                    <CheckCircle size={18} />
                   </div>
-                  <span style={{ fontSize: '14px', color: '#475569', fontWeight: '500' }}>
+                  <span style={{ fontSize: '14px', color: '#334155', fontWeight: '600' }}>
                     {lang === 'hi' ? 'एकीकृत एफएमजीई/नेक्स्ट परीक्षा कोचिंग' : 'FMGE/NEXT Coaching Integrated'}
                   </span>
                 </div>
               </div>
 
-              <div style={{ marginTop: '28px', display: 'flex', alignItems: 'center', gap: '10px', borderTop: '1px solid #e2e8f0', paddingTop: '20px' }}>
+              <div style={{ marginTop: '30px', display: 'flex', alignItems: 'center', gap: '12px', borderTop: '1px solid rgba(226, 232, 240, 0.8)', paddingTop: '22px' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <div style={{ width: '34px', height: '34px', borderRadius: '50%', background: '#475569', border: '2px solid #ffffff' }}></div>
-                  <div style={{ width: '34px', height: '34px', borderRadius: '50%', background: '#64748b', border: '2px solid #ffffff', marginLeft: '-12px' }}></div>
-                  <div style={{ width: '34px', height: '34px', borderRadius: '50%', background: '#94a3b8', border: '2px solid #ffffff', marginLeft: '-12px' }}></div>
+                  <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #1e293b, #334155)', border: '2px solid #ffffff', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}></div>
+                  <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #0284c7, #38bdf8)', border: '2px solid #ffffff', marginLeft: '-14px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}></div>
+                  <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #e15b3f, #ff8a73)', border: '2px solid #ffffff', marginLeft: '-14px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}></div>
                 </div>
-                <div style={{ fontSize: '12px', color: '#475569' }}>
-                  <span style={{ fontWeight: '700', color: '#0f172a' }}>5,000+</span> {lang === 'hi' ? 'सफल डॉक्टर और छात्र नामांकित।' : 'Doctors successfully placed.'}
+                <div style={{ fontSize: '13px', color: '#475569', fontWeight: '500' }}>
+                  <span style={{ fontWeight: '800', color: '#0f172a', fontSize: '15px' }}>
+                    <AnimatedCounter target={5000} suffix="+" format={true} />
+                  </span> {lang === 'hi' ? 'सफल डॉक्टर और छात्र नामांकित।' : 'Doctors successfully placed.'}
                 </div>
               </div>
             </div>
 
             {/* Right Form Side */}
-            <div style={{ padding: '28px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <div className="glass-panel-right" style={{ padding: '32px 28px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <h3 style={{ color: '#0f172a', fontSize: '18px', fontWeight: '800', marginBottom: '6px' }}>
                 {lang === 'hi' ? 'कॉल-बैक का अनुरोध करें' : 'Request a Callback'}
               </h3>
@@ -1796,7 +1789,6 @@ const Home = ({ onRequestCounselling }) => {
         onClose={() => setTourModalOpen(false)}
         countryName={selectedTourCountry}
       />
-
 
     </div>
   );

@@ -190,16 +190,11 @@ const Chatbot = ({ isOpen, setIsOpen, onRequestCounselling }) => {
         const response = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            message: userText, 
-            history: messages.slice(-8),
-            pageUrl: window.location.pathname,
-            pageTitle: document.title
-          })
+          body: JSON.stringify({ message: userText, history: messages.slice(-8) })
         });
         const data = await response.json();
 
-        const responseText = data.reply
+        const responseText = data.aiAvailable && data.reply
           ? data.reply
           : getScriptedFallback(userText);
 
@@ -367,7 +362,7 @@ const Chatbot = ({ isOpen, setIsOpen, onRequestCounselling }) => {
           disabled={isAiThinking}
           style={{ flexGrow: 1, padding: '10px 14px', borderRadius: '30px', border: '1px solid #cbd5e1', outline: 'none', fontSize: '13px', opacity: isAiThinking ? 0.6 : 1 }}
         />
-        <button type="submit" disabled={isAiThinking} style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'linear-gradient(135deg, #1e40af, #2563eb)', color: '#ffffff', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: isAiThinking ? 'not-allowed' : 'pointer', opacity: isAiThinking ? 0.6 : 1 }}>
+        <button type="submit" disabled={isAiThinking} style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'var(--coral-accent)', color: '#ffffff', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: isAiThinking ? 'not-allowed' : 'pointer', opacity: isAiThinking ? 0.6 : 1 }}>
           <Send size={16} />
         </button>
       </form>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Clock, User, Calendar, Share2, ArrowLeft, GraduationCap, Eye, Sparkles, CheckCircle2, MessageCircle, Send, Bookmark, BookOpen, ShieldCheck, Copy, Check } from 'lucide-react';
 import SEO from '../components/SEO';
+import { defaultBlogArticles } from '../data/defaultBlogs';
 
 const BlogPost = ({ onRequestCounselling }) => {
   const { slug } = useParams();
@@ -21,23 +22,33 @@ const BlogPost = ({ onRequestCounselling }) => {
     document.body.scrollTop = 0;
     setLoading(true);
 
+    const fallbackPost = defaultBlogArticles.find(b => b.slug === slug) || defaultBlogArticles[0];
+    const fallbackRelated = defaultBlogArticles.filter(b => b.slug !== fallbackPost.slug).slice(0, 3);
+
     fetch(`/api/blogs/${slug}`)
       .then(res => res.json())
       .then(data => {
         if (data.success && data.data) {
           setPost(data.data);
-          // Fetch related articles by category
           fetch(`/api/blogs?category=${data.data.category}`)
             .then(r => r.json())
             .then(res => {
-              if (res.success && res.data) {
+              if (res.success && res.data && res.data.length > 0) {
                 setRelatedPosts(res.data.filter(b => b._id !== data.data._id).slice(0, 3));
+              } else {
+                setRelatedPosts(fallbackRelated);
               }
             })
-            .catch(console.error);
+            .catch(() => setRelatedPosts(fallbackRelated));
+        } else {
+          setPost(fallbackPost);
+          setRelatedPosts(fallbackRelated);
         }
       })
-      .catch(console.error)
+      .catch(() => {
+        setPost(fallbackPost);
+        setRelatedPosts(fallbackRelated);
+      })
       .finally(() => setLoading(false));
   }, [slug]);
 
@@ -145,7 +156,7 @@ const BlogPost = ({ onRequestCounselling }) => {
             {/* Back Button & Category Pills */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
               <Link to="/blogs" style={{ color: 'var(--coral-accent)', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '14px', fontWeight: '700', textDecoration: 'none', background: 'rgba(255,255,255,0.08)', padding: '6px 14px', borderRadius: '20px', backdropFilter: 'blur(6px)' }}>
-                <ArrowLeft size={16} /> Back to Knowledge Hub
+                <ArrowLeft size={16} /> Back to Blogs
               </Link>
               
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
@@ -347,7 +358,7 @@ const BlogPost = ({ onRequestCounselling }) => {
                   </h3>
                 </div>
                 <Link to="/blogs" style={{ color: 'var(--coral-accent)', fontWeight: '800', fontSize: '14px', textDecoration: 'none' }}>
-                  View All Knowledge Hub Guides →
+                  View All Blog Guides →
                 </Link>
               </div>
 

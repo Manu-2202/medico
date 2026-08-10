@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Bot, MessageSquare, X, Send, Sparkles, User, CheckCircle2 } from 'lucide-react';
 import { useLanguage } from '../utils/languageContext';
 
@@ -32,31 +32,67 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
     { sender: 'ai', text: lang === 'hi' ? 'नमस्ते! मैं आपका एआई मेडिकल सलाहकार हूँ। आप एनएमसी नियमों, फीस या यूनिवर्सिटी के बारे में कुछ भी पूछ सकते हैं!' : 'Hello! I am your AI Medical Advisor. Ask me anything about NMC guidelines, 6-year fee packages, or university selection!' }
   ]);
   const [inputMsg, setInputMsg] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef(null);
 
-  const handleSend = (text) => {
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isOpen, isLoading]);
+
+  const handleSend = async (text) => {
     const q = (text || inputMsg).trim();
-    if (!q) return;
+    if (!q || isLoading) return;
 
     const userMsg = { sender: 'user', text: q };
     setMessages(prev => [...prev, userMsg]);
     if (!text) setInputMsg('');
+    setIsLoading(true);
 
-    // Find AI Match
-    const qLower = q.toLowerCase();
-    let matchedReply = knowledgeBase.find(kb => kb.keywords.some(kw => qLower.includes(kw)));
-    
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: q, history: messages.slice(-8) })
+      });
+      const data = await response.json();
+
+      if (data && data.success && data.aiAvailable && data.reply) {
+        setMessages(prev => [...prev, { sender: 'ai', text: data.reply }]);
+      } else {
+        // Fallback to local knowledge base
+        const qLower = q.toLowerCase();
+        let matchedReply = knowledgeBase.find(kb => kb.keywords.some(kw => qLower.includes(kw)));
+        if (matchedReply) {
+          setMessages(prev => [...prev, { sender: 'ai', text: matchedReply.reply }]);
+        } else {
+          setMessages(prev => [...prev, { 
+            sender: 'ai', 
+            text: lang === 'hi' 
+              ? 'आपके प्रश्न का विस्तृत उत्तर देने के लिए हमारे वरिष्ठ चिकित्सा सलाहकार तैयार हैं। 100% सटीक मार्गदर्शन प्राप्त करें!' 
+              : 'For detailed personalized guidance on your NEET score & budget, our senior counselor will guide you directly! Shall I connect you with a counselor?' 
+          }]);
+        }
+      }
+    } catch (err) {
+      const qLower = q.toLowerCase();
+      let matchedReply = knowledgeBase.find(kb => kb.keywords.some(kw => qLower.includes(kw)));
       if (matchedReply) {
         setMessages(prev => [...prev, { sender: 'ai', text: matchedReply.reply }]);
       } else {
         setMessages(prev => [...prev, { 
           sender: 'ai', 
           text: lang === 'hi' 
-            ? 'आपके प्रश्न का विस्तृत उत्तर देने के लिए हमारे वरिष्ठ चिकित्सा सलाहकार तैयार हैं। नीचे बटन दबाकर सीधा परामर्श लें!' 
-            : 'For detailed personalized guidance on your NEET score & budget, our senior advisor will guide you directly! Click below to request a callback.' 
+            ? 'हमारे वरिष्ठ चिकित्सा सलाहकार सहायता के लिए उपलब्ध हैं।' 
+            : 'Our senior medical admissions advisor can guide you directly. Would you like a fee breakdown?' 
         }]);
       }
-    }, 600);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -64,33 +100,18 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
       {/* Floating AI Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        style={{
-          position: 'fixed',
-          bottom: '94px',
-          right: '24px',
-          zIndex: 999,
-          background: 'linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%)',
-          color: '#ffffff',
-          border: '2px solid #38bdf8',
-          borderRadius: '30px',
-          padding: '12px 20px',
-          boxShadow: '0 8px 30px rgba(15, 23, 42, 0.4)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '10px',
-          cursor: 'pointer',
-          transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
-        }}
+        className="ai-advisor-trigger-btn"
+        aria-label="Toggle AI Medical Advisor"
       >
         <Sparkles size={20} color="#38bdf8" />
-        <span style={{ fontSize: '13px', fontWeight: '800' }}>
+        <span className="ai-advisor-btn-text">
           {lang === 'hi' ? 'AI मेडिकल सहायक' : 'AI Medical Advisor'}
         </span>
       </button>
 
       {/* AI Chat Window */}
       {isOpen && (
-        <div style={{ position: 'fixed', bottom: '160px', right: '24px', zIndex: 9999, width: '380px', maxWidth: 'calc(100vw - 32px)', height: '520px', background: '#0b0f19', border: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '24px', boxShadow: '0 20px 50px rgba(0,0,0,0.6)', display: 'flex', flexDirection: 'column', overflow: 'hidden', fontFamily: "'Inter', sans-serif" }}>
+        <div className="ai-advisor-window">
           
           {/* Header */}
           <div style={{ padding: '16px 20px', background: '#111827', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -106,7 +127,7 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
               </div>
             </div>
 
-            <button onClick={() => setIsOpen(false)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
+            <button onClick={() => setIsOpen(false)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: '4px' }} aria-label="Close AI Advisor">
               <X size={20} />
             </button>
           </div>
@@ -116,10 +137,10 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
             {messages.map((m, idx) => (
               <div key={idx} style={{ display: 'flex', justifyContent: m.sender === 'user' ? 'flex-end' : 'flex-start' }}>
                 <div style={{
-                  maxWidth: '82%',
+                  maxWidth: '85%',
                   padding: '12px 14px',
                   borderRadius: m.sender === 'user' ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-                  background: m.sender === 'user' ? 'linear-gradient(135deg, #e15b3f 0%, #c84327 100%)' : '#1e293b',
+                  background: m.sender === 'user' ? 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)' : '#1e293b',
                   color: '#ffffff',
                   fontSize: '13px',
                   lineHeight: '1.5',
@@ -129,6 +150,14 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
                 </div>
               </div>
             ))}
+            {isLoading && (
+              <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                <div style={{ background: '#1e293b', color: '#94a3b8', padding: '10px 16px', borderRadius: '18px 18px 18px 4px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Sparkles size={14} color="#38bdf8" style={{ animation: 'spin 2s linear infinite' }} /> Dr. Maya is thinking...
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
           </div>
 
           {/* Quick Question Chips */}
@@ -157,6 +186,7 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
             <button
               onClick={() => handleSend()}
               style={{ background: '#3b82f6', color: '#ffffff', border: 'none', borderRadius: '12px', width: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+              aria-label="Send Message"
             >
               <Send size={16} />
             </button>
@@ -164,6 +194,68 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
 
         </div>
       )}
+
+      {/* Embedded Component Styles */}
+      <style>{`
+        .ai-advisor-trigger-btn {
+          position: fixed;
+          bottom: 24px;
+          right: 24px;
+          z-index: 9999;
+          background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+          color: #ffffff;
+          border: 2px solid #38bdf8;
+          border-radius: 30px;
+          padding: 12px 20px;
+          box-shadow: 0 8px 30px rgba(15, 23, 42, 0.4);
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .ai-advisor-trigger-btn:hover {
+          transform: scale(1.05);
+          box-shadow: 0 12px 36px rgba(56, 189, 248, 0.4);
+        }
+        .ai-advisor-window {
+          position: fixed;
+          bottom: 86px;
+          right: 24px;
+          z-index: 9999;
+          width: 380px;
+          max-width: calc(100vw - 32px);
+          height: 520px;
+          max-height: calc(100vh - 110px);
+          background: #0b0f19;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 24px;
+          box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+          font-family: 'Inter', sans-serif;
+        }
+        @media (max-width: 480px) {
+          .ai-advisor-trigger-btn {
+            bottom: 16px;
+            right: 16px;
+            padding: 10px 16px;
+          }
+          .ai-advisor-btn-text {
+            font-size: 12px;
+          }
+          .ai-advisor-window {
+            right: 16px;
+            left: 16px;
+            bottom: 74px;
+            width: auto;
+            max-width: none;
+            height: calc(100vh - 120px);
+            max-height: 520px;
+          }
+        }
+      `}</style>
     </>
   );
 };

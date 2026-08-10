@@ -1,22 +1,22 @@
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
 
-const FloatingActionButtons = ({ onToggleChatbot, isChatbotOpen }) => {
+const FloatingActionButtons = () => {
   const whatsappNumber = '919876543210';
   const whatsappMsg = encodeURIComponent('Hello Medico Overseas! I am interested in MBBS Abroad admission. Please provide fee details.');
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMsg}`;
 
   return (
     <div 
+      className="floating-whatsapp-container"
       style={{ 
         position: 'fixed', 
-        bottom: '24px', 
+        bottom: '84px', 
         right: '24px', 
-        zIndex: 9999, 
+        zIndex: 9998, 
         display: 'flex', 
         flexDirection: 'column', 
-        alignItems: 'flex-end', 
-        gap: '12px' 
+        alignItems: 'flex-end'
       }}
     >
       {/* WhatsApp Direct Chat Button */}
@@ -26,12 +26,12 @@ const FloatingActionButtons = ({ onToggleChatbot, isChatbotOpen }) => {
         rel="noreferrer"
         aria-label="Chat on WhatsApp"
         style={{
-          width: '56px',
-          height: '56px',
+          width: '48px',
+          height: '48px',
           borderRadius: '50%',
           background: 'linear-gradient(135deg, #25D366, #128C7E)',
           color: '#ffffff',
-          border: '2px solid #ffffff',
+          border: '1.5px solid #ffffff',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -42,18 +42,18 @@ const FloatingActionButtons = ({ onToggleChatbot, isChatbotOpen }) => {
         }}
         className="floating-action-btn"
       >
-        <MessageCircle size={28} color="#ffffff" fill="#ffffff" />
+        <MessageCircle size={24} color="#ffffff" fill="#ffffff" />
         <span className="tooltip-label">Chat on WhatsApp</span>
       </a>
 
-      {/* Floating Tooltips Styling */}
+      {/* Floating Tooltips & Mobile Styling */}
       <style>{`
         .floating-action-btn:hover {
           transform: scale(1.08);
         }
         .tooltip-label {
           position: absolute;
-          right: 68px;
+          right: 60px;
           top: 50%;
           transform: translateY(-50%);
           background: #0e233a;
@@ -71,13 +71,16 @@ const FloatingActionButtons = ({ onToggleChatbot, isChatbotOpen }) => {
         .floating-action-btn:hover .tooltip-label {
           opacity: 1;
         }
-        @media (max-width: 768px) {
+        @media (max-width: 480px) {
+          .floating-whatsapp-container {
+            bottom: 70px !important;
+            right: 16px !important;
+          }
           .tooltip-label {
             display: none;
           }
         }
       `}</style>
-
     </div>
   );
 };

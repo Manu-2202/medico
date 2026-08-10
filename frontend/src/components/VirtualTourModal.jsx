@@ -45,9 +45,20 @@ const VirtualTourModal = ({ isOpen, onClose, countryName }) => {
     : mediaCollection.filter(m => m.category === activeCategory);
 
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', fontFamily: "'Inter', sans-serif" }}>
-      
-      <div style={{ background: '#0b0f19', border: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '24px', width: '100%', maxWidth: '960px', maxHeight: '90vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', boxShadow: '0 25px 60px rgba(0, 0, 0, 0.7)' }}>
+    <div className="vt-overlay" style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', fontFamily: "'Inter', sans-serif" }}>
+
+      <style>{`
+        @media (max-width: 640px) {
+          .vt-overlay { padding: 0 !important; align-items: flex-end !important; }
+          .vt-modal { max-width: 100% !important; width: 100% !important; max-height: 100vh !important; height: 100%; border-radius: 20px 20px 0 0 !important; }
+          .vt-media-box { height: 220px !important; }
+          .vt-category-tabs { gap: 6px !important; }
+          .vt-category-tabs button { padding: 7px 12px !important; font-size: 11px !important; }
+          .vt-thumb-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+      `}</style>
+
+      <div className="vt-modal" style={{ background: '#0b0f19', border: '1px solid rgba(255, 255, 255, 0.12)', borderRadius: '24px', width: '100%', maxWidth: '960px', maxHeight: '90vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', boxShadow: '0 25px 60px rgba(0, 0, 0, 0.7)' }}>
         
         {/* Modal Header */}
         <div style={{ padding: '20px 24px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#111827' }}>
@@ -75,7 +86,7 @@ const VirtualTourModal = ({ isOpen, onClose, countryName }) => {
         <div style={{ padding: '24px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '20px' }}>
           
           {/* Main Media Preview Box */}
-          <div style={{ position: 'relative', height: '380px', borderRadius: '18px', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+          <div className="vt-media-box" style={{ position: 'relative', height: '380px', borderRadius: '18px', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
             <img src={activeMedia.img} alt={activeMedia.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             
             <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '24px', background: 'linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, transparent 100%)', color: '#ffffff' }}>
@@ -87,29 +98,23 @@ const VirtualTourModal = ({ isOpen, onClose, countryName }) => {
             </div>
           </div>
 
-          {/* Category Tabs */}
-          <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', paddingBottom: '8px', paddingTop: '4px' }}>
+          {/* Category Tabs — wraps onto a 2nd line on narrow screens instead of being clipped/scroll-cut */}
+          <div className="vt-category-tabs" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', paddingBottom: '4px' }}>
             {['All', 'Labs', 'Mess', 'Hostel', 'Library'].map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 style={{
-                  height: '38px',
-                  padding: '0 20px',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: '20px',
-                  fontSize: '13px',
+                  padding: '8px 16px',
+                  borderRadius: '12px',
+                  fontSize: '12px',
                   fontWeight: '700',
-                  lineHeight: '1',
                   whiteSpace: 'nowrap',
-                  border: activeCategory === cat ? '1px solid #f97316' : '1px solid rgba(255, 255, 255, 0.15)',
-                  background: activeCategory === cat ? '#f97316' : 'rgba(255, 255, 255, 0.08)',
+                  flexShrink: 0,
+                  border: activeCategory === cat ? '1px solid #f97316' : '1px solid rgba(255, 255, 255, 0.1)',
+                  background: activeCategory === cat ? '#f97316' : 'rgba(255, 255, 255, 0.04)',
                   color: '#ffffff',
-                  cursor: 'pointer',
-                  boxShadow: activeCategory === cat ? '0 4px 14px rgba(249, 115, 22, 0.4)' : 'none',
-                  transition: 'all 0.2s ease'
+                  cursor: 'pointer'
                 }}
               >
                 {cat}
@@ -118,7 +123,7 @@ const VirtualTourModal = ({ isOpen, onClose, countryName }) => {
           </div>
 
           {/* Thumbnails Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px' }}>
+          <div className="vt-thumb-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px' }}>
             {filteredMedia.map(m => (
               <div
                 key={m.id}

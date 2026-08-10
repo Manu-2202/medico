@@ -7,8 +7,10 @@ import LeadFormModal from './components/LeadFormModal';
 import FloatingActionButtons from './components/FloatingActionButtons';
 import Chatbot from './components/Chatbot';
 import AiMedicalAdvisor from './components/AiMedicalAdvisor';
+import TopNotificationBar from './components/TopNotificationBar';
 import { initGA4, trackPageView } from './utils/analytics';
 import { LanguageProvider } from './utils/languageContext';
+import { requestNotificationPermission } from './utils/soundNotification';
 
 import Home from './pages/Home';
 import AboutUs from './pages/AboutUs';
@@ -32,15 +34,20 @@ function ScrollToTop() {
 }
 
 function AppContent() {
+  const location = useLocation();
+  const isCmsRoute = location.pathname.startsWith('/cms') || location.pathname.startsWith('/admin');
+
   const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
   const [selectedCountryForModal, setSelectedCountryForModal] = useState('');
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
   useEffect(() => {
     initGA4();
+    requestNotificationPermission();
   }, []);
 
   useEffect(() => {
+    if (isCmsRoute) return;
     const hasSeenModal = sessionStorage.getItem('hasSeenLeadModal');
     if (!hasSeenModal) {
       const timer = setTimeout(() => {
@@ -49,7 +56,7 @@ function AppContent() {
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [isCmsRoute]);
 
   const handleOpenLeadModal = (country = '') => {
     setSelectedCountryForModal(country);
@@ -63,8 +70,10 @@ function AppContent() {
   return (
     <>
       <ScrollToTop />
+      <TopNotificationBar />
       <Preloader />
-      <Navbar onRequestCounselling={() => handleOpenLeadModal()} />
+
+      {!isCmsRoute && <Navbar onRequestCounselling={() => handleOpenLeadModal()} />}
 
       <main>
         <Routes>
@@ -75,6 +84,7 @@ function AppContent() {
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blogs/:slug" element={<BlogPost onRequestCounselling={() => handleOpenLeadModal()} />} />
           <Route path="/contact" element={<ContactUs />} />
+          <Route path="/cms" element={<AdminDashboard />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/faqs" element={<FAQs onRequestCounselling={() => handleOpenLeadModal()} />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -82,26 +92,27 @@ function AppContent() {
         </Routes>
       </main>
 
-      <Footer onRequestCounselling={() => handleOpenLeadModal()} />
+      {!isCmsRoute && <Footer onRequestCounselling={() => handleOpenLeadModal()} />}
 
-      <FloatingActionButtons 
-        onToggleChatbot={() => setIsChatbotOpen(prev => !prev)} 
-        isChatbotOpen={isChatbotOpen}
-      />
+      {!isCmsRoute && <FloatingActionButtons />}
 
-      <Chatbot 
-        isOpen={isChatbotOpen} 
-        setIsOpen={setIsChatbotOpen} 
-        onRequestCounselling={() => handleOpenLeadModal()} 
-      />
+      {!isCmsRoute && <AiMedicalAdvisor onRequestCounselling={() => handleOpenLeadModal()} />}
 
-      <AiMedicalAdvisor onRequestCounselling={() => handleOpenLeadModal()} />
+      {!isCmsRoute && (
+        <Chatbot 
+          isOpen={isChatbotOpen} 
+          setIsOpen={setIsChatbotOpen} 
+          onRequestCounselling={() => handleOpenLeadModal()} 
+        />
+      )}
 
-      <LeadFormModal 
-        isOpen={isLeadModalOpen} 
-        onClose={handleCloseLeadModal} 
-        defaultCountry={selectedCountryForModal}
-      />
+      {!isCmsRoute && (
+        <LeadFormModal 
+          isOpen={isLeadModalOpen} 
+          onClose={handleCloseLeadModal} 
+          defaultCountry={selectedCountryForModal}
+        />
+      )}
     </>
   );
 }

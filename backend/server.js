@@ -7,7 +7,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import jwt from 'jsonwebtoken';
 import rateLimit from 'express-rate-limit';
-import { buildSystemPrompt, getKnowledgeAnswer } from './aiKnowledgeBase.js';
+import { buildSystemPrompt } from './aiKnowledgeBase.js';
 
 import Inquiry from './models/Inquiry.js';
 import Blog from './models/Blog.js';
@@ -24,10 +24,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-// Enable trust proxy for reverse proxies like Render / NGINX / Cloudflare
-// Prevents express-rate-limit ERR_ERL_UNEXPECTED_X_FORWARDED_FOR error
-app.set('trust proxy', 1);
-
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/medico_overseas';
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -95,7 +91,7 @@ let memorySiteSettings = {
   whatsappNumber: '919876543210',
   heroHeading: 'Your Trusted Gateway to NMC Approved MBBS Abroad',
   heroSubheading: 'Direct admissions in Top Government Medical Universities in Russia, Georgia, Kazakhstan, Uzbekistan, Philippines, Kyrgyzstan & Vietnam.',
-  leadEmails: 'manukamepalli8399@gmail.com',
+  leadEmails: process.env.LEAD_NOTIFY_EMAIL || 'info@medicooverseas.com',
   officeLocations: [
     {
       city: 'New Delhi (Head Office)',
@@ -226,231 +222,167 @@ let memoryFaqs = [
 
 let isMongoConnected = false;
 
-// Ensure default admin user always exists (upsert on startup)
-const seedDefaultAdmin = async () => {
-  try {
-    const bootstrapEmail = (process.env.ADMIN_BOOTSTRAP_EMAIL || 'admin@medico.com').trim().toLowerCase();
-    const bootstrapPassword = (process.env.ADMIN_BOOTSTRAP_PASSWORD || 'admin123').trim();
-
-    const existing = await User.findOne({ email: bootstrapEmail });
-    if (!existing) {
-      const admin = new User({
-        name: 'Super Admin',
-        email: bootstrapEmail,
-        password: bootstrapPassword,
-        role: 'superadmin'
-      });
-      await admin.save();
-      console.log(`[Admin Seed] ✅ Default superadmin created: ${bootstrapEmail}`);
-    } else {
-      console.log(`[Admin Seed] ℹ️ Admin already exists: ${bootstrapEmail}`);
-    }
-  } catch (err) {
-    console.error('[Admin Seed] ❌ Failed to seed admin:', err.message);
-  }
-};
-
 // Connect to MongoDB
-if (MONGODB_URI.includes('mongodb+srv://') || MONGODB_URI.includes('mongodb://')) {
-  mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 5000 })
-    .then(async () => {
-      isMongoConnected = true;
-      console.log('✅ MongoDB Connected Successfully to Atlas Database');
-      await seedDefaultAdmin();
-    })
-    .catch(err => {
-      console.error('⚠️ MongoDB connection warning (using in-memory DB fallback):', err.message);
-      if (err.message.includes('bad auth')) {
-        console.error('👉 TIP FOR BAD AUTH: Go to MongoDB Atlas -> Database Access -> Edit User Password (use letters/numbers only, no special characters like @ or #) and update MONGODB_URI in Render.');
-      }
-      isMongoConnected = false;
-    });
-}
+mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 3000 })
+  .then(() => {
+    isMongoConnected = true;
+    console.log('MongoDB Connected Successfully to:', MONGODB_URI);
+  })
+  .catch(err => {
+    console.log('MongoDB connection warning (using in-memory fallback):', err.message);
+    isMongoConnected = false;
+  });
 
-// ============================================================
-// EMAIL ENGINE
-// Priority: Gmail App Password → Resend HTTPS → Brevo SMTP
-// ============================================================
+// Persistent Gmail SMTP Transporter with connection pooling
+let gmailTransporter = null;
 
-const SMTP_USER = process.env.SMTP_USER || 'manukamepalli8399@gmail.com';
-const SMTP_PASS = (process.env.SMTP_PASS || '').replace(/\s+/g, '');
+const initEmailTransporter = () => {
+  const smtpUser = process.env.SMTP_USER;
+  const rawPass = process.env.SMTP_PASS;
+  const smtpPass = rawPass ? rawPass.replace(/\s+/g, '') : null;
 
-const logEmailProviderStatus = () => {
-  if (SMTP_PASS.length >= 16) {
-    console.log(`[Email Engine] ✅ PRIMARY: Gmail App Password configured for ${SMTP_USER}`);
-  } else {
-    console.log('[Email Engine] ⚠️  Gmail App Password not set. Add SMTP_PASS (16-char Google App Password) in Render → Environment.');
-  }
-  if (process.env.RESEND_API_KEY) {
-    console.log('[Email Engine] ✅ FALLBACK-1: Resend HTTPS API configured');
-  }
-  if (process.env.BREVO_SMTP_USER) {
-    console.log('[Email Engine] ✅ FALLBACK-2: Brevo SMTP configured');
-  }
-};
-
-logEmailProviderStatus();
-
-// --- PRIMARY: Gmail App Password (fresh connection per send, no verify()) ---
-const sendViaGmail = async (to, subject, html) => {
-  if (SMTP_PASS.length < 16) return null;
-  try {
-    const transporter = nodemailer.createTransport({
+  if (smtpUser && smtpPass) {
+    gmailTransporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
       secure: false,
-      auth: { user: SMTP_USER, pass: SMTP_PASS },
-      connectionTimeout: 30000,
-      socketTimeout: 30000,
-      greetingTimeout: 20000,
-      tls: { rejectUnauthorized: false }
+      auth: {
+        user: smtpUser,
+        pass: smtpPass
+      },
+      tls: {
+        rejectUnauthorized: false
+      },
+      pool: true,
+      maxConnections: 5,
+      maxMessages: 100
     });
-    const info = await transporter.sendMail({
-      from: `"Medico Overseas" <${SMTP_USER}>`,
-      to: Array.isArray(to) ? to.join(', ') : to,
-      subject,
-      html,
-      priority: 'high',
-      headers: { 'X-Priority': '1', 'Importance': 'High' }
-    });
-    transporter.close();
-    console.log(`[Gmail] ✅ Delivered FROM ${SMTP_USER} TO ${Array.isArray(to) ? to.join(', ') : to} | ID: ${info.messageId}`);
-    return { success: true, messageId: info.messageId };
-  } catch (err) {
-    console.error('[Gmail] ❌ Send error:', err.message);
-    return null;
+    console.log(`[Email Dispatcher] ✅ Real Gmail SMTP configured for ${smtpUser}`);
+    gmailTransporter.verify()
+      .then(() => console.log('✅ [Email Dispatcher] Gmail SMTP connected & verified successfully! Mail notifications active.'))
+      .catch(err => console.error('⚠️ [Email Dispatcher] SMTP verification warning:', err.message));
+  } else {
+    console.log('[Email Dispatcher] ℹ️ SMTP credentials not fully configured.');
   }
 };
 
-// --- FALLBACK-1: Resend HTTPS API (works even if SMTP ports are blocked) ---
-const sendViaResend = async (to, subject, html) => {
-  const resendKey = process.env.RESEND_API_KEY;
-  if (!resendKey) return null;
-  try {
-    const res = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        from: 'Medico Overseas <onboarding@resend.dev>',
-        reply_to: SMTP_USER,
-        to: Array.isArray(to) ? to : [to],
-        subject,
-        html
-      })
-    });
-    const data = await res.json();
-    if (res.ok) {
-      console.log(`[Resend] ✅ Delivered to ${Array.isArray(to) ? to.join(', ') : to} | ReplyTo: ${SMTP_USER} | ID: ${data.id}`);
-      return { success: true, messageId: data.id };
-    }
-    console.error('[Resend] ❌ API error:', JSON.stringify(data));
-    return null;
-  } catch (err) {
-    console.error('[Resend] ❌ Network error:', err.message);
-    return null;
-  }
-};
+initEmailTransporter();
 
-// --- FALLBACK-2: Brevo SMTP (sends FROM Gmail after Brevo sender verification) ---
-const sendViaBrevo = async (to, subject, html) => {
-  const brevoUser = process.env.BREVO_SMTP_USER;
-  const brevoPass = process.env.BREVO_SMTP_PASS;
-  if (!brevoUser || !brevoPass) return null;
-  const senderEmail = process.env.BREVO_SENDER_EMAIL || SMTP_USER;
-  try {
-    const transporter = nodemailer.createTransport({
-      host: 'smtp-relay.brevo.com',
+// Helper to get an active email transporter
+const getActiveTransporter = async () => {
+  if (gmailTransporter) {
+    return { transporter: gmailTransporter, sender: `"Medico Overseas" <${process.env.SMTP_USER || 'no-reply@medicooverseas.com'}>` };
+  }
+  
+  const smtpUser = process.env.SMTP_USER;
+  const rawPass = process.env.SMTP_PASS;
+  const smtpPass = rawPass ? rawPass.replace(/\s+/g, '') : null;
+
+  if (smtpUser && smtpPass) {
+    const t = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
       port: 587,
       secure: false,
-      auth: { user: brevoUser, pass: brevoPass }
+      auth: { user: smtpUser, pass: smtpPass },
+      tls: { rejectUnauthorized: false }
     });
-    const info = await transporter.sendMail({
-      from: `"Medico Overseas" <${senderEmail}>`,
-      to: Array.isArray(to) ? to.join(', ') : to,
-      subject,
-      html
-    });
-    console.log(`[Brevo] ✅ Delivered to ${Array.isArray(to) ? to.join(', ') : to} | MessageId: ${info.messageId}`);
-    return { success: true, messageId: info.messageId };
-  } catch (err) {
-    console.error('[Brevo] ❌ Send error:', err.message);
-    return null;
+    return { transporter: t, sender: `"Medico Overseas" <${smtpUser}>` };
   }
-};
 
-// --- Master dispatcher: Gmail App Password → Resend → Brevo ---
-const dispatchEmail = async (to, subject, html) => {
-  const gmailResult = await sendViaGmail(to, subject, html);
-  if (gmailResult?.success) return gmailResult;
-
-  const resendResult = await sendViaResend(to, subject, html);
-  if (resendResult?.success) return resendResult;
-
-  const brevoResult = await sendViaBrevo(to, subject, html);
-  if (brevoResult?.success) return brevoResult;
-
-  console.error('[Email Engine] ❌ All providers failed. Configure SMTP_PASS (Gmail App Password) in Render Environment Variables.');
-  return { success: false, error: 'All email providers failed' };
+  const testAccount = await nodemailer.createTestAccount();
+  const t = nodemailer.createTransport({
+    host: 'smtp.ethereal.email',
+    port: 587,
+    secure: false,
+    auth: { user: testAccount.user, pass: testAccount.pass }
+  });
+  return { transporter: t, sender: `"Medico Overseas Test" <${testAccount.user}>` };
 };
 
 // Send lead notification email to admin email list (with High Priority for instant phone push alerts)
 const sendLeadEmail = async (inquiry) => {
   const rawRecipients = memorySiteSettings.leadEmails ||
     process.env.LEAD_NOTIFY_EMAIL ||
-    'manukamepalli8399@gmail.com';
+    'info@medicooverseas.com';
 
   const recipients = rawRecipients
     .split(',')
     .map(e => e.trim())
     .filter(Boolean);
 
-  if (recipients.length === 0) recipients.push('manukamepalli8399@gmail.com');
+  if (recipients.length === 0) recipients.push(process.env.LEAD_NOTIFY_EMAIL || 'info@medicooverseas.com');
 
   console.log(`[Email Dispatcher] 🚀 Dispatching lead notification to: [${recipients.join(', ')}]`);
 
-  const submittedAt = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-  const cleanPhone = (inquiry.phone || '').replace(/[^0-9]/g, '');
-  const subject = `🚨 [NEW MBBS LEAD] ${inquiry.name} — ${inquiry.country} (${inquiry.phone})`;
-  const html = `
-    <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 620px; margin: 0 auto; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.12); border: 1px solid #e2e8f0;">
-      <div style="background: linear-gradient(135deg, #0b132b, #1f3864); padding: 26px 30px; color: #ffffff;">
-        <div style="display: flex; align-items: center; justify-content: space-between;">
-          <h2 style="margin: 0; font-size: 22px; font-weight: 800; color: #ffffff;">🎓 New MBBS Lead Alert</h2>
-          <span style="background: #ef4444; color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase;">HOT LEAD</span>
-        </div>
-        <p style="margin: 8px 0 0; color: #93c5fd; font-size: 13px;">Received at ${submittedAt} IST via Medico Overseas Website</p>
-      </div>
-      <div style="padding: 26px 30px; background: #ffffff; color: #0f172a;">
-        <table style="width: 100%; border-collapse: collapse; font-size: 15px;">
-          <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b; width: 36%;">👤 Student Name</td><td style="padding: 11px 6px; font-weight: 800; color: #0f172a; font-size: 16px;">${inquiry.name}</td></tr>
-          <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">📱 Phone Number</td><td style="padding: 11px 6px;"><a href="tel:${inquiry.phone}" style="color: #2563eb; font-weight: 800; text-decoration: none; font-size: 16px;">${inquiry.phone}</a></td></tr>
-          <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">💬 WhatsApp Link</td><td style="padding: 11px 6px;"><a href="https://wa.me/91${cleanPhone.slice(-10)}?text=Hello%20${encodeURIComponent(inquiry.name)}%2C%20greetings%20from%20Medico%20Overseas!" style="background: #22c55e; color: #ffffff; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-weight: 700; font-size: 13px; display: inline-block;">💬 Chat on WhatsApp</a></td></tr>
-          <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">📧 Email Address</td><td style="padding: 11px 6px;"><a href="mailto:${inquiry.email}" style="color: #2563eb; text-decoration: none; font-weight: 600;">${inquiry.email || 'Not provided'}</a></td></tr>
-          <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">🏙️ City / State</td><td style="padding: 11px 6px; font-weight: 600;">${inquiry.city || 'Not specified'}</td></tr>
-          <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">🌍 Preferred Country</td><td style="padding: 11px 6px;"><span style="background: #dbeafe; color: #1e40af; padding: 4px 12px; border-radius: 20px; font-weight: 800;">${inquiry.country}</span></td></tr>
-          <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">🩺 NEET Score</td><td style="padding: 11px 6px; font-weight: 800; color: #059669;">${inquiry.neetScore ? inquiry.neetScore + ' Marks' : 'Not provided'}</td></tr>
-          <tr><td style="padding: 11px 6px; color: #64748b; vertical-align: top;">💬 Message</td><td style="padding: 11px 6px; color: #334155; line-height: 1.5;">${inquiry.message || '—'}</td></tr>
-        </table>
-      </div>
-      <div style="background: #f8fafc; padding: 14px 30px; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0;">
-        📍 Source: <strong>${inquiry.sourcePage || 'Website'}</strong> &nbsp;|&nbsp; Sent instantly to <strong>${recipients.join(', ')}</strong>
-      </div>
-    </div>
-  `;
+  try {
+    const { transporter, sender } = await getActiveTransporter();
+    const submittedAt = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+    const cleanPhone = (inquiry.phone || '').replace(/[^0-9]/g, '');
 
-  return await dispatchEmail(recipients, subject, html);
+    const info = await transporter.sendMail({
+      from: sender,
+      to: recipients.join(', '),
+      subject: `New Student Inquiry: ${inquiry.name} - MBBS in ${inquiry.country}`,
+      text: `New MBBS Lead Inquiry Received!\n\nName: ${inquiry.name}\nPhone: ${inquiry.phone}\nEmail: ${inquiry.email || 'Not provided'}\nCity: ${inquiry.city || 'Not specified'}\nPreferred Country: ${inquiry.country}\nNEET Score: ${inquiry.neetScore || 'Not provided'}\nMessage: ${inquiry.message || 'None'}\nReceived: ${submittedAt}\nSource: ${inquiry.sourcePage || 'Website'}`,
+      html: `
+        <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 620px; margin: 0 auto; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.12); border: 1px solid #e2e8f0;">
+          <div style="background: linear-gradient(135deg, #0b132b, #1f3864); padding: 26px 30px; color: #ffffff;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <h2 style="margin: 0; font-size: 22px; font-weight: 800; color: #ffffff;">🎓 New MBBS Lead Alert</h2>
+              <span style="background: #22c55e; color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase;">NEW INQUIRY</span>
+            </div>
+            <p style="margin: 8px 0 0; color: #93c5fd; font-size: 13px;">Received at ${submittedAt} IST via Medico Overseas Website</p>
+          </div>
+          <div style="padding: 26px 30px; background: #ffffff; color: #0f172a;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 15px;">
+              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b; width: 36%;">👤 Student Name</td><td style="padding: 11px 6px; font-weight: 800; color: #0f172a; font-size: 16px;">${inquiry.name}</td></tr>
+              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">📱 Phone Number</td><td style="padding: 11px 6px;"><a href="tel:${inquiry.phone}" style="color: #2563eb; font-weight: 800; text-decoration: none; font-size: 16px;">${inquiry.phone}</a></td></tr>
+              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">💬 WhatsApp Link</td><td style="padding: 11px 6px;"><a href="https://wa.me/91${cleanPhone.slice(-10)}?text=Hello%20${encodeURIComponent(inquiry.name)}%2C%20greetings%20from%20Medico%20Overseas!" style="background: #22c55e; color: #ffffff; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-weight: 700; font-size: 13px; display: inline-block;">💬 Chat on WhatsApp</a></td></tr>
+              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">📧 Email Address</td><td style="padding: 11px 6px;"><a href="mailto:${inquiry.email}" style="color: #2563eb; text-decoration: none; font-weight: 600;">${inquiry.email || 'Not provided'}</a></td></tr>
+              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">🏙️ City / State</td><td style="padding: 11px 6px; font-weight: 600;">${inquiry.city || 'Not specified'}</td></tr>
+              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">🌍 Preferred Country</td><td style="padding: 11px 6px;"><span style="background: #dbeafe; color: #1e40af; padding: 4px 12px; border-radius: 20px; font-weight: 800;">${inquiry.country}</span></td></tr>
+              <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">🩺 NEET Score</td><td style="padding: 11px 6px; font-weight: 800; color: #059669;">${inquiry.neetScore ? inquiry.neetScore + ' Marks' : 'Not provided'}</td></tr>
+              <tr><td style="padding: 11px 6px; color: #64748b; vertical-align: top;">💬 Message</td><td style="padding: 11px 6px; color: #334155; line-height: 1.5;">${inquiry.message || '—'}</td></tr>
+            </table>
+          </div>
+          <div style="background: #f8fafc; padding: 14px 30px; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0;">
+            📍 Source: <strong>${inquiry.sourcePage || 'Website'}</strong> &nbsp;|&nbsp; Sent to <strong>${recipients.join(', ')}</strong>
+          </div>
+        </div>
+      `
+    });
+
+    const previewUrl = nodemailer.getTestMessageUrl(info);
+    if (previewUrl) {
+      console.log(`[Email Dispatcher] ✉️ Ethereal preview URL: ${previewUrl}`);
+    } else {
+      console.log(`[Email Dispatcher] ✅ Gmail alert delivered to ${recipients.join(', ')} | MessageId: ${info.messageId}`);
+    }
+
+    return { success: true, messageId: info.messageId, recipients };
+  } catch (err) {
+    console.error('[Email Dispatcher] ❌ Send Error:', err.message);
+    return { success: false, error: err.message, recipients };
+  }
 };
 
+// Send confirmation email to the student who submitted the inquiry (warm, polite, reassuring, parent-friendly)
 const sendStudentConfirmationEmail = async (inquiry) => {
   if (!inquiry.email || !inquiry.email.includes('@')) {
     console.log('[Student Email] Skipping — invalid or empty email address:', inquiry.email);
     return;
   }
 
-  console.log(`[Student Email] 🚀 Sending polite confirmation email to student: ${inquiry.email}`);
+  try {
+    const { transporter, sender } = await getActiveTransporter();
+    console.log(`[Student Email] 🚀 Sending confirmation email to student: ${inquiry.email}`);
 
-  const subject = `Warm Greetings from Medico Overseas | Regarding Your MBBS Inquiry, ${inquiry.name}`;
-  const html = `
+    const info = await transporter.sendMail({
+      from: sender,
+      to: inquiry.email,
+      subject: `Welcome to Medico Overseas - Your MBBS Admission Guidance, ${inquiry.name}`,
+      text: `Respected ${inquiry.name},\n\nThank you for reaching out to Medico Overseas regarding MBBS opportunities in ${inquiry.country}.\n\nOur senior medical counseling board has received your inquiry. A senior counselor will contact you shortly on ${inquiry.phone} to assist you with transparent information regarding university choices, tuition fees, hostels, and NMC guidelines.\n\nWarm regards,\nMedico Overseas Admissions Team\nPhone: +91 98765 43210\nWebsite: https://medicooverseas.com`,
+      html: `
         <div style="font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 620px; margin: 0 auto; border-radius: 18px; overflow: hidden; box-shadow: 0 8px 32px rgba(31, 56, 100, 0.12); border: 1px solid #e2e8f0; background: #ffffff;">
           <!-- Header Banner -->
           <div style="background: linear-gradient(135deg, #0b132b 0%, #1f3864 100%); padding: 36px 32px; color: #ffffff; text-align: center;">
@@ -536,85 +468,18 @@ const sendStudentConfirmationEmail = async (inquiry) => {
             Regional Counseling Centers: New Delhi | Mumbai | Hyderabad | Bangalore | Vijayawada
           </div>
         </div>
-  `;
+      `
+    });
 
-  return await dispatchEmail(inquiry.email, subject, html);
+    console.log(`[Student Email] ✅ Polite confirmation email delivered to ${inquiry.email} | MessageId: ${info.messageId}`);
+    return { success: true, messageId: info.messageId };
+  } catch (err) {
+    console.error(`[Student Email] ❌ Failed to send to ${inquiry.email}:`, err.message);
+    return { success: false, error: err.message };
+  }
 };
 
-const _unusedStudentEmailHelper = async (inquiry) => {
-  // placeholder to avoid further old code parsing
-  if (false) {
-
-    console.log(`[Student Email] 🚀 Sending polite confirmation email to student: ${inquiry.email}`);
-
-    const info = await transporter.sendMail({
-      from: senderAddress,
-      to: inquiry.email,
-      subject: `Warm Greetings from Medico Overseas | Regarding Your MBBS Inquiry, ${inquiry.name}`,
-      priority: 'high',
-      headers: {
-        'X-Priority': '1',
-        'X-MSMail-Priority': 'High',
-        'Importance': 'High'
-      },
-      html: `
-        <div style="font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 620px; margin: 0 auto; border-radius: 18px; overflow: hidden; box-shadow: 0 8px 32px rgba(31, 56, 100, 0.12); border: 1px solid #e2e8f0; background: #ffffff;">
-          <!-- Header Banner -->
-          <div style="background: linear-gradient(135deg, #0b132b 0%, #1f3864 100%); padding: 36px 32px; color: #ffffff; text-align: center;">
-            <div style="display: inline-block; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 30px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #f97316; margin-bottom: 12px;">
-              🎓 Official Medical Admissions Board
-            </div>
-            <h1 style="margin: 0; font-size: 26px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px;">Medico Overseas</h1>
-            <p style="color: #93c5fd; margin: 8px 0 0; font-size: 14px; font-weight: 500;">Your Trusted Partner for NMC & WHO Recognized MBBS Abroad</p>
-          </div>
-
-          <!-- Main Body Content -->
-          <div style="padding: 36px 32px; color: #1e293b; line-height: 1.75; font-size: 15px;">
-            <p style="font-size: 17px; font-weight: 700; color: #1f3864; margin-top: 0;">
-              Respected ${inquiry.name},
-            </p>
-
-            <p style="color: #334155; margin-bottom: 20px;">
-              Warmest greetings from the <strong>Medico Overseas</strong> family. We sincerely thank you and your family for placing your valuable trust in us for your medical education aspirations.
-            </p>
-
-            <p style="color: #334155; margin-bottom: 24px;">
-              Pursuing a career in medicine is a noble and courageous calling. We have safely received your inquiry regarding <strong>MBBS opportunities in ${inquiry.country}</strong>, and our senior counseling board is honored to assist you with transparent, end-to-end guidance.
-            </p>
-
-            <!-- Inquiry Details Summary Card -->
-            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 5px solid #1f3864; border-radius: 12px; padding: 20px 24px; margin: 28px 0;">
-              <div style="font-weight: 800; font-size: 14px; color: #1f3864; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;">
-                📋 Your Registered Counseling Details
-              </div>
-              <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b; width: 42%;">🌍 Preferred Destination:</td><td style="padding: 8px 0; font-weight: 700; color: #0f172a;"><span style="background: #dbeafe; color: #1e40af; padding: 3px 10px; border-radius: 12px;">${inquiry.country}</span></td></tr>
-                <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b;">🩺 NEET Status / Score:</td><td style="padding: 8px 0; font-weight: 700; color: #059669;">${inquiry.neetScore ? inquiry.neetScore + ' Marks' : 'To be discussed with counselor'}</td></tr>
-                <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b;">📱 Registered Phone:</td><td style="padding: 8px 0; font-weight: 700; color: #0f172a;">${inquiry.phone}</td></tr>
-                <tr><td style="padding: 8px 0; color: #64748b;">🏙️ City / State:</td><td style="padding: 8px 0; font-weight: 600; color: #334155;">${inquiry.city || 'Provided'}</td></tr>
-              </table>
-            </div>
-
-            <!-- What Happens Next Section -->
-            <div style="margin: 28px 0;">
-              <h3 style="color: #1f3864; font-size: 16px; font-weight: 800; margin-bottom: 14px;">
-                ✨ What Happens Next (Our Commitment to You & Your Parents):
-              </h3>
-              <ul style="padding-left: 20px; margin: 0; color: #475569; font-size: 14px;">
-                <li style="margin-bottom: 10px;">
-                  <strong>Personalized University Shortlist:</strong> Our senior advisor is preparing a transparent list of top government medical universities fully compliant with NMC Gazette & WHO standards.
-                </li>
-                <li style="margin-bottom: 10px;">
-                  <strong>Dedicated 1-on-1 Discussion:</strong> A senior medical counselor will call you within <strong>15–30 minutes</strong> on <strong>${inquiry.phone}</strong> to explain tuition fees, English-medium curriculum, hostel security, Indian mess, and NEXT/FMGE coaching.
-                </li>
-                <li style="margin-bottom: 0;">
-                  <strong>Zero Hidden Fees:</strong> We maintain 100% transparency with direct university fee deposits and complete visa assistance.
-                </li>
-              </ul>
-            </div>
-
 // API ROUTES
-
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -894,8 +759,8 @@ app.post('/api/inquiries', publicApiLimiter, async (req, res) => {
   try {
     const { name, phone, email, city, country, neetScore, message, sourcePage } = req.body;
 
-    if (!name || !phone || !email || !country) {
-      return res.status(400).json({ success: false, message: 'Name, Phone, Email, and Preferred Country are required.' });
+    if (!name || !phone || !country) {
+      return res.status(400).json({ success: false, message: 'Name, Phone Number, and Preferred Country are required.' });
     }
 
     let inquiry;
@@ -932,12 +797,10 @@ app.post('/api/inquiries', publicApiLimiter, async (req, res) => {
     // 🚀 Dispatch emails in background asynchronously without blocking HTTP response
     setImmediate(async () => {
       try {
-        console.log(`[Background Email Dispatch] Starting dispatch for lead: ${name} (${email})...`);
-        const results = await Promise.allSettled([
+        await Promise.allSettled([
           sendLeadEmail(inquiry),
           sendStudentConfirmationEmail(inquiry)
         ]);
-        console.log(`[Background Email Dispatch] Results for ${name}:`, JSON.stringify(results, null, 2));
       } catch (err) {
         console.error('[Background Email Dispatch Error]:', err);
       }
@@ -1016,11 +879,11 @@ app.delete('/api/inquiries/:id', requireAdmin, async (req, res) => {
 
 // ELIGIBILITY CHECK API
 // ==========================================
-// AI CHATBOT ("Dr. Maya") — real Claude-powered answers, grounded in our own data
+// AI CHATBOT ("Dr. Maya") — real OpenAI-powered answers, grounded in our own data
 // ==========================================
 app.post('/api/chat', chatLimiter, async (req, res) => {
   try {
-    const { message, history, pageUrl, pageTitle } = req.body;
+    const { message, history } = req.body;
 
     if (!message || typeof message !== 'string' || !message.trim()) {
       return res.status(400).json({ success: false, message: 'A message is required.' });
@@ -1029,75 +892,69 @@ app.post('/api/chat', chatLimiter, async (req, res) => {
       return res.status(400).json({ success: false, message: 'Message is too long.' });
     }
 
-    const apiKey = process.env.ANTHROPIC_API_KEY;
+    const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
-      // Fall back intelligently to our page-aware knowledge engine
-      const knowledgeReply = getKnowledgeAnswer(message, pageUrl);
+      // Graceful fallback signal — the frontend widget shows its scripted flow instead
+      // of a broken/blank chat when no key is configured yet.
       return res.json({
         success: true,
-        aiAvailable: true,
-        reply: knowledgeReply,
-        source: 'knowledge-base'
+        aiAvailable: false,
+        reply: null,
+        message: 'AI chat is not configured yet on this server.'
       });
     }
 
     // Keep prior turns short and bounded so a long chat can't blow up token cost.
     const safeHistory = Array.isArray(history) ? history.slice(-8) : [];
     const messages = [
+      // OpenAI's Chat Completions API takes the system prompt as a message in the
+      // array itself (role: 'system'), unlike Anthropic's separate `system` field.
+      { role: 'system', content: buildSystemPrompt() },
       ...safeHistory
         .filter(m => m && typeof m.text === 'string' && (m.sender === 'user' || m.sender === 'bot'))
         .map(m => ({ role: m.sender === 'user' ? 'user' : 'assistant', content: m.text.slice(0, 1000) })),
       { role: 'user', content: message.trim() }
     ];
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
+        'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: 'claude-3-5-sonnet-20241022',
+        model: 'gpt-4o-mini',
         max_tokens: 400,
-        system: buildSystemPrompt(pageUrl, pageTitle),
         messages
       })
     });
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error('[AI Chat] Anthropic API error:', response.status, errText);
-      const fallbackReply = getKnowledgeAnswer(message, pageUrl);
+      console.error('[AI Chat] OpenAI API error:', response.status, errText);
       return res.json({
         success: true,
-        aiAvailable: true,
-        reply: fallbackReply,
-        source: 'knowledge-base-fallback'
+        aiAvailable: false,
+        reply: null,
+        message: 'The AI assistant is temporarily unavailable.'
       });
     }
 
     const data = await response.json();
-    const replyText = (data.content || [])
-      .filter(block => block.type === 'text')
-      .map(block => block.text)
-      .join('\n')
-      .trim();
+    const replyText = (data.choices?.[0]?.message?.content || '').trim();
 
     res.json({
       success: true,
       aiAvailable: true,
-      reply: replyText || getKnowledgeAnswer(message, pageUrl),
-      source: 'llm'
+      reply: replyText || "I'm not sure how to answer that — would you like me to connect you with a counsellor?"
     });
   } catch (error) {
     console.error('[AI Chat] Error:', error);
-    const fallbackReply = getKnowledgeAnswer(req.body ? req.body.message : '', req.body ? req.body.pageUrl : '');
     res.json({
       success: true,
-      aiAvailable: true,
-      reply: fallbackReply,
-      source: 'knowledge-base-error-fallback'
+      aiAvailable: false,
+      reply: null,
+      message: 'The AI assistant hit an error — please try again or request a counsellor.'
     });
   }
 });
@@ -1156,9 +1013,12 @@ app.post('/api/admin/login', async (req, res) => {
 
     const user = await User.findOne({ email: cleanEmail });
 
-    // Bootstrap credentials for initial admin setup if no user exists yet
-    const bootstrapEmail = (process.env.ADMIN_BOOTSTRAP_EMAIL || 'admin@medico.com').trim().toLowerCase();
-    const bootstrapPassword = (process.env.ADMIN_BOOTSTRAP_PASSWORD || 'admin123').trim();
+    // One-time bootstrap: ONLY works when no admin user exists yet in the database,
+    // ONLY for the exact email/password pair configured server-side via env vars,
+    // and it immediately creates a real hashed-password user so this path can never
+    // be used again. No hardcoded credentials are accepted after the first admin exists.
+    const bootstrapEmail = (process.env.ADMIN_BOOTSTRAP_EMAIL || '').trim().toLowerCase();
+    const bootstrapPassword = (process.env.ADMIN_BOOTSTRAP_PASSWORD || '').trim();
     const existingAdminCount = await User.countDocuments({});
 
     let authenticatedUser = null;
@@ -1171,6 +1031,8 @@ app.post('/api/admin/login', async (req, res) => {
       authenticatedUser = user;
     } else if (
       existingAdminCount === 0 &&
+      bootstrapEmail &&
+      bootstrapPassword &&
       cleanEmail === bootstrapEmail &&
       cleanPassword === bootstrapPassword
     ) {
@@ -1181,7 +1043,6 @@ app.post('/api/admin/login', async (req, res) => {
         role: 'superadmin'
       });
       await authenticatedUser.save();
-      console.log(`[Admin Auth] ✅ Created first superadmin account for ${cleanEmail}`);
     } else {
       return res.status(401).json({ success: false, message: 'Invalid admin email or password.' });
     }
@@ -1218,26 +1079,6 @@ app.post('/api/admin/login', async (req, res) => {
   } catch (error) {
     console.error('Admin Login Error:', error);
     res.status(500).json({ success: false, message: 'Server login error: ' + error.message });
-  }
-});
-
-// Emergency admin reset endpoint — protected by ADMIN_RESET_SECRET env var
-app.post('/api/admin/reset-admin', async (req, res) => {
-  try {
-    const { secret } = req.body;
-    const resetSecret = process.env.ADMIN_RESET_SECRET || 'medico-reset-2026';
-    if (secret !== resetSecret) {
-      return res.status(403).json({ success: false, message: 'Invalid reset secret.' });
-    }
-    const bootstrapEmail = (process.env.ADMIN_BOOTSTRAP_EMAIL || 'admin@medico.com').trim().toLowerCase();
-    const bootstrapPassword = (process.env.ADMIN_BOOTSTRAP_PASSWORD || 'admin123').trim();
-    await User.deleteOne({ email: bootstrapEmail });
-    const admin = new User({ name: 'Super Admin', email: bootstrapEmail, password: bootstrapPassword, role: 'superadmin' });
-    await admin.save();
-    console.log(`[Admin Reset] ✅ Admin account reset for ${bootstrapEmail}`);
-    return res.json({ success: true, message: `Admin account reset successfully. Login with ${bootstrapEmail} / ${bootstrapPassword}` });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
   }
 });
 
@@ -1313,9 +1154,9 @@ app.get('/api/track-admission/:query', async (req, res) => {
     }
 
     if (!lead) {
-      lead = memoryInquiries.find(i =>
-        (i.phone && i.phone.toLowerCase().includes(q)) ||
-        (i.email && i.email.toLowerCase().includes(q)) ||
+      lead = memoryInquiries.find(i => 
+        (i.phone && i.phone.toLowerCase().includes(q)) || 
+        (i.email && i.email.toLowerCase().includes(q)) || 
         i._id === q
       );
     }

@@ -34,8 +34,73 @@ if (typeof window !== 'undefined') {
   window.addEventListener('touchstart', handleInteraction, { once: true });
 }
 
-// Play pleasant, loud, multi-tone medical alert chime
-export const playAlertSound = (type = 'chime') => {
+// Request browser push notification permission and trigger lockscreen / OS system banner popup
+export const requestNotificationPermission = async () => {
+  if (typeof window === 'undefined' || !('Notification' in window)) return false;
+  if (Notification.permission === 'granted') return true;
+  if (Notification.permission !== 'denied') {
+    try {
+      const permission = await Notification.requestPermission();
+      return permission === 'granted';
+    } catch (e) {
+      return false;
+    }
+  }
+  return false;
+};
+
+export const triggerSystemNotification = (title, body) => {
+  if (typeof window === 'undefined' || !('Notification' in window)) return;
+
+  const showPopup = () => {
+    try {
+      const options = {
+        body: body || 'A new student inquiry has been registered on Medico Overseas!',
+        icon: 'https://cdn-icons-png.flaticon.com/512/387/387561.png',
+        badge: 'https://cdn-icons-png.flaticon.com/512/387/387561.png',
+        tag: 'medico-lead-alert-' + Date.now(),
+        requireInteraction: true,
+        renotify: true,
+        vibrate: [200, 100, 200, 100, 200]
+      };
+
+      if ('serviceWorker' in navigator && navigator.serviceWorker.ready) {
+        navigator.serviceWorker.ready.then(reg => {
+          if (reg && reg.showNotification) {
+            reg.showNotification(title || '🎓 Medico Overseas Alert', options);
+          } else {
+            const n = new Notification(title || '🎓 Medico Overseas Alert', options);
+            n.onclick = () => { window.focus(); n.close(); };
+          }
+        }).catch(() => {
+          const n = new Notification(title || '🎓 Medico Overseas Alert', options);
+          n.onclick = () => { window.focus(); n.close(); };
+        });
+      } else {
+        const n = new Notification(title || '🎓 Medico Overseas Alert', options);
+        n.onclick = () => { window.focus(); n.close(); };
+      }
+    } catch (e) {
+      console.warn('[Notification Engine] System popup error:', e);
+    }
+  };
+
+  if (Notification.permission === 'granted') {
+    showPopup();
+  } else if (Notification.permission !== 'denied') {
+    Notification.requestPermission().then(permission => {
+      if (permission === 'granted') {
+        showPopup();
+      }
+    });
+  }
+};
+
+// Play pleasant, loud, multi-tone medical alert chime & trigger system popup banner
+export const playAlertSound = (type = 'chime', title, body) => {
+  // Always attempt system popup notification first
+  triggerSystemNotification(title, body);
+
   try {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
     if (!AudioContextClass) return;

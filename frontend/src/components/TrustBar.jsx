@@ -6,11 +6,11 @@ const TrustBar = () => {
   const { lang, t } = useLanguage();
   const sectionRef = useRef(null);
 
-  // Counter states (Initialized with verified stats so 0+ is never shown)
-  const [yearsCount, setYearsCount] = useState(15);
-  const [studentsCount, setStudentsCount] = useState(5000);
-  const [univCount, setUnivCount] = useState(100);
-  const [countriesCount, setCountriesCount] = useState(8);
+  // Counter states (Initialized at 0 so auto-increment counts up smoothly from 0)
+  const [yearsCount, setYearsCount] = useState(0);
+  const [studentsCount, setStudentsCount] = useState(0);
+  const [univCount, setUnivCount] = useState(0);
+  const [countriesCount, setCountriesCount] = useState(0);
 
   const animationRef = useRef(null);
   const hasAnimatedRef = useRef(false);
@@ -19,13 +19,18 @@ const TrustBar = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
-        if (entry.isIntersecting && !hasAnimatedRef.current) {
-          hasAnimatedRef.current = true;
+        if (entry.isIntersecting) {
           runAutoIncrementAnimation();
+        } else {
+          if (animationRef.current) cancelAnimationFrame(animationRef.current);
+          setYearsCount(0);
+          setStudentsCount(0);
+          setUnivCount(0);
+          setCountriesCount(0);
         }
       },
       { 
-        threshold: 0.2
+        threshold: 0.15
       }
     );
 
@@ -42,12 +47,12 @@ const TrustBar = () => {
   const runAutoIncrementAnimation = () => {
     if (animationRef.current) cancelAnimationFrame(animationRef.current);
 
-    const duration = 2000;
+    const duration = 2200;
     const startTime = performance.now();
 
     const targetYears = 15;
     const targetStudents = 10000;
-    const targetUniv = 50;
+    const targetUniv = 100;
     const targetCountries = 8;
 
     const step = (currentTime) => {

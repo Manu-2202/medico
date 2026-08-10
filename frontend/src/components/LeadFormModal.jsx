@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Send, CheckCircle2, AlertCircle, User, Phone, Mail, MapPin, Award, ShieldCheck } from 'lucide-react';
 import { useLanguage } from '../utils/languageContext';
 import { playAlertSound } from '../utils/soundNotification';
+import { showInAppNotificationBar } from './TopNotificationBar';
 
 const LeadFormModal = ({ isOpen, onClose, defaultCountry = '' }) => {
   const { lang, t } = useLanguage();
@@ -45,7 +46,11 @@ const LeadFormModal = ({ isOpen, onClose, defaultCountry = '' }) => {
       const data = await res.json();
 
       if (data.success) {
-        playAlertSound();
+        showInAppNotificationBar(
+          '🎓 INQUIRY REGISTERED SUCCESSFULLY!',
+          `Thank you ${formData.name}! Confirmation email sent & senior counselor assigned.`,
+          formData
+        );
         setSuccessMsg(data.message);
         setFormData({ name: '', phone: '', email: '', city: '', country: defaultCountry || 'Russia', neetScore: '', message: '' });
         setIsCaptchaVerified(false);

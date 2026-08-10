@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import { Search, Clock, User, ArrowRight, Eye, Sparkles, BookOpen, Calendar, Tag, Filter, X } from 'lucide-react';
 import SEO from '../components/SEO';
 import { useLanguage } from '../utils/languageContext';
+import { defaultBlogArticles } from '../data/defaultBlogs';
 
 const Blogs = () => {
   const { lang, t } = useLanguage();
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [blogs, setBlogs] = useState(defaultBlogArticles);
+  const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -28,14 +29,24 @@ const Blogs = () => {
   }, [selectedCategory]);
 
   const fetchBlogs = async () => {
-    setLoading(true);
     try {
       const url = selectedCategory === 'All' ? '/api/blogs' : `/api/blogs?category=${selectedCategory}`;
       const res = await fetch(url);
       const data = await res.json();
-      if (data.success) setBlogs(data.data);
+      if (data && data.success && Array.isArray(data.data) && data.data.length > 0) {
+        setBlogs(data.data);
+      } else {
+        const filteredFallback = selectedCategory === 'All' 
+          ? defaultBlogArticles 
+          : defaultBlogArticles.filter(b => b.category.toLowerCase() === selectedCategory.toLowerCase());
+        setBlogs(filteredFallback.length > 0 ? filteredFallback : defaultBlogArticles);
+      }
     } catch (err) {
       console.error(err);
+      const filteredFallback = selectedCategory === 'All' 
+        ? defaultBlogArticles 
+        : defaultBlogArticles.filter(b => b.category.toLowerCase() === selectedCategory.toLowerCase());
+      setBlogs(filteredFallback.length > 0 ? filteredFallback : defaultBlogArticles);
     } finally {
       setLoading(false);
     }
@@ -53,8 +64,8 @@ const Blogs = () => {
   return (
     <div style={{ background: '#f8fafc', minHeight: '100vh', paddingBottom: '90px' }}>
       <SEO 
-        title="MBBS Abroad Blog & Knowledge Hub 2026: NMC Guidelines, Fee Comparisons & FMGE Tips"
-        description="Official Medico Overseas Knowledge Hub: Latest articles on MBBS in Russia, Georgia, Kazakhstan, Uzbekistan, FMGE vs NEXT strategies, NMC Gazette rules, and medical university comparisons for Indian students."
+        title="MBBS Abroad Blog 2026: NMC Guidelines, Fee Comparisons & FMGE Tips"
+        description="Official Medico Overseas Blog: Latest articles on MBBS in Russia, Georgia, Kazakhstan, Uzbekistan, FMGE vs NEXT strategies, NMC Gazette rules, and medical university comparisons for Indian students."
         keywords="MBBS abroad blogs, study MBBS in Russia guide 2026, NMC guidelines for foreign medical graduates, FMGE exam strategy, Medico Overseas blog"
       />
 
@@ -95,7 +106,7 @@ const Blogs = () => {
             </div>
             
             <h1 style={{ color: '#ffffff', fontSize: '44px', fontWeight: '800', marginBottom: '16px', letterSpacing: '-0.5px', lineHeight: '1.2' }}>
-              {lang === 'hi' ? 'मेडिको ओवरसीज ' : 'Medico Overseas '}<span style={{ color: 'var(--coral-accent)' }}>{lang === 'hi' ? 'ज्ञान केंद्र (ब्लॉग)' : 'Knowledge Hub'}</span>
+              {lang === 'hi' ? 'मेडिको ओवरसीज ' : 'Medico Overseas '}<span style={{ color: 'var(--coral-accent)' }}>{lang === 'hi' ? 'ब्लॉग' : 'Blog'}</span>
             </h1>
 
             <p style={{ color: '#cbd5e1', fontSize: '17px', lineHeight: '1.6', marginBottom: '32px', maxWidth: '720px', margin: '0 auto 32px auto' }}>
@@ -244,7 +255,7 @@ const Blogs = () => {
           </div>
 
           {loading ? (
-            <div style={{ textAlign: 'center', padding: '80px', fontSize: '16px', color: 'var(--text-muted)' }}>Loading knowledge hub articles...</div>
+            <div style={{ textAlign: 'center', padding: '80px', fontSize: '16px', color: 'var(--text-muted)' }}>Loading blog articles...</div>
           ) : regularPosts.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '60px 20px', background: '#ffffff', borderRadius: '20px', boxShadow: '0 4px 20px rgba(0,0,0,0.04)', border: '1px solid #e2e8f0' }}>
               <BookOpen size={48} color="var(--coral-accent)" style={{ marginBottom: '12px' }} />

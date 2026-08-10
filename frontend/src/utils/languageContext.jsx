@@ -9,7 +9,7 @@ const translations = {
     navAbout: 'About Us',
     navDestinations: 'Destinations',
     navExams: 'Exam Guides',
-    navBlogs: 'Knowledge Hub',
+    navBlogs: 'Blogs',
     navContact: 'Contact Us',
     navAdmin: 'Admin Portal',
     bookConsultation: 'Book Free Consultation',
@@ -85,7 +85,7 @@ const translations = {
 
     // Blogs Page
     blogJournalBadge: 'Official Medical Education Journal',
-    blogHubTitle: 'Medico Overseas Knowledge Hub',
+    blogHubTitle: 'Medico Overseas Blog',
     blogHubSub: 'Authoritative guides on NMC 2026 Gazette regulations, university fee structures, FMGE/NEXT exam roadmaps, and on-ground student experiences.',
     blogSearchPlaceholder: 'Search articles by country, fees, or exam (e.g. Russia, Fees, FMGE)...',
     blogFilterLabel: 'Filter:',

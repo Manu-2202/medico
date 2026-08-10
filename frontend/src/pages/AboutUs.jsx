@@ -6,67 +6,8 @@ import {
   UserCheck, Stethoscope, BadgeCheck, Utensils
 } from 'lucide-react';
 import SEO from '../components/SEO';
+import AnimatedCounter from '../components/AnimatedCounter';
 import { useLanguage } from '../utils/languageContext';
-
-const AnimatedCounter = ({ target, duration = 1500, suffix = "", format = false }) => {
-  const [count, setCount] = useState(0);
-  const [hasStarted, setHasStarted] = useState(false);
-  const elementRef = React.useRef(null);
-
-  React.useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setHasStarted(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (elementRef.current) {
-      observer.observe(elementRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  React.useEffect(() => {
-    if (!hasStarted) return;
-
-    let startTime = null;
-    const startValue = 0;
-    let animationFrameId;
-
-    const animate = (timestamp) => {
-      if (!startTime) startTime = timestamp;
-      const progress = timestamp - startTime;
-      const percentage = Math.min(progress / duration, 1);
-
-      // Easing: easeOutQuad
-      const easedPercentage = percentage * (2 - percentage);
-      const currentValue = Math.floor(startValue + easedPercentage * (target - startValue));
-
-      setCount(currentValue);
-
-      if (progress < duration) {
-        animationFrameId = window.requestAnimationFrame(animate);
-      } else {
-        setCount(target);
-      }
-    };
-
-    animationFrameId = window.requestAnimationFrame(animate);
-    return () => {
-      if (animationFrameId) {
-        window.cancelAnimationFrame(animationFrameId);
-      }
-    };
-  }, [hasStarted, target, duration]);
-
-  const formattedValue = format ? count.toLocaleString('en-IN') : count;
-  return <span ref={elementRef}>{formattedValue}{suffix}</span>;
-};
 
 const AboutUs = ({ onRequestCounselling }) => {
   const { lang } = useLanguage();
@@ -308,47 +249,94 @@ const AboutUs = ({ onRequestCounselling }) => {
 
       {/* 2. STATS & YEARS OF OPERATION BAR */}
       <section style={{ background: '#ffffff', padding: '42px 0', borderBottom: '1px solid #e2e8f0', boxShadow: '0 8px 30px rgba(15, 23, 42, 0.04)', marginTop: '-2px' }}>
+        <style>{`
+          .about-stat-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 28px 24px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+          }
+          .about-stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 32px rgba(31, 56, 100, 0.08) !important;
+            border-color: #cbd5e1 !important;
+          }
+        `}</style>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '32px', textAlign: 'center' }}>
+          {/* Header Badge */}
+          <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(225, 91, 63, 0.1)', border: '1px solid rgba(225, 91, 63, 0.25)', padding: '5px 16px', borderRadius: '30px', fontSize: '12px', fontWeight: '800', color: 'var(--coral-accent)', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
+              <ShieldCheck size={15} /> {lang === 'hi' ? 'प्रमाणित ट्रैक रिकॉर्ड' : 'Quick-Glance Track Record'}
+            </div>
+          </div>
 
-            <div style={{ padding: '10px' }}>
-              <div style={{ fontSize: '42px', fontWeight: '800', color: 'var(--navy-primary)', marginBottom: '4px', fontFamily: 'var(--font-heading)' }}>
-                <AnimatedCounter target={15} suffix="+ Years" />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '22px' }}>
+
+            {/* Stat 1: Years of Experience */}
+            <div className="about-stat-card">
+              <div style={{ width: '52px', height: '52px', borderRadius: '16px', background: 'rgba(225, 91, 63, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto', border: '1px solid rgba(225, 91, 63, 0.2)' }}>
+                <Award size={26} color="var(--coral-accent)" />
               </div>
-              <div style={{ fontSize: '14px', color: 'var(--text-muted)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                {lang === 'hi' ? 'संचालन के वर्ष' : 'Years of Operation'}
+              <div style={{ fontSize: '40px', fontWeight: '800', color: 'var(--navy-primary)', lineHeight: 1, letterSpacing: '-1px' }}>
+                <AnimatedCounter target={15} suffix="+" />
               </div>
-              <p style={{ fontSize: '13px', color: '#64748b', marginTop: '4px' }}>{lang === 'hi' ? '2012 में स्थापित' : 'Established in 2012'}</p>
+              <div style={{ fontSize: '15px', fontWeight: '700', color: 'var(--coral-accent)', marginTop: '10px' }}>
+                {lang === 'hi' ? 'अनुभव के वर्ष' : 'Years Experience'}
+              </div>
+              <div style={{ fontSize: '13px', color: '#64748b', marginTop: '4px', fontWeight: '500' }}>
+                {lang === 'hi' ? '15 वर्षों का बेदाग रिकॉर्ड' : 'Unblemished 15-Year Record'}
+              </div>
             </div>
 
-            <div style={{ padding: '10px', borderLeft: '1px solid #f1f5f9' }}>
-              <div style={{ fontSize: '42px', fontWeight: '800', color: 'var(--coral-accent)', marginBottom: '4px', fontFamily: 'var(--font-heading)' }}>
+            {/* Stat 2: Students Placed */}
+            <div className="about-stat-card">
+              <div style={{ width: '52px', height: '52px', borderRadius: '16px', background: 'rgba(29, 78, 216, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto', border: '1px solid rgba(29, 78, 216, 0.2)' }}>
+                <GraduationCap size={26} color="#1d4ed8" />
+              </div>
+              <div style={{ fontSize: '40px', fontWeight: '800', color: 'var(--navy-primary)', lineHeight: 1, letterSpacing: '-1px' }}>
                 <AnimatedCounter target={10000} suffix="+" format={true} />
               </div>
-              <div style={{ fontSize: '14px', color: 'var(--text-muted)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              <div style={{ fontSize: '15px', fontWeight: '700', color: '#1d4ed8', marginTop: '10px' }}>
                 {lang === 'hi' ? 'छात्र प्रवेश' : 'Students Placed'}
               </div>
-              <p style={{ fontSize: '13px', color: '#64748b', marginTop: '4px' }}>{lang === 'hi' ? 'शीर्ष विदेशी मेडिकल कॉलेजों में' : 'Across Top Foreign Medical Colleges'}</p>
+              <div style={{ fontSize: '13px', color: '#64748b', marginTop: '4px', fontWeight: '500' }}>
+                {lang === 'hi' ? 'सफल डॉक्टर और विद्वान' : 'Successful Doctors & Scholars'}
+              </div>
             </div>
 
-            <div style={{ padding: '10px', borderLeft: '1px solid #f1f5f9' }}>
-              <div style={{ fontSize: '42px', fontWeight: '800', color: 'var(--cyan-accent)', marginBottom: '4px', fontFamily: 'var(--font-heading)' }}>
-                <AnimatedCounter target={6} suffix=" Countries" />
+            {/* Stat 3: NMC Approved Universities */}
+            <div className="about-stat-card">
+              <div style={{ width: '52px', height: '52px', borderRadius: '16px', background: 'rgba(5, 150, 105, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto', border: '1px solid rgba(5, 150, 105, 0.2)' }}>
+                <Building2 size={26} color="#059669" />
               </div>
-              <div style={{ fontSize: '14px', color: 'var(--text-muted)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                {lang === 'hi' ? 'देश' : 'Countries Served'}
+              <div style={{ fontSize: '40px', fontWeight: '800', color: 'var(--navy-primary)', lineHeight: 1, letterSpacing: '-1px' }}>
+                <AnimatedCounter target={100} suffix="+" />
               </div>
-              <p style={{ fontSize: '13px', color: '#64748b', marginTop: '4px' }}>{lang === 'hi' ? 'रूस, जॉर्जिया, उज्बेकिस्तान, कजाकिस्तान, किर्गिस्तान और आर्मेनिया' : 'Russia, Georgia, Uzbekistan, Kazakhstan, Kyrgyzstan & Armenia'}</p>
+              <div style={{ fontSize: '15px', fontWeight: '700', color: '#059669', marginTop: '10px' }}>
+                {lang === 'hi' ? 'एनएमसी अनुमोदित विश्वविद्यालय' : 'NMC Approved Universities'}
+              </div>
+              <div style={{ fontSize: '13px', color: '#64748b', marginTop: '4px', fontWeight: '500' }}>
+                {lang === 'hi' ? '100% मान्यता प्राप्त विश्वविद्यालय' : '100% Recognized & Accredited'}
+              </div>
             </div>
 
-            <div style={{ padding: '10px', borderLeft: '1px solid #f1f5f9' }}>
-              <div style={{ fontSize: '42px', fontWeight: '800', color: '#10b981', marginBottom: '4px', fontFamily: 'var(--font-heading)' }}>
-                <AnimatedCounter target={50} suffix="+ Partnered" />
+            {/* Stat 4: Study Destinations */}
+            <div className="about-stat-card">
+              <div style={{ width: '52px', height: '52px', borderRadius: '16px', background: 'rgba(124, 58, 237, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto', border: '1px solid rgba(124, 58, 237, 0.2)' }}>
+                <Globe size={26} color="#7c3aed" />
               </div>
-              <div style={{ fontSize: '14px', color: 'var(--text-muted)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                {lang === 'hi' ? 'राज्य मेडिकल विश्वविद्यालय' : 'State Medical Universities'}
+              <div style={{ fontSize: '40px', fontWeight: '800', color: 'var(--navy-primary)', lineHeight: 1, letterSpacing: '-1px' }}>
+                <AnimatedCounter target={8} suffix="+" />
               </div>
-              <p style={{ fontSize: '13px', color: '#64748b', marginTop: '4px' }}>{lang === 'hi' ? 'WHO और NMC सूचीबद्ध कॉलेज' : 'WHO & NMC Listed Colleges'}</p>
+              <div style={{ fontSize: '15px', fontWeight: '700', color: '#7c3aed', marginTop: '10px' }}>
+                {lang === 'hi' ? 'अध्ययन देश' : 'Study Destinations'}
+              </div>
+              <div style={{ fontSize: '13px', color: '#64748b', marginTop: '4px', fontWeight: '500' }}>
+                {lang === 'hi' ? 'वैश्विक अध्ययन देश' : 'Global Study Destinations'}
+              </div>
             </div>
 
           </div>
