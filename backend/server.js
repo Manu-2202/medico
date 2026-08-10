@@ -296,12 +296,14 @@ logEmailProviderStatus();
 const sendViaResend = async (to, subject, html) => {
   const resendKey = process.env.RESEND_API_KEY;
   if (!resendKey) return null;
+  const senderEmail = process.env.BREVO_SENDER_EMAIL || 'manukamepalli8399@gmail.com';
   try {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         from: 'Medico Overseas <onboarding@resend.dev>',
+        reply_to: senderEmail,
         to: Array.isArray(to) ? to : [to],
         subject,
         html
@@ -309,7 +311,7 @@ const sendViaResend = async (to, subject, html) => {
     });
     const data = await res.json();
     if (res.ok) {
-      console.log(`[Resend] ✅ Delivered to ${Array.isArray(to) ? to.join(', ') : to} | ID: ${data.id}`);
+      console.log(`[Resend] ✅ Delivered to ${Array.isArray(to) ? to.join(', ') : to} | ReplyTo: ${senderEmail} | ID: ${data.id}`);
       return { success: true, messageId: data.id };
     }
     console.error('[Resend] ❌ API error:', JSON.stringify(data));
@@ -321,10 +323,13 @@ const sendViaResend = async (to, subject, html) => {
 };
 
 // --- Brevo SMTP (port 587 works on Render, unlike Gmail SMTP) ---
+// Sends FROM your verified Gmail address via Brevo's mail relay
 const sendViaBrevo = async (to, subject, html) => {
   const brevoUser = process.env.BREVO_SMTP_USER;
   const brevoPass = process.env.BREVO_SMTP_PASS;
   if (!brevoUser || !brevoPass) return null;
+  // BREVO_SENDER_EMAIL = the verified Gmail you added in Brevo dashboard
+  const senderEmail = process.env.BREVO_SENDER_EMAIL || 'manukamepalli8399@gmail.com';
   try {
     const transporter = nodemailer.createTransport({
       host: 'smtp-relay.brevo.com',
@@ -333,7 +338,7 @@ const sendViaBrevo = async (to, subject, html) => {
       auth: { user: brevoUser, pass: brevoPass }
     });
     const info = await transporter.sendMail({
-      from: `"Medico Overseas" <${brevoUser}>`,
+      from: `"Medico Overseas" <${senderEmail}>`,
       to: Array.isArray(to) ? to.join(', ') : to,
       subject,
       html
