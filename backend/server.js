@@ -227,37 +227,46 @@ let memoryFaqs = [
 let isMongoConnected = false;
 
 // Connect to MongoDB
-mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 3000 })
-  .then(() => {
-    isMongoConnected = true;
-    console.log('MongoDB Connected Successfully to:', MONGODB_URI);
-  })
-  .catch(err => {
-    console.log('MongoDB connection warning (using in-memory fallback):', err.message);
-    isMongoConnected = false;
-  });
+if (MONGODB_URI.includes('mongodb+srv://') || MONGODB_URI.includes('mongodb://')) {
+  mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 5000 })
+    .then(() => {
+      isMongoConnected = true;
+      console.log('✅ MongoDB Connected Successfully to Atlas Database');
+    })
+    .catch(err => {
+      console.error('⚠️ MongoDB connection warning (using in-memory DB fallback):', err.message);
+      if (err.message.includes('bad auth')) {
+        console.error('👉 TIP FOR BAD AUTH: Go to MongoDB Atlas -> Database Access -> Edit User Password (use letters/numbers only, no special characters like @ or #) and update MONGODB_URI in Render.');
+      }
+      isMongoConnected = false;
+    });
+}
 
 // Persistent Gmail SMTP Transporter with connection pooling
 let gmailTransporter = null;
 
-const initEmailTransporter = () => {
+const createEmailTransporter = () => {
   const smtpUser = process.env.SMTP_USER || 'manukamepalli8399@gmail.com';
   const rawPass = process.env.SMTP_PASS || '';
   const smtpPass = rawPass.replace(/\s+/g, '');
 
   if (smtpUser.includes('@') && smtpPass.length >= 16 && !smtpPass.includes('your_') && !smtpPass.includes('app_password')) {
-    gmailTransporter = nodemailer.createTransport({
+    return nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: smtpUser,
         pass: smtpPass
-      },
-      pool: true,
-      maxConnections: 5,
-      maxMessages: 100
+      }
     });
-    console.log(`[Email Dispatcher] ✅ Real Gmail SMTP configured for ${smtpUser}`);
-    gmailTransporter.verify()
+  }
+  return null;
+};
+
+const initEmailTransporter = () => {
+  const transporter = createEmailTransporter();
+  if (transporter) {
+    console.log(`[Email Dispatcher] ✅ Real Gmail SMTP configured for ${process.env.SMTP_USER || 'manukamepalli8399@gmail.com'}`);
+    transporter.verify()
       .then(() => console.log('✅ [Email Dispatcher] Gmail SMTP connected & verified successfully! Real email alerts are ACTIVE.'))
       .catch(err => console.error('⚠️ [Email Dispatcher] Gmail SMTP connection failed:', err.message));
   } else {
@@ -285,7 +294,7 @@ const sendLeadEmail = async (inquiry) => {
 
   try {
     const smtpUser = process.env.SMTP_USER || 'manukamepalli8399@gmail.com';
-    let transporter = gmailTransporter;
+    let transporter = createEmailTransporter();
     let senderAddress = `"Medico Overseas Leads" <${smtpUser}>`;
 
     if (!transporter) {
@@ -363,7 +372,7 @@ const sendStudentConfirmationEmail = async (inquiry) => {
 
   try {
     const smtpUser = process.env.SMTP_USER || 'manukamepalli8399@gmail.com';
-    let transporter = gmailTransporter;
+    let transporter = createEmailTransporter();
     let senderAddress = `"Medico Overseas Counseling" <${smtpUser}>`;
 
     if (!transporter) {
