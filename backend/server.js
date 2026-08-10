@@ -277,6 +277,38 @@ const initEmailTransporter = () => {
 
 initEmailTransporter();
 
+const sendViaResend = async (to, subject, html) => {
+  const resendKey = process.env.RESEND_API_KEY;
+  if (!resendKey) return null;
+
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${resendKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: 'Medico Overseas <onboarding@resend.dev>',
+        to: Array.isArray(to) ? to : [to],
+        subject: subject,
+        html: html
+      })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      console.log(`[Resend HTTPS API] ✅ Email sent to ${to} | ID: ${data.id}`);
+      return { success: true, messageId: data.id };
+    } else {
+      console.error(`[Resend HTTPS API] ❌ API error:`, data);
+      return null;
+    }
+  } catch (err) {
+    console.error(`[Resend HTTPS API] ❌ Network error:`, err.message);
+    return null;
+  }
+};
+
 // Send lead notification email to admin email list (with High Priority for instant phone push alerts)
 const sendLeadEmail = async (inquiry) => {
   const rawRecipients = memorySiteSettings.leadEmails ||
@@ -291,6 +323,40 @@ const sendLeadEmail = async (inquiry) => {
   if (recipients.length === 0) recipients.push('manukamepalli8399@gmail.com');
 
   console.log(`[Email Dispatcher] 🚀 Dispatching lead notification to: [${recipients.join(', ')}]`);
+
+  const submittedAt = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+  const cleanPhone = (inquiry.phone || '').replace(/[^0-9]/g, '');
+  const subject = `🚨 [NEW MBBS LEAD] ${inquiry.name} — ${inquiry.country} (${inquiry.phone})`;
+  const html = `
+    <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 620px; margin: 0 auto; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.12); border: 1px solid #e2e8f0;">
+      <div style="background: linear-gradient(135deg, #0b132b, #1f3864); padding: 26px 30px; color: #ffffff;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <h2 style="margin: 0; font-size: 22px; font-weight: 800; color: #ffffff;">🎓 New MBBS Lead Alert</h2>
+          <span style="background: #ef4444; color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase;">HOT LEAD</span>
+        </div>
+        <p style="margin: 8px 0 0; color: #93c5fd; font-size: 13px;">Received at ${submittedAt} IST via Medico Overseas Website</p>
+      </div>
+      <div style="padding: 26px 30px; background: #ffffff; color: #0f172a;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 15px;">
+          <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b; width: 36%;">👤 Student Name</td><td style="padding: 11px 6px; font-weight: 800; color: #0f172a; font-size: 16px;">${inquiry.name}</td></tr>
+          <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">📱 Phone Number</td><td style="padding: 11px 6px;"><a href="tel:${inquiry.phone}" style="color: #2563eb; font-weight: 800; text-decoration: none; font-size: 16px;">${inquiry.phone}</a></td></tr>
+          <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">💬 WhatsApp Link</td><td style="padding: 11px 6px;"><a href="https://wa.me/91${cleanPhone.slice(-10)}?text=Hello%20${encodeURIComponent(inquiry.name)}%2C%20greetings%20from%20Medico%20Overseas!" style="background: #22c55e; color: #ffffff; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-weight: 700; font-size: 13px; display: inline-block;">💬 Chat on WhatsApp</a></td></tr>
+          <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">📧 Email Address</td><td style="padding: 11px 6px;"><a href="mailto:${inquiry.email}" style="color: #2563eb; text-decoration: none; font-weight: 600;">${inquiry.email || 'Not provided'}</a></td></tr>
+          <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">🏙️ City / State</td><td style="padding: 11px 6px; font-weight: 600;">${inquiry.city || 'Not specified'}</td></tr>
+          <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">🌍 Preferred Country</td><td style="padding: 11px 6px;"><span style="background: #dbeafe; color: #1e40af; padding: 4px 12px; border-radius: 20px; font-weight: 800;">${inquiry.country}</span></td></tr>
+          <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 11px 6px; color: #64748b;">🩺 NEET Score</td><td style="padding: 11px 6px; font-weight: 800; color: #059669;">${inquiry.neetScore ? inquiry.neetScore + ' Marks' : 'Not provided'}</td></tr>
+          <tr><td style="padding: 11px 6px; color: #64748b; vertical-align: top;">💬 Message</td><td style="padding: 11px 6px; color: #334155; line-height: 1.5;">${inquiry.message || '—'}</td></tr>
+        </table>
+      </div>
+      <div style="background: #f8fafc; padding: 14px 30px; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0;">
+        📍 Source: <strong>${inquiry.sourcePage || 'Website'}</strong> &nbsp;|&nbsp; Sent instantly to <strong>${recipients.join(', ')}</strong>
+      </div>
+    </div>
+  `;
+
+  // Try HTTPS API first if configured
+  const resendResult = await sendViaResend(recipients, subject, html);
+  if (resendResult && resendResult.success) return resendResult;
 
   try {
     const smtpUser = process.env.SMTP_USER || 'manukamepalli8399@gmail.com';
@@ -363,12 +429,106 @@ const sendLeadEmail = async (inquiry) => {
   }
 };
 
-// Send confirmation email to the student who submitted the inquiry (warm, polite, reassuring, parent-friendly)
 const sendStudentConfirmationEmail = async (inquiry) => {
   if (!inquiry.email || !inquiry.email.includes('@')) {
     console.log('[Student Email] Skipping — invalid or empty email address:', inquiry.email);
     return;
   }
+
+  console.log(`[Student Email] 🚀 Sending polite confirmation email to student: ${inquiry.email}`);
+
+  const subject = `Warm Greetings from Medico Overseas | Regarding Your MBBS Inquiry, ${inquiry.name}`;
+  const html = `
+        <div style="font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 620px; margin: 0 auto; border-radius: 18px; overflow: hidden; box-shadow: 0 8px 32px rgba(31, 56, 100, 0.12); border: 1px solid #e2e8f0; background: #ffffff;">
+          <!-- Header Banner -->
+          <div style="background: linear-gradient(135deg, #0b132b 0%, #1f3864 100%); padding: 36px 32px; color: #ffffff; text-align: center;">
+            <div style="display: inline-block; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 30px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #f97316; margin-bottom: 12px;">
+              🎓 Official Medical Admissions Board
+            </div>
+            <h1 style="margin: 0; font-size: 26px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px;">Medico Overseas</h1>
+            <p style="color: #93c5fd; margin: 8px 0 0; font-size: 14px; font-weight: 500;">Your Trusted Partner for NMC & WHO Recognized MBBS Abroad</p>
+          </div>
+
+          <!-- Main Body Content -->
+          <div style="padding: 36px 32px; color: #1e293b; line-height: 1.75; font-size: 15px;">
+            <p style="font-size: 17px; font-weight: 700; color: #1f3864; margin-top: 0;">
+              Respected ${inquiry.name},
+            </p>
+
+            <p style="color: #334155; margin-bottom: 20px;">
+              Warmest greetings from the <strong>Medico Overseas</strong> family. We sincerely thank you and your family for placing your valuable trust in us for your medical education aspirations.
+            </p>
+
+            <p style="color: #334155; margin-bottom: 24px;">
+              Pursuing a career in medicine is a noble and courageous calling. We have safely received your inquiry regarding <strong>MBBS opportunities in ${inquiry.country}</strong>, and our senior counseling board is honored to assist you with transparent, end-to-end guidance.
+            </p>
+
+            <!-- Inquiry Details Summary Card -->
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 5px solid #1f3864; border-radius: 12px; padding: 20px 24px; margin: 28px 0;">
+              <div style="font-weight: 800; font-size: 14px; color: #1f3864; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;">
+                📋 Your Registered Counseling Details
+              </div>
+              <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b; width: 42%;">🌍 Preferred Destination:</td><td style="padding: 8px 0; font-weight: 700; color: #0f172a;"><span style="background: #dbeafe; color: #1e40af; padding: 3px 10px; border-radius: 12px;">${inquiry.country}</span></td></tr>
+                <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b;">🩺 NEET Status / Score:</td><td style="padding: 8px 0; font-weight: 700; color: #059669;">${inquiry.neetScore ? inquiry.neetScore + ' Marks' : 'To be discussed with counselor'}</td></tr>
+                <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b;">📱 Registered Phone:</td><td style="padding: 8px 0; font-weight: 700; color: #0f172a;">${inquiry.phone}</td></tr>
+                <tr><td style="padding: 8px 0; color: #64748b;">🏙️ City / State:</td><td style="padding: 8px 0; font-weight: 600; color: #334155;">${inquiry.city || 'Provided'}</td></tr>
+              </table>
+            </div>
+
+            <!-- What Happens Next Section -->
+            <div style="margin: 28px 0;">
+              <h3 style="color: #1f3864; font-size: 16px; font-weight: 800; margin-bottom: 14px;">
+                ✨ What Happens Next (Our Commitment to You & Your Parents):
+              </h3>
+              <ul style="padding-left: 20px; margin: 0; color: #475569; font-size: 14px;">
+                <li style="margin-bottom: 10px;">
+                  <strong>Personalized University Shortlist:</strong> Our senior advisor is preparing a transparent list of top government medical universities fully compliant with NMC Gazette & WHO standards.
+                </li>
+                <li style="margin-bottom: 10px;">
+                  <strong>Dedicated 1-on-1 Discussion:</strong> A senior medical counselor will call you within <strong>15–30 minutes</strong> on <strong>${inquiry.phone}</strong> to explain tuition fees, English-medium curriculum, hostel security, Indian mess, and NEXT/FMGE coaching.
+                </li>
+                <li style="margin-bottom: 0;">
+                  <strong>Zero Hidden Fees:</strong> We maintain 100% transparency with direct university fee deposits and complete visa assistance.
+                </li>
+              </ul>
+            </div>
+
+            <!-- Direct Helpline / WhatsApp Connect -->
+            <div style="background: linear-gradient(135deg, rgba(37, 211, 102, 0.08) 0%, rgba(59, 130, 246, 0.08) 100%); border: 1px solid rgba(37, 211, 102, 0.3); border-radius: 14px; padding: 24px; text-align: center; margin: 32px 0;">
+              <div style="font-weight: 800; color: #166534; font-size: 15px; margin-bottom: 6px;">
+                Would you or your parents like to speak with us right away?
+              </div>
+              <p style="margin: 0 0 16px; font-size: 13px; color: #4b5563;">
+                Feel free to message or call our senior counseling team directly:
+              </p>
+              <div style="text-align: center;">
+                <a href="https://wa.me/919876543210?text=Hello%20Medico%20Overseas%2C%20I%20am%20${encodeURIComponent(inquiry.name)}.%20I%20registered%20for%20MBBS%20guidance%20for%20${encodeURIComponent(inquiry.country)}." style="display: inline-block; background: #22c55e; color: #ffffff; padding: 12px 28px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 14px; box-shadow: 0 4px 14px rgba(34,197,94,0.35);">
+                  💬 Chat on WhatsApp (+91 98765 43210)
+                </a>
+              </div>
+            </div>
+
+            <p style="color: #64748b; font-size: 13px; line-height: 1.6; border-top: 1px solid #f1f5f9; padding-top: 20px; margin-bottom: 0;">
+              We look forward to speaking with you and guiding you toward a fulfilling medical career.<br/><br/>
+              Warmest regards,<br/>
+              <strong style="color: #1f3864; font-size: 14px;">Senior Counseling & Admissions Board</strong><br/>
+              <span style="color: #64748b;">Medico Overseas Educational Consultancy</span><br/>
+              <span style="color: #94a3b8; font-size: 12px;">Official Admissions Partner for Premier Global Medical Universities</span>
+            </p>
+          </div>
+
+          <!-- Footer -->
+          <div style="background: #f8fafc; padding: 18px 32px; text-align: center; font-size: 12px; color: #94a3b8; border-top: 1px solid #e2e8f0;">
+            © 2026 Medico Overseas Educational Consultancy. All rights reserved.<br/>
+            Regional Counseling Centers: New Delhi | Mumbai | Hyderabad | Bangalore | Vijayawada
+          </div>
+        </div>
+  `;
+
+  // Try HTTPS API first if configured
+  const resendResult = await sendViaResend(inquiry.email, subject, html);
+  if (resendResult && resendResult.success) return resendResult;
 
   try {
     const smtpUser = process.env.SMTP_USER || 'manukamepalli8399@gmail.com';
