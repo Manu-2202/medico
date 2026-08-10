@@ -9,7 +9,7 @@ import AdmissionTracker from '../components/AdmissionTracker';
 import FmgeQuizHub from '../components/FmgeQuizHub';
 import VirtualTourModal from '../components/VirtualTourModal';
 import VoiceAssistant from '../components/VoiceAssistant';
-import AiMedicalAdvisor from '../components/AiMedicalAdvisor';
+
 import SEO from '../components/SEO';
 import TrustBar from '../components/TrustBar';
 import { useLanguage } from '../utils/languageContext';
@@ -1797,8 +1797,6 @@ const Home = ({ onRequestCounselling }) => {
         countryName={selectedTourCountry}
       />
 
-      {/* FLOATING AI MEDICAL CAREER ADVISOR CHATBOT */}
-      <AiMedicalAdvisor onRequestCounselling={onRequestCounselling} />
 
     </div>
   );

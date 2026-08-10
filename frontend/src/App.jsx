@@ -6,6 +6,7 @@ import Preloader from './components/Preloader';
 import LeadFormModal from './components/LeadFormModal';
 import FloatingActionButtons from './components/FloatingActionButtons';
 import Chatbot from './components/Chatbot';
+import AiMedicalAdvisor from './components/AiMedicalAdvisor';
 import { initGA4, trackPageView } from './utils/analytics';
 import { LanguageProvider } from './utils/languageContext';
 
@@ -93,6 +94,8 @@ function AppContent() {
         setIsOpen={setIsChatbotOpen} 
         onRequestCounselling={() => handleOpenLeadModal()} 
       />
+
+      <AiMedicalAdvisor onRequestCounselling={() => handleOpenLeadModal()} />
 
       <LeadFormModal 
         isOpen={isLeadModalOpen} 
