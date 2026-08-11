@@ -312,10 +312,10 @@ const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
   }).slice(0, 3);
 
   return (
-    <div style={{ background: '#ffffff', borderRadius: '20px', padding: '22px 24px', border: '1px solid #fed7aa', boxShadow: '0 8px 30px rgba(234, 88, 12, 0.08)', margin: '10px 0' }}>
+    <div style={{ background: '#ffffff', borderRadius: '24px', padding: '32px 28px', border: '1px solid #fed7aa', boxShadow: '0 12px 40px rgba(234, 88, 12, 0.12)', margin: '30px 0' }}>
       
       {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: '18px' }}>
+      <div style={{ textAlign: 'center', marginBottom: '28px' }}>
         <span className="badge-coral" style={{ fontSize: '11px', marginBottom: '8px', padding: '3px 12px' }}>
           {lang === 'hi' ? '🎯 स्मार्ट नीट व बजट कैलकुलेटर' : '🎯 Smart NEET & Budget Matcher'}
         </span>

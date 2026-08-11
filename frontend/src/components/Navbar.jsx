@@ -80,30 +80,27 @@ const Navbar = ({ onRequestCounselling }) => {
     <header style={{ position: 'sticky', top: 0, zIndex: 1000, background: 'whitesmoke', borderBottom: '1px solid #e2e8f0', boxShadow: isScrolled ? '0 6px 24px rgba(31, 56, 100, 0.12)' : '0 2px 12px rgba(0,0,0,0.04)', transition: 'all 0.3s ease' }}>
       
       {/* Top Utility Contact Bar */}
-      <div className="top-utility-bar" style={{ background: '#eef2f6', color: '#1e3a8a', fontSize: '11px', padding: '6px 0', borderBottom: '1px solid #e2e8f0' }}>
-        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'nowrap', overflowX: 'auto', gap: '12px' }}>
+      <div style={{ background: '#eef2f6', color: '#1e3a8a', fontSize: '11px', padding: '5px 0', borderBottom: '1px solid #e2e8f0' }}>
+        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexShrink: 0 }}>
-            <a href={`tel:${siteSettings.helplinePhone}`} style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#1e3a8a', fontWeight: '700', whiteSpace: 'nowrap' }}>
-              <Phone size={12} color="var(--coral-accent)" /> {lang === 'hi' ? 'हेल्पलाइन:' : 'Helpline:'} {siteSettings.helplinePhone}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <a href={`tel:${siteSettings.helplinePhone}`} style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#1e3a8a', fontWeight: '700', whiteSpace: 'nowrap', fontSize: '11px' }}>
+              <Phone size={11} color="var(--coral-accent)" /> {siteSettings.helplinePhone}
             </a>
-            <a href={`mailto:${siteSettings.helplineEmail}`} style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#1e3a8a', fontWeight: '600', whiteSpace: 'nowrap' }}>
-              <Mail size={12} color="var(--coral-accent)" /> {siteSettings.helplineEmail}
+            <a href={`mailto:${siteSettings.helplineEmail}`} style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#1e3a8a', fontWeight: '600', whiteSpace: 'nowrap', fontSize: '11px' }} className="utility-email">
+              <Mail size={11} color="var(--coral-accent)" /> {siteSettings.helplineEmail}
             </a>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#475569', whiteSpace: 'nowrap', fontWeight: '700' }}>
-              {lang === 'hi' ? '🏆 आईएसओ 9001:2015 प्रमाणित परामर्श' : '🏆 ISO 9001:2015 Certified Consultancy'}
-            </span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(225, 91, 63, 0.12)', color: 'var(--coral-accent)', border: '1px solid rgba(225, 91, 63, 0.25)', padding: '2px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: '700', whiteSpace: 'nowrap' }}>
-              <ShieldCheck size={12} /> {lang === 'hi' ? '100% एनएमसी एवं डब्ल्यूएचओ मान्यता प्राप्त' : '100% NMC & WHO Recognized Universities'}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(225, 91, 63, 0.12)', color: 'var(--coral-accent)', border: '1px solid rgba(225, 91, 63, 0.25)', padding: '2px 7px', borderRadius: '4px', fontSize: '10px', fontWeight: '700', whiteSpace: 'nowrap' }} className="utility-nmc">
+              <ShieldCheck size={11} /> NMC & WHO Approved
             </span>
             <button 
               onClick={toggleLanguage} 
-              style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#1e3a8a', borderRadius: '4px', padding: '2px 8px', fontSize: '11px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+              style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#1e3a8a', borderRadius: '4px', padding: '2px 7px', fontSize: '11px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '3px' }}
             >
-              <Globe size={11} color="var(--coral-accent)" /> {lang === 'en' ? 'हिंदी' : 'English'}
+              <Globe size={11} color="var(--coral-accent)" /> {lang === 'en' ? 'हिंदी' : 'EN'}
             </button>
           </div>
 
@@ -111,7 +108,7 @@ const Navbar = ({ onRequestCounselling }) => {
       </div>
 
       {/* Main Header Container */}
-      <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0px 16px', height: '65px' }}>
+      <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0px 16px', height: '60px' }}>
         
         {/* Brand Logo */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', zIndex: 10 }}>
@@ -122,11 +119,11 @@ const Navbar = ({ onRequestCounselling }) => {
             style={{ 
               height: '170px', 
               width: 'auto', 
-              maxWidth: '400px',
+              maxWidth: '360px',
               objectFit: 'contain',
               display: 'block',
-              marginTop: '-45px',
-              marginBottom: '-45px',
+              marginTop: '-40px',
+              marginBottom: '-40px',
               filter: 'drop-shadow(0 4px 14px rgba(31, 56, 100, 0.22))',
               transition: 'all 0.3s ease'
             }} 

@@ -915,5 +915,61 @@ table {
   body, html, #root {
     overflow-x: hidden !important;
   }
+
+  /* ---- NAVBAR MOBILE FIXES ---- */
+
+  /* Logo size on mobile */
+  .brand-logo-img {
+    height: 110px !important;
+    max-width: 220px !important;
+    margin-top: -25px !important;
+    margin-bottom: -25px !important;
+  }
+
+  /* Hide email on very small screens to save space */
+  .utility-email {
+    display: none !important;
+  }
+
+  /* Compact utility bar on mobile */
+  .utility-nmc {
+    display: none !important;
+  }
+
+  /* Desktop nav hidden on mobile (controlled by JS drawer) */
+  .desktop-nav {
+    display: none !important;
+  }
+
+  /* Desktop CTA button hidden on mobile */
+  .desktop-cta-btn {
+    display: none !important;
+  }
+
+  /* Mobile hamburger always visible */
+  .mobile-toggle {
+    display: flex !important;
+  }
+
+  /* ---- SECTION SPACING REDUCTION ---- */
+  section {
+    padding-top: 36px !important;
+    padding-bottom: 36px !important;
+  }
+
+  .container {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
 }
 
+/* Desktop: Hide mobile toggle */
+@media screen and (min-width: 769px) {
+  .mobile-toggle {
+    display: none !important;
+  }
+
+  .desktop-nav {
+    display: flex !important;
+  }
+}
