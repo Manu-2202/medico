@@ -572,32 +572,10 @@ const Home = ({ onRequestCounselling }) => {
                   </p>
 
                   {/* Service Pills */}
-                  <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '32px' }}>
+                  <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                     {[t('univAdmissions'), t('visaDocs'), t('scholarshipGuidance')].map((s, i) => (
                       <span key={i} style={{ background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)', color: '#e2e8f0', padding: '8px 18px', borderRadius: '30px', fontSize: '13px', fontWeight: '600' }}>{s}</span>
                     ))}
-                  </div>
-
-                  {/* Stats row */}
-                  <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
-                    <div style={{ textAlign: 'left' }}>
-                      <div style={{ fontSize: '26px', fontWeight: '900', color: '#f97316', lineHeight: 1 }}>
-                        5,000+
-                      </div>
-                      <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600', marginTop: '4px' }}>Students Placed</div>
-                    </div>
-                    <div style={{ textAlign: 'left' }}>
-                      <div style={{ fontSize: '26px', fontWeight: '900', color: '#f97316', lineHeight: 1 }}>
-                        6+
-                      </div>
-                      <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600', marginTop: '4px' }}>Countries</div>
-                    </div>
-                    <div style={{ textAlign: 'left' }}>
-                      <div style={{ fontSize: '26px', fontWeight: '900', color: '#f97316', lineHeight: 1 }}>
-                        98%
-                      </div>
-                      <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600', marginTop: '4px' }}>Success Rate</div>
-                    </div>
                   </div>
                 </div>
 
