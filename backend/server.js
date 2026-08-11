@@ -72,14 +72,48 @@ app.use(express.static(path.join(__dirname, '../frontend/dist')));
 app.use(express.static(path.join(__dirname, '../dist')));
 
 // In-Memory Database Fallbacks for offline / local execution
-let memoryInquiries = [];
+let memoryInquiries = [
+  { _id: 'inq-1', name: 'Aarav Sharma', phone: '+91 98765 43210', email: 'aarav.s@gmail.com', city: 'Delhi', country: 'Russia', status: 'New', neetScore: 485, message: 'Interested in Bashkir State Medical University.', createdAt: new Date(Date.now() - 1000 * 60 * 5) },
+  { _id: 'inq-2', name: 'Priya Patel', phone: '+91 98123 45678', email: 'priya.p@gmail.com', city: 'Ahmedabad', country: 'Georgia', status: 'In Counseling', neetScore: 512, message: 'Want details about Tbilisi State Medical University.', createdAt: new Date(Date.now() - 1000 * 60 * 15) },
+  { _id: 'inq-3', name: 'Rohan Gupta', phone: '+91 97654 32109', email: 'rohan.g@yahoo.com', city: 'Jaipur', country: 'Kazakhstan', status: 'Enrolled', neetScore: 450, message: 'Admitted to Asfendiyarov Kazakh National Medical University.', createdAt: new Date(Date.now() - 1000 * 60 * 30) },
+  { _id: 'inq-4', name: 'Ananya Verma', phone: '+91 96543 21098', email: 'ananya.v@gmail.com', city: 'Lucknow', country: 'Uzbekistan', status: 'Contacted', neetScore: 390, message: 'Looking for low tuition fee colleges in Uzbekistan.', createdAt: new Date(Date.now() - 1000 * 60 * 60) },
+  { _id: 'inq-5', name: 'Vikram Singh', phone: '+91 95432 10987', email: 'vikram.s@gmail.com', city: 'Chandigarh', country: 'Russia', status: 'In Counseling', neetScore: 420, message: 'Comparing Kazan Federal University and Crimea Federal.', createdAt: new Date(Date.now() - 1000 * 60 * 90) },
+  { _id: 'inq-6', name: 'Kavya Reddy', phone: '+91 94321 09876', email: 'kavya.r@gmail.com', city: 'Hyderabad', country: 'Georgia', status: 'New', neetScore: 535, message: 'Interested in Batumi Shota Rustaveli State University.', createdAt: new Date(Date.now() - 1000 * 60 * 120) },
+  { _id: 'inq-7', name: 'Siddharth Nair', phone: '+91 93210 98765', email: 'siddharth.n@gmail.com', city: 'Kochi', country: 'Kyrgyzstan', status: 'Enrolled', neetScore: 360, message: 'Enrolled in Osh State University for 2026 batch.', createdAt: new Date(Date.now() - 1000 * 60 * 180) },
+  { _id: 'inq-8', name: 'Sneha Kulkarni', phone: '+91 92109 87654', email: 'sneha.k@gmail.com', city: 'Pune', country: 'Philippines', status: 'Contacted', neetScore: 410, message: 'Seeking information on BS+MD course structure.', createdAt: new Date(Date.now() - 1000 * 60 * 240) },
+  { _id: 'inq-9', name: 'Aditya Joshi', phone: '+91 91098 76543', email: 'aditya.j@gmail.com', city: 'Indore', country: 'Vietnam', status: 'New', neetScore: 475, message: 'Can I get admission in Can Tho University of Medicine?', createdAt: new Date(Date.now() - 1000 * 60 * 300) },
+  { _id: 'inq-10', name: 'Meera Iyer', phone: '+91 90987 65432', email: 'meera.i@gmail.com', city: 'Chennai', country: 'Russia', status: 'In Counseling', neetScore: 495, message: 'Is Orel State University NMC approved?', createdAt: new Date(Date.now() - 1000 * 60 * 360) },
+  { _id: 'inq-11', name: 'Rahul Choudhary', phone: '+91 89876 54321', email: 'rahul.c@gmail.com', city: 'Patna', country: 'Kazakhstan', status: 'Contacted', neetScore: 380, message: 'Need hostel and Indian food availability details.', createdAt: new Date(Date.now() - 1000 * 60 * 420) },
+  { _id: 'inq-12', name: 'Divya Agarwal', phone: '+91 88765 43210', email: 'divya.a@gmail.com', city: 'Kolkata', country: 'Georgia', status: 'New', neetScore: 520, message: 'Applying for European University Tbilisi.', createdAt: new Date(Date.now() - 1000 * 60 * 480) },
+  { _id: 'inq-13', name: 'Arjun Das', phone: '+91 87654 32109', email: 'arjun.d@gmail.com', city: 'Guwahati', country: 'Russia', status: 'In Counseling', neetScore: 440, message: 'Scholarship guidance for MBBS in Russia.', createdAt: new Date(Date.now() - 1000 * 60 * 540) },
+  { _id: 'inq-14', name: 'Tanvi Shah', phone: '+91 86543 21098', email: 'tanvi.s@gmail.com', city: 'Surat', country: 'Uzbekistan', status: 'New', neetScore: 405, message: 'Samarkand State Medical University fee structure.', createdAt: new Date(Date.now() - 1000 * 60 * 600) },
+  { _id: 'inq-15', name: 'Karan Mehra', phone: '+91 85432 10987', email: 'karan.m@gmail.com', city: 'Amritsar', country: 'Kyrgyzstan', status: 'Contacted', neetScore: 345, message: 'International School of Medicine admission process.', createdAt: new Date(Date.now() - 1000 * 60 * 660) },
+  { _id: 'inq-16', name: 'Isha Saxena', phone: '+91 84321 09876', email: 'isha.s@gmail.com', city: 'Bhopal', country: 'Russia', status: 'In Counseling', neetScore: 460, message: 'Volgograd State Medical University hostel facilities.', createdAt: new Date(Date.now() - 1000 * 60 * 720) },
+  { _id: 'inq-17', name: 'Manish Kumar', phone: '+91 83210 98765', email: 'manish.k@gmail.com', city: 'Ranchi', country: 'Georgia', status: 'Enrolled', neetScore: 510, message: 'Seat confirmed in Caucasus International University.', createdAt: new Date(Date.now() - 1000 * 60 * 780) },
+  { _id: 'inq-18', name: 'Pooja Hegde', phone: '+91 82109 87654', email: 'pooja.h@gmail.com', city: 'Mangalore', country: 'Philippines', status: 'New', neetScore: 425, message: 'Davao Medical School Foundation syllabus comparison.', createdAt: new Date(Date.now() - 1000 * 60 * 840) },
+  { _id: 'inq-19', name: 'Varun Rao', phone: '+91 81098 76543', email: 'varun.r@gmail.com', city: 'Visakhapatnam', country: 'Vietnam', status: 'In Counseling', neetScore: 430, message: 'Hong Bang International University MBBS course fees.', createdAt: new Date(Date.now() - 1000 * 60 * 900) },
+  { _id: 'inq-20', name: 'Nisha Bhat', phone: '+91 80987 65432', email: 'nisha.b@gmail.com', city: 'Mysore', country: 'Kazakhstan', status: 'Contacted', neetScore: 375, message: 'Kazakh National Medical University Indian mess query.', createdAt: new Date(Date.now() - 1000 * 60 * 960) },
+  { _id: 'inq-21', name: 'Gaurav Mishra', phone: '+91 79876 54321', email: 'gaurav.m@gmail.com', city: 'Varanasi', country: 'Russia', status: 'New', neetScore: 490, message: 'Kazan State Medical University direct seat booking.', createdAt: new Date(Date.now() - 1000 * 60 * 1020) },
+  { _id: 'inq-22', name: 'Riya Sen', phone: '+91 78765 43210', email: 'riya.s@gmail.com', city: 'Dehradun', country: 'Georgia', status: 'In Counseling', neetScore: 505, message: 'Alte University MBBS application requirements.', createdAt: new Date(Date.now() - 1000 * 60 * 1080) },
+  { _id: 'inq-23', name: 'Deepak Yadav', phone: '+91 77654 32109', email: 'deepak.y@gmail.com', city: 'Noida', country: 'Uzbekistan', status: 'New', neetScore: 395, message: 'Tashkent Medical Academy fee payment installment details.', createdAt: new Date(Date.now() - 1000 * 60 * 1140) },
+  { _id: 'inq-24', name: 'Shreya Pillai', phone: '+91 76543 21098', email: 'shreya.p@gmail.com', city: 'Thiruvananthapuram', country: 'Russia', status: 'Contacted', neetScore: 470, message: 'First Moscow State Medical University eligibility.', createdAt: new Date(Date.now() - 1000 * 60 * 1200) }
+];
+
 let memoryNotifications = [
   {
     id: 'note-1',
-    title: 'MERN Backend active',
-    message: 'Pure MERN stack activated — WordPress dependencies removed.',
-    type: 'system',
-    createdAt: new Date(Date.now() - 1000 * 60 * 10),
+    title: '🚨 New Student Lead Inquiry',
+    message: 'Aarav Sharma (+91 98765 43210) submitted inquiry for MBBS in Russia.',
+    type: 'lead',
+    createdAt: new Date(Date.now() - 1000 * 60 * 5),
+    read: false
+  },
+  {
+    id: 'note-2',
+    title: '🚨 New Student Lead Inquiry',
+    message: 'Priya Patel (+91 98123 45678) submitted inquiry for MBBS in Georgia.',
+    type: 'lead',
+    createdAt: new Date(Date.now() - 1000 * 60 * 15),
     read: false
   }
 ];
@@ -370,11 +404,18 @@ const sendLeadEmail = async (inquiry) => {
       html: `
         <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 620px; margin: 0 auto; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.12); border: 1px solid #e2e8f0;">
           <div style="background: linear-gradient(135deg, #0b132b, #1f3864); padding: 26px 30px; color: #ffffff;">
-            <div style="display: flex; align-items: center; justify-content: space-between;">
-              <h2 style="margin: 0; font-size: 22px; font-weight: 800; color: #ffffff;">🎓 New MBBS Lead Alert</h2>
+            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 12px;">
+              <div style="background: #2563eb; color: #ffffff; width: 44px; height: 44px; border-radius: 12px; font-weight: 900; font-size: 24px; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(37,99,235,0.4);">M</div>
+              <div>
+                <h2 style="margin: 0; font-size: 20px; font-weight: 900; color: #ffffff; letter-spacing: -0.3px;">Medico Overseas</h2>
+                <span style="color: #93c5fd; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Official Admissions Portal</span>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+              <h3 style="margin: 0; font-size: 16px; font-weight: 800; color: #ffffff;">🎓 New Student Lead Alert</h3>
               <span style="background: #22c55e; color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase;">NEW INQUIRY</span>
             </div>
-            <p style="margin: 8px 0 0; color: #93c5fd; font-size: 13px;">Received at ${submittedAt} IST via Medico Overseas Website</p>
+            <p style="margin: 6px 0 0; color: #93c5fd; font-size: 12px;">Received at ${submittedAt} IST via Medico Overseas Website</p>
           </div>
           <div style="padding: 26px 30px; background: #ffffff; color: #0f172a;">
             <table style="width: 100%; border-collapse: collapse; font-size: 15px;">
@@ -429,11 +470,14 @@ const sendStudentConfirmationEmail = async (inquiry) => {
         <div style="font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 620px; margin: 0 auto; border-radius: 18px; overflow: hidden; box-shadow: 0 8px 32px rgba(31, 56, 100, 0.12); border: 1px solid #e2e8f0; background: #ffffff;">
           <!-- Header Banner -->
           <div style="background: linear-gradient(135deg, #0b132b 0%, #1f3864 100%); padding: 36px 32px; color: #ffffff; text-align: center;">
-            <div style="display: inline-block; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 30px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #f97316; margin-bottom: 12px;">
+            <div style="display: inline-flex; align-items: center; justify-content: center; background: #2563eb; color: #ffffff; width: 52px; height: 52px; border-radius: 14px; font-weight: 900; font-size: 28px; box-shadow: 0 6px 16px rgba(37,99,235,0.5); margin-bottom: 12px;">
+              M
+            </div>
+            <h1 style="margin: 0; font-size: 26px; font-weight: 900; color: #ffffff; letter-spacing: -0.5px;">Medico Overseas</h1>
+            <p style="color: #93c5fd; margin: 6px 0 14px; font-size: 14px; font-weight: 500;">Your Trusted Partner for NMC & WHO Recognized MBBS Abroad</p>
+            <div style="display: inline-block; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); padding: 5px 16px; border-radius: 30px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: #f97316;">
               🎓 Official Medical Admissions Board
             </div>
-            <h1 style="margin: 0; font-size: 26px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px;">Medico Overseas</h1>
-            <p style="color: #93c5fd; margin: 8px 0 0; font-size: 14px; font-weight: 500;">Your Trusted Partner for NMC & WHO Recognized MBBS Abroad</p>
           </div>
 
           <!-- Main Body Content -->
