@@ -781,13 +781,14 @@ const AboutUs = ({ onRequestCounselling }) => {
             </div>
 
             {/* Embedded Google Map iframe */}
-            <div style={{ height: '400px', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 12px 30px rgba(0,0,0,0.1)', border: '1px solid #cbd5e1' }}>
+            <div style={{ height: '420px', minHeight: '420px', width: '100%', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 12px 30px rgba(0,0,0,0.1)', border: '1px solid #cbd5e1', background: '#f1f5f9' }}>
               <iframe
+                key={activeMapTab}
                 title={officeBranches[activeMapTab].city}
                 src={officeBranches[activeMapTab].mapUrl}
                 width="100%"
                 height="100%"
-                style={{ border: 0 }}
+                style={{ border: 0, display: 'block', width: '100%', height: '100%', minHeight: '420px' }}
                 allowFullScreen=""
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"

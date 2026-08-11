@@ -287,13 +287,13 @@ const ContactUs = () => {
             </div>
 
             {/* Embedded Google Map */}
-            <div style={{ borderRadius: '20px', overflow: 'hidden', height: '240px', boxShadow: 'var(--shadow-sm)', border: '1px solid #e2e8f0' }}>
+            <div style={{ borderRadius: '20px', overflow: 'hidden', height: '420px', minHeight: '420px', width: '100%', boxShadow: '0 12px 30px rgba(0,0,0,0.1)', border: '1px solid #cbd5e1', background: '#f1f5f9' }}>
               <iframe 
                 title="Medico Overseas Head Office Map"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.986884698501!2d77.2155!3d28.6304!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd37b741d057%3A0xcdee88e4739382f!2sConnaught%20Place%2C%20New%20Delhi!5e0!3m2!1sen!2sin!4v1680000000000!5m2!1sen!2sin"
                 width="100%" 
                 height="100%" 
-                style={{ border: 0 }} 
+                style={{ border: 0, display: 'block', width: '100%', height: '100%', minHeight: '420px' }} 
                 allowFullScreen="" 
                 loading="lazy" 
                 referrerPolicy="no-referrer-when-downgrade"
