@@ -555,175 +555,258 @@ const Home = ({ onRequestCounselling }) => {
       <section style={{ padding: '0', background: '#f8fafc', position: 'relative', width: '100%', overflow: 'hidden' }}>
         <div style={{ position: 'relative', width: '100%', overflow: 'hidden', boxShadow: '0 10px 30px rgba(15, 23, 42, 0.08)' }}>
 
-          {/* SLIDE 1: Dark Navy Angled Split Banner */}
+          {/* SLIDE 1: Deep Navy Mesh Gradient with Floating Orbs */}
           {currentSlide === 0 && (
-            <div style={{ background: '#ffffff', minHeight: '540px' }}>
-              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', minHeight: '540px' }}>
-                <div style={{ background: '#0e233a', color: '#ffffff', padding: '60px 48px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', clipPath: 'polygon(0 0, 100% 0, 88% 100%, 0 100%)', zIndex: 2 }} className="slide-content-navy">
-                  <h1 style={{ color: '#ffffff', fontSize: '38px', fontWeight: '800', lineHeight: '1.2', marginBottom: '18px', textTransform: 'uppercase', letterSpacing: '-0.5px' }}>
+            <div style={{ 
+              background: 'linear-gradient(135deg, #0B1426 0%, #0e233a 45%, #1a0b2e 100%)',
+              minHeight: '560px', position: 'relative', overflow: 'hidden'
+            }}>
+              {/* Floating decorative orbs */}
+              <div style={{ position: 'absolute', top: '-80px', right: '-80px', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(225,91,63,0.25) 0%, transparent 70%)', pointerEvents: 'none' }} />
+              <div style={{ position: 'absolute', bottom: '-60px', left: '-60px', width: '300px', height: '300px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%)', pointerEvents: 'none' }} />
+              <div style={{ position: 'absolute', top: '40%', left: '40%', width: '200px', height: '200px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(168,85,247,0.15) 0%, transparent 70%)', pointerEvents: 'none' }} />
+              {/* Grid mesh overlay */}
+              <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)', backgroundSize: '60px 60px', pointerEvents: 'none' }} />
+              
+              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', minHeight: '560px', padding: '60px 48px', position: 'relative', zIndex: 2 }}>
+                <div style={{ color: '#ffffff' }}>
+                  {/* Badge */}
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(225,91,63,0.2)', border: '1px solid rgba(225,91,63,0.5)', padding: '6px 16px', borderRadius: '30px', fontSize: '12px', fontWeight: '800', color: '#ff8a73', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '20px', backdropFilter: 'blur(10px)' }}>
+                    🎓 {t('ourServices')}
+                  </div>
+
+                  <h1 style={{ color: '#ffffff', fontSize: '48px', fontWeight: '900', lineHeight: '1.15', marginBottom: '20px', letterSpacing: '-1px' }}>
                     {t('heroTitle0')}
                   </h1>
-                  <p style={{ color: '#b2c7db', fontSize: '16px', lineHeight: '1.6', marginBottom: '32px', maxWidth: '520px' }}>
+                  <p style={{ color: '#94a3b8', fontSize: '17px', lineHeight: '1.7', marginBottom: '36px', maxWidth: '500px' }}>
                     {t('heroSub0')}
                   </p>
 
-                  <div>
-                    <div style={{ fontSize: '12px', fontWeight: '800', color: '#7ca5cc', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '12px' }}>
-                      {t('ourServices')}
-                    </div>
-                    <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                      <span style={{ border: '1px solid rgba(255,255,255,0.3)', color: '#ffffff', padding: '8px 18px', borderRadius: '30px', fontSize: '13px', fontWeight: '600' }}>
-                        {t('univAdmissions')}
-                      </span>
-                      <span style={{ border: '1px solid rgba(255,255,255,0.3)', color: '#ffffff', padding: '8px 18px', borderRadius: '30px', fontSize: '13px', fontWeight: '600' }}>
-                        {t('visaDocs')}
-                      </span>
-                      <span style={{ border: '1px solid rgba(255,255,255,0.3)', color: '#ffffff', padding: '8px 18px', borderRadius: '30px', fontSize: '13px', fontWeight: '600' }}>
-                        {t('scholarshipGuidance')}
-                      </span>
-                    </div>
+                  {/* Service Pills */}
+                  <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '36px' }}>
+                    {[t('univAdmissions'), t('visaDocs'), t('scholarshipGuidance')].map((s, i) => (
+                      <span key={i} style={{ background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)', color: '#e2e8f0', padding: '8px 18px', borderRadius: '30px', fontSize: '13px', fontWeight: '600' }}>{s}</span>
+                    ))}
+                  </div>
+
+                  {/* Stats row */}
+                  <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+                    {[['5000+', 'Students Placed'], ['7+', 'Countries'], ['98%', 'Success Rate']].map(([num, label], i) => (
+                      <div key={i} style={{ textAlign: 'center' }}>
+                        <div style={{ fontSize: '28px', fontWeight: '900', color: '#f97316', lineHeight: 1 }}>{num}</div>
+                        <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600', marginTop: '4px' }}>{label}</div>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '30px', height: '100%', background: '#ffffff' }}>
-                  <img
-                    src={slideDoctorPhotos[0].img}
-                    alt={slideDoctorPhotos[0].alt}
-                    style={{ width: '100%', height: '100%', maxHeight: '440px', objectFit: 'cover', objectPosition: 'top center', borderRadius: '16px', boxShadow: '0 12px 30px rgba(0,0,0,0.1)' }}
-                  />
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+                  {/* Glassmorphism image frame */}
+                  <div style={{ position: 'relative' }}>
+                    <div style={{ position: 'absolute', inset: '-12px', borderRadius: '28px', background: 'linear-gradient(135deg, rgba(225,91,63,0.4), rgba(59,130,246,0.3))', filter: 'blur(20px)' }} />
+                    <div style={{ position: 'relative', width: '340px', height: '400px', borderRadius: '24px', overflow: 'hidden', border: '2px solid rgba(255,255,255,0.15)', boxShadow: '0 30px 60px rgba(0,0,0,0.5)' }}>
+                      <img src={slideDoctorPhotos[0].img} alt={slideDoctorPhotos[0].alt} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }} />
+                      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(11,20,38,0.5) 0%, transparent 60%)' }} />
+                    </div>
+                    {/* Floating badge on image */}
+                    <div style={{ position: 'absolute', bottom: '20px', left: '-20px', background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(20px)', padding: '12px 18px', borderRadius: '16px', boxShadow: '0 8px 24px rgba(0,0,0,0.25)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #10b981, #059669)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}>✓</div>
+                      <div>
+                        <div style={{ fontSize: '13px', fontWeight: '800', color: '#0f172a' }}>NMC Approved</div>
+                        <div style={{ fontSize: '11px', color: '#64748b' }}>100% Recognized</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           )}
 
-          {/* SLIDE 2: Royal Sapphire & Indigo Blue Banner */}
+          {/* SLIDE 2: Royal Electric Blue with Diagonal Stripes */}
           {currentSlide === 1 && (
-            <div style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%)', minHeight: '540px' }}>
-              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', padding: '50px 48px', minHeight: '540px' }}>
+            <div style={{ 
+              background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #312e81 100%)',
+              minHeight: '560px', position: 'relative', overflow: 'hidden'
+            }}>
+              {/* Diagonal accent stripes */}
+              <div style={{ position: 'absolute', inset: 0, backgroundImage: 'repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(255,255,255,0.02) 40px, rgba(255,255,255,0.02) 80px)', pointerEvents: 'none' }} />
+              {/* Glow blobs */}
+              <div style={{ position: 'absolute', top: '-100px', left: '30%', width: '500px', height: '500px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(99,102,241,0.3) 0%, transparent 65%)', pointerEvents: 'none' }} />
+              <div style={{ position: 'absolute', bottom: '-80px', right: '10%', width: '350px', height: '350px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(249,115,22,0.25) 0%, transparent 65%)', pointerEvents: 'none' }} />
+
+              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', padding: '60px 48px', minHeight: '560px', position: 'relative', zIndex: 2 }}>
                 <div style={{ color: '#ffffff' }}>
-                  <h1 style={{ color: '#ffffff', fontSize: '40px', fontWeight: '800', lineHeight: '1.2', marginBottom: '18px' }}>
+                  <div style={{ display: 'inline-block', background: 'linear-gradient(90deg, #f97316, #ef4444)', color: '#ffffff', padding: '6px 18px', borderRadius: '30px', fontSize: '12px', fontWeight: '800', letterSpacing: '0.5px', marginBottom: '22px', textTransform: 'uppercase', boxShadow: '0 4px 15px rgba(249,115,22,0.4)' }}>
+                    {lang === 'hi' ? '🌍 एनएमसी एवं डब्ल्यूएचओ मान्यता प्राप्त' : '🌍 NMC & WHO ACCREDITED UNIVERSITIES'}
+                  </div>
+
+                  <h1 style={{ color: '#ffffff', fontSize: '46px', fontWeight: '900', lineHeight: '1.15', marginBottom: '20px', letterSpacing: '-0.5px' }}>
                     {lang === 'hi' ? (
-                      <>अपने जुनून को बदलें <br /> एक <span style={{ color: '#f97316' }}>वैश्विक मेडिकल करियर</span> में</>
+                      <>अपने जुनून को बदलें <br /> एक <span style={{ color: '#f97316', textShadow: '0 0 30px rgba(249,115,22,0.5)' }}>वैश्विक मेडिकल करियर</span> में</>
                     ) : (
-                      <>Transform Your Passion <br /> Into a <span style={{ color: '#f97316' }}>Global Medical Career</span></>
+                      <>Transform Your Passion <br /> Into a <span style={{ color: '#f97316', textShadow: '0 0 30px rgba(249,115,22,0.5)' }}>Global Medical Career</span></>
                     )}
                   </h1>
 
-                  <div style={{ display: 'inline-block', background: '#ffffff', color: '#1e3a8a', padding: '6px 18px', borderRadius: '30px', fontSize: '12px', fontWeight: '800', letterSpacing: '0.5px', marginBottom: '22px', textTransform: 'uppercase' }}>
-                    {lang === 'hi' ? 'एनएमसी एवं डब्ल्यूएचओ मान्यता प्राप्त विश्वविद्यालय' : 'NMC & WHO ACCREDITED UNIVERSITIES'}
-                  </div>
-
-                  <p style={{ color: '#93c5fd', fontSize: '15px', lineHeight: '1.7', marginBottom: '28px', maxWidth: '540px' }}>
+                  <p style={{ color: '#93c5fd', fontSize: '16px', lineHeight: '1.7', marginBottom: '32px', maxWidth: '520px' }}>
                     {lang === 'hi'
                       ? 'रूस, जॉर्जिया, किर्गिस्तान, उज्बेकिस्तान, आर्मेनिया और वियतनाम के शीर्ष सरकारी मेडिकल विश्वविद्यालयों में एमबीबीएस की पढ़ाई करें।'
                       : 'Study MBBS in world-class government medical universities across Russia, Georgia, Kyrgyzstan, Uzbekistan, Armenia, and Vietnam.'}
                   </p>
 
-                  <div style={{ marginBottom: '28px' }}>
-                    <button className="btn-primary" onClick={onRequestCounselling} style={{ background: '#f97316', color: '#ffffff', padding: '14px 34px', fontSize: '15px', borderRadius: '30px', border: 'none', fontWeight: '700', boxShadow: '0 8px 25px rgba(249, 115, 22, 0.4)' }}>
+                  <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', marginBottom: '32px' }}>
+                    <button className="btn-primary" onClick={onRequestCounselling} style={{ background: 'linear-gradient(135deg, #f97316, #ea580c)', color: '#ffffff', padding: '14px 34px', fontSize: '15px', borderRadius: '30px', border: 'none', fontWeight: '700', boxShadow: '0 8px 25px rgba(249,115,22,0.5)' }}>
                       {lang === 'hi' ? 'निःशुल्क परामर्श प्राप्त करें' : 'Get Free Counselling'}
                     </button>
+                    <a href="tel:+919876543210" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.25)', color: '#ffffff', padding: '14px 24px', borderRadius: '30px', fontSize: '14px', fontWeight: '700', backdropFilter: 'blur(10px)' }}>
+                      <Phone size={16} /> Call Now
+                    </a>
                   </div>
 
-                  <div style={{ display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap', fontSize: '13px', color: '#93c5fd' }}>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Phone size={14} color="#f97316" /> +91 98765 43210</span>
+                  <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', fontSize: '13px', color: '#93c5fd' }}>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Mail size={14} color="#f97316" /> info@medicooverseas.com</span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Globe size={14} color="#f97316" /> medicooverseas.com</span>
                   </div>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-                  <div style={{ width: '330px', height: '330px', borderRadius: '50%', background: '#eff6ff', border: '6px solid #ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.2)' }}>
-                    <img
-                      src={slideDoctorPhotos[1].img}
-                      alt={slideDoctorPhotos[1].alt}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }}
-                    />
+                  <div style={{ position: 'relative' }}>
+                    {/* Glowing ring */}
+                    <div style={{ position: 'absolute', inset: '-16px', borderRadius: '50%', background: 'conic-gradient(from 0deg, #f97316, #6366f1, #10b981, #f97316)', filter: 'blur(3px)', opacity: 0.8 }} />
+                    <div style={{ width: '330px', height: '330px', borderRadius: '50%', background: '#eff6ff', border: '8px solid #0f172a', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', boxShadow: '0 20px 50px rgba(0,0,0,0.5)', position: 'relative' }}>
+                      <img src={slideDoctorPhotos[1].img} alt={slideDoctorPhotos[1].alt} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }} />
+                    </div>
+                    {/* Floating country flags */}
+                    <div style={{ position: 'absolute', top: '-10px', right: '-30px', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.2)', padding: '8px 14px', borderRadius: '12px', fontSize: '22px' }}>🇷🇺🇬🇪🇰🇿</div>
+                    <div style={{ position: 'absolute', bottom: '20px', left: '-30px', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.2)', padding: '8px 14px', borderRadius: '12px', fontSize: '22px' }}>🇺🇿🇦🇲🇻🇳</div>
                   </div>
                 </div>
               </div>
             </div>
           )}
 
-          {/* SLIDE 3: Warm Peach & Cream Banner */}
+          {/* SLIDE 3: Warm Coral Sunrise Gradient */}
           {currentSlide === 2 && (
-            <div style={{ background: 'linear-gradient(135deg, #fff3ee 0%, #ffe6da 100%)', minHeight: '540px' }}>
-              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', padding: '50px 48px', minHeight: '540px' }}>
+            <div style={{ 
+              background: 'linear-gradient(135deg, #1a0a00 0%, #7c2d12 40%, #c2410c 100%)',
+              minHeight: '560px', position: 'relative', overflow: 'hidden'
+            }}>
+              {/* Sunburst rays */}
+              <div style={{ position: 'absolute', top: '-50%', left: '60%', width: '800px', height: '800px', background: 'conic-gradient(from 0deg, transparent 20deg, rgba(255,200,100,0.08) 25deg, transparent 30deg)', pointerEvents: 'none' }} />
+              <div style={{ position: 'absolute', top: '-100px', right: '-100px', width: '500px', height: '500px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(251,146,60,0.35) 0%, transparent 65%)', pointerEvents: 'none' }} />
+              <div style={{ position: 'absolute', bottom: '-60px', left: '5%', width: '300px', height: '300px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(239,68,68,0.3) 0%, transparent 65%)', pointerEvents: 'none' }} />
+              {/* Dot grid pattern */}
+              <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px)', backgroundSize: '32px 32px', pointerEvents: 'none' }} />
+
+              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', padding: '60px 48px', minHeight: '560px', position: 'relative', zIndex: 2 }}>
                 <div>
-                  <h1 style={{ color: '#102a43', fontSize: '42px', fontWeight: '800', lineHeight: '1.2', marginBottom: '18px' }}>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.3)', padding: '6px 16px', borderRadius: '30px', fontSize: '12px', fontWeight: '800', color: '#fde68a', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '20px' }}>
+                    🏆 {lang === 'hi' ? 'भारत का अग्रणी परामर्श' : "India's Premier Consultancy"}
+                  </div>
+
+                  <h1 style={{ color: '#ffffff', fontSize: '46px', fontWeight: '900', lineHeight: '1.15', marginBottom: '20px', letterSpacing: '-0.5px', textShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
                     {lang === 'hi' ? (
-                      <>शीर्ष विदेशी मेडिकल विश्वविद्यालयों का <br /> <span style={{ color: '#f97316' }}>विश्वसनीय प्रवेश द्वार</span></>
+                      <>शीर्ष विदेशी मेडिकल <br /> <span style={{ color: '#fde68a' }}>विश्वविद्यालयों का प्रवेश द्वार</span></>
                     ) : (
-                      <>Your Gateway to Top <br /> <span style={{ color: '#f97316' }}>Foreign Medical Universities</span></>
+                      <>Your Gateway to Top <br /> <span style={{ color: '#fde68a', textShadow: '0 0 30px rgba(253,230,138,0.4)' }}>Foreign Medical Universities</span></>
                     )}
                   </h1>
 
-                  <p style={{ color: '#486581', fontSize: '16px', lineHeight: '1.6', marginBottom: '30px', maxWidth: '520px' }}>
+                  <p style={{ color: '#fed7aa', fontSize: '16px', lineHeight: '1.7', marginBottom: '32px', maxWidth: '520px' }}>
                     {lang === 'hi'
                       ? '100% अंग्रेजी माध्यम, यूरोपीय क्लिनिकल सिमुलेशन लैब और प्रथम वर्ष से ही एकीकृत एफएमजीई/नेक्स्ट परीक्षा कोचिंग।'
                       : '100% English medium instruction, European clinical simulation labs, and integrated FMGE / NEXT exam coaching from Year 1.'}
                   </p>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'flex-start' }}>
-                    <button className="btn-primary" onClick={onRequestCounselling} style={{ background: '#f97316', color: '#ffffff', padding: '14px 36px', fontSize: '15px', borderRadius: '10px', border: 'none', fontWeight: '700', boxShadow: '0 10px 25px rgba(249, 115, 22, 0.35)' }}>
+                  <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', alignItems: 'center' }}>
+                    <button className="btn-primary" onClick={onRequestCounselling} style={{ background: '#ffffff', color: '#c2410c', padding: '14px 36px', fontSize: '15px', borderRadius: '30px', border: 'none', fontWeight: '800', boxShadow: '0 10px 30px rgba(0,0,0,0.35)' }}>
                       {lang === 'hi' ? 'आज ही शुरुआत करें' : 'Get Started Today'}
                     </button>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: '#486581', fontWeight: '600' }}>
-                      <Phone size={14} color="#486581" /> +91 98765 43210
-                    </span>
+                    <a href="tel:+919876543210" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#fde68a', fontSize: '14px', fontWeight: '700' }}>
+                      <Phone size={16} /> +91 98765 43210
+                    </a>
                   </div>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-                  <div style={{ background: '#ffffff', padding: '10px', borderRadius: '24px', border: '4px solid #ffffff', boxShadow: '0 20px 40px rgba(16, 42, 67, 0.08)', width: '330px', height: '370px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-                    <img
-                      src={slideDoctorPhotos[2].img}
-                      alt={slideDoctorPhotos[2].alt}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', borderRadius: '18px' }}
-                    />
+                  <div style={{ position: 'relative' }}>
+                    {/* Glow behind image */}
+                    <div style={{ position: 'absolute', inset: '-20px', borderRadius: '28px', background: 'rgba(251,146,60,0.35)', filter: 'blur(30px)' }} />
+                    <div style={{ background: 'rgba(255,255,255,0.1)', padding: '12px', borderRadius: '28px', border: '2px solid rgba(255,255,255,0.25)', boxShadow: '0 25px 50px rgba(0,0,0,0.4)', width: '340px', height: '380px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', backdropFilter: 'blur(5px)', position: 'relative' }}>
+                      <img src={slideDoctorPhotos[2].img} alt={slideDoctorPhotos[2].alt} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', borderRadius: '20px' }} />
+                    </div>
+                    {/* Floating achievement */}
+                    <div style={{ position: 'absolute', top: '20px', right: '-30px', background: 'rgba(255,255,255,0.95)', padding: '10px 14px', borderRadius: '14px', boxShadow: '0 8px 24px rgba(0,0,0,0.25)', textAlign: 'center' }}>
+                      <div style={{ fontSize: '22px', fontWeight: '900', color: '#c2410c' }}>5000+</div>
+                      <div style={{ fontSize: '10px', color: '#64748b', fontWeight: '700' }}>Students Placed</div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           )}
 
-          {/* SLIDE 4: Clean Modern White Banner */}
+          {/* SLIDE 4: Deep Emerald Forest with Premium Glass Cards */}
           {currentSlide === 3 && (
-            <div style={{ background: '#ffffff', minHeight: '540px' }}>
-              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', padding: '50px 48px', minHeight: '540px' }}>
+            <div style={{ 
+              background: 'linear-gradient(135deg, #022c22 0%, #064e3b 45%, #065f46 100%)',
+              minHeight: '560px', position: 'relative', overflow: 'hidden'
+            }}>
+              {/* Wave pattern */}
+              <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(rgba(52,211,153,0.07) 1px, transparent 1px)', backgroundSize: '24px 24px', pointerEvents: 'none' }} />
+              <div style={{ position: 'absolute', top: '-120px', right: '-120px', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(16,185,129,0.25) 0%, transparent 65%)', pointerEvents: 'none' }} />
+              <div style={{ position: 'absolute', bottom: '-80px', left: '20%', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,95,70,0.5) 0%, transparent 65%)', pointerEvents: 'none' }} />
+
+              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', padding: '60px 48px', minHeight: '560px', position: 'relative', zIndex: 2 }}>
                 <div>
-                  <div style={{ color: '#f97316', fontSize: '13px', fontWeight: '800', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>
+                  <div style={{ color: '#6ee7b7', fontSize: '13px', fontWeight: '800', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ width: '24px', height: '2px', background: '#6ee7b7', display: 'inline-block', borderRadius: '2px' }} />
                     {lang === 'hi' ? 'अपनी मेडिकल यात्रा शुरू करें' : 'BEGIN YOUR MEDICAL JOURNEY'}
+                    <span style={{ width: '24px', height: '2px', background: '#6ee7b7', display: 'inline-block', borderRadius: '2px' }} />
                   </div>
 
-                  <h1 style={{ color: '#102a43', fontSize: '44px', fontWeight: '800', lineHeight: '1.18', marginBottom: '18px' }}>
+                  <h1 style={{ color: '#ffffff', fontSize: '48px', fontWeight: '900', lineHeight: '1.15', marginBottom: '20px', letterSpacing: '-1px', textShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
                     {lang === 'hi' ? (
-                      <>विश्वस्तरीय एमबीबीएस <br /> <span style={{ color: '#f97316' }}>बिना भारी डोनेशन के</span></>
+                      <>विश्वस्तरीय एमबीबीएस <br /> <span style={{ color: '#6ee7b7', textShadow: '0 0 30px rgba(110,231,183,0.4)' }}>बिना भारी डोनेशन के</span></>
                     ) : (
-                      <>World-Class MBBS <br /> <span style={{ color: '#f97316' }}>Without Heavy Capitation</span></>
+                      <>World-Class MBBS <br /> <span style={{ color: '#6ee7b7', textShadow: '0 0 30px rgba(110,231,183,0.4)' }}>Without Heavy Capitation</span></>
                     )}
                   </h1>
 
-                  <p style={{ color: '#627d98', fontSize: '15px', lineHeight: '1.6', marginBottom: '30px', maxWidth: '520px' }}>
+                  <p style={{ color: '#a7f3d0', fontSize: '16px', lineHeight: '1.7', marginBottom: '36px', maxWidth: '520px' }}>
                     {lang === 'hi'
                       ? 'विश्वविद्यालय चयन, पात्रता जांच, और एमईए वीजा अपोस्टिल से लेकर भारतीय हॉस्टल मेस तक पूर्ण सहायता।'
                       : 'Complete end-to-end support from university selection, eligibility check, and MEA visa apostille to Indian hostel mess setup.'}
                   </p>
 
-                  <div>
-                    <button className="btn-primary" onClick={onRequestCounselling} style={{ background: '#f97316', color: '#ffffff', padding: '15px 42px', fontSize: '16px', borderRadius: '12px', border: 'none', fontWeight: '700', boxShadow: '0 10px 30px rgba(249, 115, 22, 0.4)' }}>
+                  <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', marginBottom: '36px' }}>
+                    <button className="btn-primary" onClick={onRequestCounselling} style={{ background: 'linear-gradient(135deg, #10b981, #059669)', color: '#ffffff', padding: '15px 42px', fontSize: '16px', borderRadius: '14px', border: 'none', fontWeight: '800', boxShadow: '0 10px 30px rgba(16,185,129,0.5)' }}>
                       {lang === 'hi' ? 'निःशुल्क परामर्श प्राप्त करें' : 'Get Free Counselling'}
                     </button>
+                  </div>
+
+                  {/* Trust indicators */}
+                  <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+                    {[['✅', 'NMC Approved'], ['🏥', 'WHO Listed'], ['📋', 'MCI Guided']].map(([icon, text], i) => (
+                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)', padding: '8px 14px', borderRadius: '10px', backdropFilter: 'blur(10px)' }}>
+                        <span style={{ fontSize: '14px' }}>{icon}</span>
+                        <span style={{ fontSize: '12px', color: '#a7f3d0', fontWeight: '700' }}>{text}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-                  <div style={{ width: '320px', height: '320px', borderRadius: '50%', background: '#eef5fc', border: '6px solid #102a43', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', boxShadow: '0 18px 40px rgba(16, 42, 67, 0.15)' }}>
-                    <img
-                      src={slideDoctorPhotos[3].img}
-                      alt={slideDoctorPhotos[3].alt}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }}
-                    />
+                  <div style={{ position: 'relative' }}>
+                    <div style={{ position: 'absolute', inset: '-16px', borderRadius: '50%', background: 'linear-gradient(135deg, rgba(16,185,129,0.6), rgba(6,95,70,0.6))', filter: 'blur(20px)' }} />
+                    <div style={{ width: '320px', height: '320px', borderRadius: '50%', background: 'rgba(255,255,255,0.08)', border: '4px solid rgba(110,231,183,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', boxShadow: '0 20px 50px rgba(0,0,0,0.5)', backdropFilter: 'blur(10px)', position: 'relative' }}>
+                      <img src={slideDoctorPhotos[3].img} alt={slideDoctorPhotos[3].alt} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }} />
+                    </div>
+                    {/* ISO badge */}
+                    <div style={{ position: 'absolute', bottom: '10px', right: '-20px', background: 'linear-gradient(135deg, #10b981, #047857)', padding: '10px 16px', borderRadius: '14px', boxShadow: '0 8px 24px rgba(0,0,0,0.3)', textAlign: 'center' }}>
+                      <div style={{ fontSize: '12px', fontWeight: '900', color: '#ffffff' }}>ISO 9001</div>
+                      <div style={{ fontSize: '10px', color: '#a7f3d0', fontWeight: '700' }}>Certified</div>
+                    </div>
                   </div>
                 </div>
               </div>

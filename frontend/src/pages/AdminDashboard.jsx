@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Users, BarChart3, Mail, FileText, Globe, MessageSquare, Image as ImageIcon,
   Search, Bell, RefreshCw, Download, Plus, Trash2, Edit3, LogOut, User, Key, CheckCircle2, Clock, 
   TrendingUp, Activity, Filter, ChevronLeft, ChevronRight, Printer, Shield, ArrowUpRight, Volume2, X,
-  Calculator
+  Calculator, Sun, Moon
 } from 'lucide-react';
 
 
@@ -26,6 +26,37 @@ const AdminDashboard = () => {
   const [statusFilter, setStatusFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [profileStatusMsg, setProfileStatusMsg] = useState('');
+
+  // Light / Dark Mode Toggle State
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const saved = localStorage.getItem('adminTheme');
+    return saved ? saved === 'dark' : true;
+  });
+
+  const toggleTheme = () => {
+    setIsDarkMode(prev => {
+      const next = !prev;
+      localStorage.setItem('adminTheme', next ? 'dark' : 'light');
+      return next;
+    });
+  };
+
+  const theme = {
+    bgShell: isDarkMode ? '#0b0f19' : '#f8fafc',
+    bgSidebar: isDarkMode ? '#111827' : '#ffffff',
+    bgCard: isDarkMode ? '#111827' : '#ffffff',
+    bgCardAlt: isDarkMode ? 'rgba(255,255,255,0.03)' : '#f8fafc',
+    border: isDarkMode ? 'rgba(255,255,255,0.06)' : '#e2e8f0',
+    borderLight: isDarkMode ? 'rgba(255,255,255,0.1)' : '#cbd5e1',
+    textPrimary: isDarkMode ? '#ffffff' : '#0f172a',
+    textSecondary: isDarkMode ? '#94a3b8' : '#475569',
+    textMuted: isDarkMode ? '#64748b' : '#94a3b8',
+    inputBg: isDarkMode ? '#0b0f19' : '#f8fafc',
+    inputBorder: isDarkMode ? 'rgba(255,255,255,0.14)' : '#cbd5e1',
+    tableHeaderBg: isDarkMode ? 'rgba(255,255,255,0.02)' : '#f8fafc',
+    tableRowHover: isDarkMode ? 'rgba(255,255,255,0.03)' : '#f1f5f9',
+    shadow: isDarkMode ? '0 10px 30px rgba(0,0,0,0.4)' : '0 4px 20px rgba(0,0,0,0.06)'
+  };
 
   const lastInquiriesCountRef = useRef(-1);
 
@@ -742,19 +773,19 @@ const AdminDashboard = () => {
 
   // 3. Authenticated CRM Dashboard
   return (
-    <div className="admin-shell" style={{ display: 'flex', minHeight: '100vh', background: '#0b0f19', color: '#e2e8f0', fontFamily: "'Inter', sans-serif" }}>
+    <div className="admin-shell" style={{ display: 'flex', minHeight: '100vh', background: theme.bgShell, color: theme.textPrimary, fontFamily: "'Inter', sans-serif", transition: 'background 0.3s ease, color 0.3s ease' }}>
       
       {/* 1. LEFT VERTICAL NAVIGATION SIDEBAR (Matching reference image) */}
-      <aside className="admin-sidebar" style={{ width: '260px', background: '#111827', borderRight: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
+      <aside className="admin-sidebar" style={{ width: '260px', background: theme.bgSidebar, borderRight: `1px solid ${theme.border}`, display: 'flex', flexDirection: 'column', flexShrink: 0, transition: 'background 0.3s ease, border-color 0.3s ease' }}>
         
         {/* Sidebar Header / Brand */}
-        <div style={{ padding: '24px 20px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{ padding: '24px 20px', borderBottom: `1px solid ${theme.border}`, display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: '800', fontSize: '18px', boxShadow: '0 4px 14px rgba(59,130,246,0.35)' }}>
             M
           </div>
           <div>
-            <div style={{ color: '#ffffff', fontWeight: '800', fontSize: '16px', letterSpacing: '-0.02em' }}>Medico Overseas</div>
-            <div style={{ color: '#64748b', fontSize: '11px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Executive Admin Panel</div>
+            <div style={{ color: theme.textPrimary, fontWeight: '800', fontSize: '16px', letterSpacing: '-0.02em' }}>Medico Overseas</div>
+            <div style={{ color: theme.textMuted, fontSize: '11px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Executive Admin Panel</div>
           </div>
         </div>
 
@@ -784,8 +815,8 @@ const AdminDashboard = () => {
                   padding: '12px 14px',
                   borderRadius: '12px',
                   border: 'none',
-                  background: isActive ? 'linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%)' : 'transparent',
-                  color: isActive ? '#3b82f6' : '#94a3b8',
+                  background: isActive ? (isDarkMode ? 'linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%)' : '#eff6ff') : 'transparent',
+                  color: isActive ? '#3b82f6' : theme.textSecondary,
                   borderLeft: isActive ? '3px solid #3b82f6' : '3px solid transparent',
                   fontWeight: isActive ? '700' : '500',
                   fontSize: '14px',
@@ -794,11 +825,11 @@ const AdminDashboard = () => {
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <IconComponent size={18} color={isActive ? '#3b82f6' : '#64748b'} />
+                  <IconComponent size={18} color={isActive ? '#3b82f6' : (isDarkMode ? '#64748b' : '#94a3b8')} />
                   <span>{item.label}</span>
                 </div>
                 {item.badge !== undefined && item.badge > 0 && (
-                  <span style={{ background: isActive ? '#3b82f6' : 'rgba(255,255,255,0.08)', color: isActive ? '#ffffff' : '#94a3b8', padding: '2px 8px', borderRadius: '999px', fontSize: '11px', fontWeight: '700' }}>
+                  <span style={{ background: isActive ? '#3b82f6' : (isDarkMode ? 'rgba(255,255,255,0.08)' : '#e2e8f0'), color: isActive ? '#ffffff' : theme.textSecondary, padding: '2px 8px', borderRadius: '999px', fontSize: '11px', fontWeight: '700' }}>
                     {item.badge}
                   </span>
                 )}
@@ -807,16 +838,53 @@ const AdminDashboard = () => {
           })}
         </nav>
 
+        {/* Sidebar Mode Toggle Button */}
+        <div style={{ padding: '0 16px 12px 16px' }}>
+          <button
+            onClick={toggleTheme}
+            style={{
+              width: '100%',
+              padding: '10px 14px',
+              borderRadius: '12px',
+              border: `1px solid ${theme.border}`,
+              background: isDarkMode ? 'rgba(255,255,255,0.04)' : '#f1f5f9',
+              color: theme.textPrimary,
+              fontSize: '13px',
+              fontWeight: '700',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              {isDarkMode ? <Sun size={16} color="#f59e0b" /> : <Moon size={16} color="#3b82f6" />}
+              <span>{isDarkMode ? 'Light Mode' : 'Dark Mode'}</span>
+            </div>
+            <span style={{
+              fontSize: '11px',
+              padding: '2px 8px',
+              borderRadius: '10px',
+              background: isDarkMode ? '#f59e0b' : '#3b82f6',
+              color: '#ffffff',
+              fontWeight: '800'
+            }}>
+              {isDarkMode ? 'OFF' : 'ON'}
+            </span>
+          </button>
+        </div>
+
         {/* Sidebar Footer / Admin Account Card */}
-        <div style={{ padding: '16px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-          <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '14px', padding: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ padding: '16px', borderTop: `1px solid ${theme.border}` }}>
+          <div style={{ background: isDarkMode ? 'rgba(255,255,255,0.03)' : '#f8fafc', border: `1px solid ${theme.border}`, borderRadius: '14px', padding: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <div style={{ width: '34px', height: '34px', borderRadius: '50%', background: '#3b82f6', color: '#fff', display: 'grid', placeItems: 'center', fontWeight: '700', fontSize: '13px' }}>
                 {profileData.name.charAt(0)}
               </div>
               <div>
-                <div style={{ fontSize: '13px', fontWeight: '700', color: '#fff' }}>{profileData.name}</div>
-                <div style={{ fontSize: '11px', color: '#64748b' }}>Administrator</div>
+                <div style={{ fontSize: '13px', fontWeight: '700', color: theme.textPrimary }}>{profileData.name}</div>
+                <div style={{ fontSize: '11px', color: theme.textMuted }}>Administrator</div>
               </div>
             </div>
             <button onClick={handleAdminLogout} title="Logout" style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '4px' }}>
@@ -840,6 +908,8 @@ const AdminDashboard = () => {
           onExportCsv={handleExportCsv}
           onClearNotifications={handleClearNotifications}
           onOpenProfile={() => setActiveTab('profile')}
+          isDarkMode={isDarkMode}
+          onToggleTheme={toggleTheme}
         />
 
         {/* Dynamic Workspace Tab Render */}
