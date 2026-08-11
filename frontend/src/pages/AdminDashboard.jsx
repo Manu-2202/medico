@@ -101,6 +101,21 @@ const AdminDashboard = () => {
   };
 
   useEffect(() => {
+    const savedProfile = localStorage.getItem('adminProfile');
+    if (savedProfile) {
+      try {
+        const parsed = JSON.parse(savedProfile);
+        if (parsed.name || parsed.email || parsed.photo) {
+          setProfileData(prev => ({
+            ...prev,
+            name: parsed.name || prev.name,
+            email: parsed.email || prev.email,
+            photo: parsed.photo || prev.photo
+          }));
+        }
+      } catch (e) {}
+    }
+
     const token = localStorage.getItem('adminToken');
     if (!token) {
       setIsAuthenticated(false);
@@ -118,9 +133,9 @@ const AdminDashboard = () => {
           if (data.user) {
             setProfileData(prev => ({
               ...prev,
-              name: data.user.name || prev.name,
-              email: data.user.email || prev.email,
-              photo: data.user.avatar || prev.photo
+              name: prev.name !== 'Admin User' ? prev.name : (data.user.name || prev.name),
+              email: prev.email !== 'admin@medico.com' ? prev.email : (data.user.email || prev.email),
+              photo: prev.photo || data.user.avatar || ''
             }));
           }
         } else {
@@ -129,7 +144,6 @@ const AdminDashboard = () => {
         }
       })
       .catch(() => {
-        // Fail CLOSED: any network/verify error means we do NOT grant access.
         localStorage.removeItem('adminToken');
         setIsAuthenticated(false);
       })
