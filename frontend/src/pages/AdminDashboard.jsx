@@ -743,13 +743,13 @@ const AdminDashboard = () => {
         {/* Sidebar Navigation Items */}
         <nav style={{ padding: '16px 12px', display: 'flex', flexDirection: 'column', gap: '4px', flex: 1 }}>
           {[
-            { id: 'dashboard', label: t('tabDashboard'), icon: LayoutDashboard },
-            { id: 'leads', label: t('tabLeads'), icon: Users, badge: inquiries.length },
-            { id: 'analytics', label: t('tabAnalytics'), icon: BarChart3 },
-            { id: 'settings', label: t('tabSettings'), icon: Mail },
-            { id: 'blogs', label: t('tabBlogs'), icon: FileText },
-            { id: 'countries', label: t('tabCountries'), icon: Globe },
-            { id: 'testimonials', label: t('tabTestimonials'), icon: MessageSquare },
+            { id: 'dashboard', label: t('tabDashboard') || 'Dashboard', icon: LayoutDashboard },
+            { id: 'leads', label: t('tabLeads') || 'Student Leads', icon: Users, badge: inquiries.length },
+            { id: 'analytics', label: t('tabAnalytics') || 'Analytics & Reports', icon: BarChart3 },
+            { id: 'settings', label: t('tabSettings') || 'Site & Email Settings', icon: Mail },
+            { id: 'blogs', label: t('tabBlogs') || 'Blogs CMS', icon: FileText },
+            { id: 'countries', label: t('tabCountries') || 'Destinations CMS', icon: Globe },
+            { id: 'testimonials', label: t('tabTestimonials') || 'Student Testimonials', icon: MessageSquare },
             { id: 'profile', label: 'Admin Profile', icon: User }
           ].map((item) => {
             const IconComponent = item.icon;
@@ -1418,6 +1418,36 @@ const AdminDashboard = () => {
                 <textarea placeholder="Overview details..." rows="4" value={customCountry.overview} onChange={e => setCustomCountry({...customCountry, overview: e.target.value})} style={{ background: '#0b0f19', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px', color: '#fff' }}></textarea>
                 <button type="submit" style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '12px 20px', borderRadius: '10px', fontWeight: '700', width: 'fit-content', cursor: 'pointer' }}>Create Country Page</button>
               </form>
+            </div>
+          )}
+
+          {/* TAB 6: TESTIMONIALS CMS */}
+          {activeTab === 'testimonials' && (
+            <div style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '20px', padding: '28px', maxWidth: '800px' }}>
+              <h2 style={{ color: '#ffffff', fontSize: '22px', fontWeight: '800', marginBottom: '8px' }}>Student Testimonials CMS</h2>
+              <p style={{ color: '#94a3b8', fontSize: '13px', marginBottom: '20px' }}>Manage student reviews and testimonials displayed on the homepage.</p>
+              {testimonialStatusMsg && <div style={{ color: '#34d399', marginBottom: '16px', fontWeight: '600' }}>{testimonialStatusMsg}</div>}
+              <form onSubmit={handleCreateTestimonial} style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '24px' }}>
+                <input placeholder="Student Name (e.g. Ananya Roy)" required value={newTestimonial.name} onChange={e => setNewTestimonial({...newTestimonial, name: e.target.value})} style={{ background: '#0b0f19', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px', color: '#fff' }} />
+                <input placeholder="University Name & Country (e.g. Kazan Federal University, Russia)" required value={newTestimonial.university} onChange={e => setNewTestimonial({...newTestimonial, university: e.target.value})} style={{ background: '#0b0f19', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px', color: '#fff' }} />
+                <textarea placeholder="Student Review / Experience quote..." rows="3" required value={newTestimonial.quote} onChange={e => setNewTestimonial({...newTestimonial, quote: e.target.value})} style={{ background: '#0b0f19', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px', color: '#fff' }}></textarea>
+                <button type="submit" style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '12px 20px', borderRadius: '10px', fontWeight: '700', width: 'fit-content', cursor: 'pointer' }}>Publish Student Testimonial</button>
+              </form>
+
+              <h3 style={{ color: '#fff', fontSize: '16px', marginBottom: '12px' }}>Live Testimonials ({testimonials.length})</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {testimonials.map(t => (
+                  <div key={t._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.06)' }}>
+                    <div>
+                      <div style={{ color: '#fff', fontWeight: '700', fontSize: '13.5px' }}>{t.name}</div>
+                      <div style={{ color: '#94a3b8', fontSize: '12px' }}>{t.university} — "{t.quote}"</div>
+                    </div>
+                    <button onClick={() => handleDeleteTestimonial(t._id)} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '6px' }} title="Delete Testimonial">
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 

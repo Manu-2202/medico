@@ -119,13 +119,13 @@ const Navbar = ({ onRequestCounselling }) => {
             alt="Medico Overseas Logo" 
             className="brand-logo-img"
             style={{ 
-              height: '140px', 
+              height: '165px', 
               width: 'auto', 
-              maxWidth: '320px',
+              maxWidth: '360px',
               objectFit: 'contain',
-              marginTop: '-35px',
-              marginBottom: '-35px',
-              filter: 'drop-shadow(0 4px 12px rgba(31, 56, 100, 0.18))',
+              marginTop: '-40px',
+              marginBottom: '-40px',
+              filter: 'drop-shadow(0 4px 14px rgba(31, 56, 100, 0.22))',
               transition: 'all 0.3s ease'
             }} 
           />
@@ -290,40 +290,40 @@ const Navbar = ({ onRequestCounselling }) => {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div style={{ background: '#ffffff', borderTop: '1px solid #e2e8f0', padding: '20px 16px', display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '80vh', overflowY: 'auto' }} className="mobile-drawer">
-          <Link to="/" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '15px', fontWeight: location.pathname === '/' ? '800' : '600', color: location.pathname === '/' ? 'var(--coral-accent)' : 'var(--navy-primary)', background: location.pathname === '/' ? 'rgba(225, 91, 63, 0.12)' : 'transparent', padding: '8px 14px', borderRadius: '10px', textDecoration: 'none' }}>
+        <div style={{ background: '#ffffff', borderTop: '1px solid #e2e8f0', padding: '24px 20px', display: 'flex', flexDirection: 'column', gap: '14px', maxHeight: '85vh', overflowY: 'auto' }} className="mobile-drawer">
+          <Link to="/" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '17px', fontWeight: location.pathname === '/' ? '800' : '700', color: location.pathname === '/' ? 'var(--coral-accent)' : '#1e3a8a', background: location.pathname === '/' ? 'rgba(225, 91, 63, 0.1)' : '#f8fafc', padding: '12px 18px', borderRadius: '12px', textDecoration: 'none', display: 'block' }}>
             {t('navHome')}
           </Link>
-          <Link to="/about" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '15px', fontWeight: location.pathname === '/about' ? '800' : '600', color: location.pathname === '/about' ? 'var(--coral-accent)' : 'var(--navy-primary)', background: location.pathname === '/about' ? 'rgba(225, 91, 63, 0.12)' : 'transparent', padding: '8px 14px', borderRadius: '10px', textDecoration: 'none' }}>
+          <Link to="/about" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '17px', fontWeight: location.pathname === '/about' ? '800' : '700', color: location.pathname === '/about' ? 'var(--coral-accent)' : '#1e3a8a', background: location.pathname === '/about' ? 'rgba(225, 91, 63, 0.1)' : '#f8fafc', padding: '12px 18px', borderRadius: '12px', textDecoration: 'none', display: 'block' }}>
             {t('navAbout')}
           </Link>
           
-          <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '10px' }}>
-            <div style={{ fontWeight: '800', color: 'var(--coral-accent)', fontSize: '12px', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.5px' }}>{t('navDestinations')}</div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-              <Link to="/destinations/mbbs-in-russia" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '13px', fontWeight: '600', color: location.pathname === '/destinations/mbbs-in-russia' ? 'var(--coral-accent)' : 'var(--navy-primary)', background: location.pathname === '/destinations/mbbs-in-russia' ? 'rgba(225, 91, 63, 0.12)' : 'transparent', padding: '6px 8px', borderRadius: '8px', textDecoration: 'none' }}>🇷🇺 Russia</Link>
-              <Link to="/destinations/mbbs-in-georgia" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '13px', fontWeight: '600', color: location.pathname === '/destinations/mbbs-in-georgia' ? 'var(--coral-accent)' : 'var(--navy-primary)', background: location.pathname === '/destinations/mbbs-in-georgia' ? 'rgba(225, 91, 63, 0.12)' : 'transparent', padding: '6px 8px', borderRadius: '8px', textDecoration: 'none' }}>🇬🇪 Georgia</Link>
-              <Link to="/destinations/mbbs-in-kyrgyzstan" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '13px', fontWeight: '600', color: location.pathname === '/destinations/mbbs-in-kyrgyzstan' ? 'var(--coral-accent)' : 'var(--navy-primary)', background: location.pathname === '/destinations/mbbs-in-kyrgyzstan' ? 'rgba(225, 91, 63, 0.12)' : 'transparent', padding: '6px 8px', borderRadius: '8px', textDecoration: 'none' }}>🇰🇬 Kyrgyzstan</Link>
-              <Link to="/destinations/mbbs-in-uzbekistan" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '13px', fontWeight: '600', color: location.pathname === '/destinations/mbbs-in-uzbekistan' ? 'var(--coral-accent)' : 'var(--navy-primary)', background: location.pathname === '/destinations/mbbs-in-uzbekistan' ? 'rgba(225, 91, 63, 0.12)' : 'transparent', padding: '6px 8px', borderRadius: '8px', textDecoration: 'none' }}>🇺🇿 Uzbekistan</Link>
-              <Link to="/destinations/mbbs-in-armenia" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '13px', fontWeight: '600', color: location.pathname === '/destinations/mbbs-in-armenia' ? 'var(--coral-accent)' : 'var(--navy-primary)', background: location.pathname === '/destinations/mbbs-in-armenia' ? 'rgba(225, 91, 63, 0.12)' : 'transparent', padding: '6px 8px', borderRadius: '8px', textDecoration: 'none' }}>🇦🇲 Armenia</Link>
-              <Link to="/destinations/mbbs-in-vietnam" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '13px', fontWeight: '600', color: location.pathname === '/destinations/mbbs-in-vietnam' ? 'var(--coral-accent)' : 'var(--navy-primary)', background: location.pathname === '/destinations/mbbs-in-vietnam' ? 'rgba(225, 91, 63, 0.12)' : 'transparent', padding: '6px 8px', borderRadius: '8px', textDecoration: 'none' }}>🇻🇳 Vietnam</Link>
+          <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '12px' }}>
+            <div style={{ fontWeight: '800', color: 'var(--coral-accent)', fontSize: '13px', textTransform: 'uppercase', marginBottom: '10px', letterSpacing: '0.5px', paddingLeft: '4px' }}>{t('navDestinations')}</div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <Link to="/destinations/mbbs-in-russia" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '14px', fontWeight: '700', color: location.pathname === '/destinations/mbbs-in-russia' ? 'var(--coral-accent)' : '#1e3a8a', background: '#f1f5f9', padding: '10px 12px', borderRadius: '10px', textDecoration: 'none' }}>🇷🇺 Russia</Link>
+              <Link to="/destinations/mbbs-in-georgia" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '14px', fontWeight: '700', color: location.pathname === '/destinations/mbbs-in-georgia' ? 'var(--coral-accent)' : '#1e3a8a', background: '#f1f5f9', padding: '10px 12px', borderRadius: '10px', textDecoration: 'none' }}>🇬🇪 Georgia</Link>
+              <Link to="/destinations/mbbs-in-kyrgyzstan" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '14px', fontWeight: '700', color: location.pathname === '/destinations/mbbs-in-kyrgyzstan' ? 'var(--coral-accent)' : '#1e3a8a', background: '#f1f5f9', padding: '10px 12px', borderRadius: '10px', textDecoration: 'none' }}>🇰🇬 Kyrgyzstan</Link>
+              <Link to="/destinations/mbbs-in-uzbekistan" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '14px', fontWeight: '700', color: location.pathname === '/destinations/mbbs-in-uzbekistan' ? 'var(--coral-accent)' : '#1e3a8a', background: '#f1f5f9', padding: '10px 12px', borderRadius: '10px', textDecoration: 'none' }}>🇺🇿 Uzbekistan</Link>
+              <Link to="/destinations/mbbs-in-armenia" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '14px', fontWeight: '700', color: location.pathname === '/destinations/mbbs-in-armenia' ? 'var(--coral-accent)' : '#1e3a8a', background: '#f1f5f9', padding: '10px 12px', borderRadius: '10px', textDecoration: 'none' }}>🇦🇲 Armenia</Link>
+              <Link to="/destinations/mbbs-in-vietnam" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '14px', fontWeight: '700', color: location.pathname === '/destinations/mbbs-in-vietnam' ? 'var(--coral-accent)' : '#1e3a8a', background: '#f1f5f9', padding: '10px 12px', borderRadius: '10px', textDecoration: 'none' }}>🇻🇳 Vietnam</Link>
             </div>
           </div>
 
-          <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '10px' }}>
-            <div style={{ fontWeight: '800', color: 'var(--coral-accent)', fontSize: '12px', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.5px' }}>{t('navExams')}</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <Link to="/exams/fmge-exam" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '13px', fontWeight: '600', color: location.pathname === '/exams/fmge-exam' ? 'var(--coral-accent)' : 'var(--navy-primary)', background: location.pathname === '/exams/fmge-exam' ? 'rgba(225, 91, 63, 0.12)' : 'transparent', padding: '6px 10px', borderRadius: '8px', textDecoration: 'none' }}>🩺 FMGE / NEXT Exam Prep</Link>
-              <Link to="/exams/nmat-exam" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '13px', fontWeight: '600', color: location.pathname === '/exams/nmat-exam' ? 'var(--coral-accent)' : 'var(--navy-primary)', background: location.pathname === '/exams/nmat-exam' ? 'rgba(225, 91, 63, 0.12)' : 'transparent', padding: '6px 10px', borderRadius: '8px', textDecoration: 'none' }}>📝 NMAT Exam Prep</Link>
+          <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '12px' }}>
+            <div style={{ fontWeight: '800', color: 'var(--coral-accent)', fontSize: '13px', textTransform: 'uppercase', marginBottom: '10px', letterSpacing: '0.5px', paddingLeft: '4px' }}>{t('navExams')}</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <Link to="/exams/fmge-exam" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '14px', fontWeight: '700', color: location.pathname === '/exams/fmge-exam' ? 'var(--coral-accent)' : '#1e3a8a', background: '#f1f5f9', padding: '10px 14px', borderRadius: '10px', textDecoration: 'none' }}>🩺 FMGE / NEXT Exam Prep</Link>
+              <Link to="/exams/nmat-exam" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '14px', fontWeight: '700', color: location.pathname === '/exams/nmat-exam' ? 'var(--coral-accent)' : '#1e3a8a', background: '#f1f5f9', padding: '10px 14px', borderRadius: '10px', textDecoration: 'none' }}>📝 NMAT Exam Prep</Link>
             </div>
           </div>
 
-          <Link to="/faqs" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '15px', fontWeight: location.pathname === '/faqs' ? '800' : '600', color: location.pathname === '/faqs' ? 'var(--coral-accent)' : 'var(--navy-primary)', background: location.pathname === '/faqs' ? 'rgba(225, 91, 63, 0.12)' : 'transparent', padding: '8px 14px', borderRadius: '10px', textDecoration: 'none' }}>{t('navFaqs')}</Link>
-          <Link to="/blogs" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '15px', fontWeight: location.pathname.startsWith('/blogs') ? '800' : '600', color: location.pathname.startsWith('/blogs') ? 'var(--coral-accent)' : 'var(--navy-primary)', background: location.pathname.startsWith('/blogs') ? 'rgba(225, 91, 63, 0.12)' : 'transparent', padding: '8px 14px', borderRadius: '10px', textDecoration: 'none' }}>{t('navBlogs')}</Link>
-          <Link to="/contact" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '15px', fontWeight: location.pathname === '/contact' ? '800' : '600', color: location.pathname === '/contact' ? 'var(--coral-accent)' : 'var(--navy-primary)', background: location.pathname === '/contact' ? 'rgba(225, 91, 63, 0.12)' : 'transparent', padding: '8px 14px', borderRadius: '10px', textDecoration: 'none' }}>{t('navContact')}</Link>
+          <Link to="/faqs" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '17px', fontWeight: location.pathname === '/faqs' ? '800' : '700', color: location.pathname === '/faqs' ? 'var(--coral-accent)' : '#1e3a8a', background: location.pathname === '/faqs' ? 'rgba(225, 91, 63, 0.1)' : '#f8fafc', padding: '12px 18px', borderRadius: '12px', textDecoration: 'none', display: 'block' }}>{t('navFaqs')}</Link>
+          <Link to="/blogs" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '17px', fontWeight: location.pathname.startsWith('/blogs') ? '800' : '700', color: location.pathname.startsWith('/blogs') ? 'var(--coral-accent)' : '#1e3a8a', background: location.pathname.startsWith('/blogs') ? 'rgba(225, 91, 63, 0.1)' : '#f8fafc', padding: '12px 18px', borderRadius: '12px', textDecoration: 'none', display: 'block' }}>{t('navBlogs')}</Link>
+          <Link to="/contact" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '17px', fontWeight: location.pathname === '/contact' ? '800' : '700', color: location.pathname === '/contact' ? 'var(--coral-accent)' : '#1e3a8a', background: location.pathname === '/contact' ? 'rgba(225, 91, 63, 0.1)' : '#f8fafc', padding: '12px 18px', borderRadius: '12px', textDecoration: 'none', display: 'block' }}>{t('navContact')}</Link>
           
-          <button className="btn-primary" onClick={onRequestCounselling} style={{ width: '100%', padding: '12px', marginTop: '6px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
-            <GraduationCap size={18} /> {t('bookConsultation')}
+          <button className="btn-primary" onClick={onRequestCounselling} style={{ width: '100%', padding: '14px', marginTop: '8px', fontSize: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', borderRadius: '14px', fontWeight: '800' }}>
+            <GraduationCap size={20} /> {t('bookConsultation')}
           </button>
         </div>
       )}
