@@ -222,54 +222,54 @@ let memoryFaqs = [
 
 let isMongoConnected = false;
 
+const seedInquiriesToMongo = async () => {
+  try {
+    const seedInquiries = [
+      { name: 'Aarav Sharma', phone: '+91 98765 43210', email: 'aarav.s@gmail.com', city: 'Delhi', country: 'Russia', status: 'New', neetScore: 485, message: 'Interested in Bashkir State Medical University.' },
+      { name: 'Priya Patel', phone: '+91 98123 45678', email: 'priya.p@gmail.com', city: 'Ahmedabad', country: 'Georgia', status: 'In Counseling', neetScore: 512, message: 'Want details about Tbilisi State Medical University.' },
+      { name: 'Rohan Gupta', phone: '+91 97654 32109', email: 'rohan.g@yahoo.com', city: 'Jaipur', country: 'Kazakhstan', status: 'Enrolled', neetScore: 450, message: 'Admitted to Asfendiyarov Kazakh National Medical University.' },
+      { name: 'Ananya Verma', phone: '+91 96543 21098', email: 'ananya.v@gmail.com', city: 'Lucknow', country: 'Uzbekistan', status: 'Contacted', neetScore: 390, message: 'Looking for low tuition fee colleges in Uzbekistan.' },
+      { name: 'Vikram Singh', phone: '+91 95432 10987', email: 'vikram.s@gmail.com', city: 'Chandigarh', country: 'Russia', status: 'In Counseling', neetScore: 420, message: 'Comparing Kazan Federal University and Crimea Federal.' },
+      { name: 'Kavya Reddy', phone: '+91 94321 09876', email: 'kavya.r@gmail.com', city: 'Hyderabad', country: 'Georgia', status: 'New', neetScore: 535, message: 'Interested in Batumi Shota Rustaveli State University.' },
+      { name: 'Siddharth Nair', phone: '+91 93210 98765', email: 'siddharth.n@gmail.com', city: 'Kochi', country: 'Kyrgyzstan', status: 'Enrolled', neetScore: 360, message: 'Enrolled in Osh State University for 2026 batch.' },
+      { name: 'Sneha Kulkarni', phone: '+91 92109 87654', email: 'sneha.k@gmail.com', city: 'Pune', country: 'Philippines', status: 'Contacted', neetScore: 410, message: 'Seeking information on BS+MD course structure.' },
+      { name: 'Aditya Joshi', phone: '+91 91098 76543', email: 'aditya.j@gmail.com', city: 'Indore', country: 'Vietnam', status: 'New', neetScore: 475, message: 'Can I get admission in Can Tho University of Medicine?' },
+      { name: 'Meera Iyer', phone: '+91 90987 65432', email: 'meera.i@gmail.com', city: 'Chennai', country: 'Russia', status: 'In Counseling', neetScore: 495, message: 'Is Orel State University NMC approved?' },
+      { name: 'Rahul Choudhary', phone: '+91 89876 54321', email: 'rahul.c@gmail.com', city: 'Patna', country: 'Kazakhstan', status: 'Contacted', neetScore: 380, message: 'Need hostel and Indian food availability details.' },
+      { name: 'Divya Agarwal', phone: '+91 88765 43210', email: 'divya.a@gmail.com', city: 'Kolkata', country: 'Georgia', status: 'New', neetScore: 520, message: 'Applying for European University Tbilisi.' },
+      { name: 'Arjun Das', phone: '+91 87654 32109', email: 'arjun.d@gmail.com', city: 'Guwahati', country: 'Russia', status: 'In Counseling', neetScore: 440, message: 'Scholarship guidance for MBBS in Russia.' },
+      { name: 'Tanvi Shah', phone: '+91 86543 21098', email: 'tanvi.s@gmail.com', city: 'Surat', country: 'Uzbekistan', status: 'New', neetScore: 405, message: 'Samarkand State Medical University fee structure.' },
+      { name: 'Karan Mehra', phone: '+91 85432 10987', email: 'karan.m@gmail.com', city: 'Amritsar', country: 'Kyrgyzstan', status: 'Contacted', neetScore: 345, message: 'International School of Medicine admission process.' },
+      { name: 'Isha Saxena', phone: '+91 84321 09876', email: 'isha.s@gmail.com', city: 'Bhopal', country: 'Russia', status: 'In Counseling', neetScore: 460, message: 'Volgograd State Medical University hostel facilities.' },
+      { name: 'Manish Kumar', phone: '+91 83210 98765', email: 'manish.k@gmail.com', city: 'Ranchi', country: 'Georgia', status: 'Enrolled', neetScore: 510, message: 'Seat confirmed in Caucasus International University.' },
+      { name: 'Pooja Hegde', phone: '+91 82109 87654', email: 'pooja.h@gmail.com', city: 'Mangalore', country: 'Philippines', status: 'New', neetScore: 425, message: 'Davao Medical School Foundation syllabus comparison.' },
+      { name: 'Varun Rao', phone: '+91 81098 76543', email: 'varun.r@gmail.com', city: 'Visakhapatnam', country: 'Vietnam', status: 'In Counseling', neetScore: 430, message: 'Hong Bang International University MBBS course fees.' },
+      { name: 'Nisha Bhat', phone: '+91 80987 65432', email: 'nisha.b@gmail.com', city: 'Mysore', country: 'Kazakhstan', status: 'Contacted', neetScore: 375, message: 'Kazakh National Medical University Indian mess query.' },
+      { name: 'Gaurav Mishra', phone: '+91 79876 54321', email: 'gaurav.m@gmail.com', city: 'Varanasi', country: 'Russia', status: 'New', neetScore: 490, message: 'Kazan State Medical University direct seat booking.' },
+      { name: 'Riya Sen', phone: '+91 78765 43210', email: 'riya.s@gmail.com', city: 'Dehradun', country: 'Georgia', status: 'In Counseling', neetScore: 505, message: 'Alte University MBBS application requirements.' },
+      { name: 'Deepak Yadav', phone: '+91 77654 32109', email: 'deepak.y@gmail.com', city: 'Noida', country: 'Uzbekistan', status: 'New', neetScore: 395, message: 'Tashkent Medical Academy fee payment installment details.' },
+      { name: 'Shreya Pillai', phone: '+91 76543 21098', email: 'shreya.p@gmail.com', city: 'Thiruvananthapuram', country: 'Russia', status: 'Contacted', neetScore: 470, message: 'First Moscow State Medical University eligibility.' }
+    ];
+
+    for (const item of seedInquiries) {
+      await Inquiry.updateOne(
+        { email: item.email },
+        { $setOnInsert: item },
+        { upsert: true }
+      );
+    }
+    console.log('✅ Synchronized 24 initial student inquiries into MongoDB Atlas database!');
+  } catch (seedErr) {
+    console.error('Seed error:', seedErr.message);
+  }
+};
+
 // Connect to MongoDB
 mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 5000 })
   .then(async () => {
     isMongoConnected = true;
     console.log('MongoDB Connected Successfully to:', MONGODB_URI);
-
-    try {
-      const count = await Inquiry.countDocuments();
-      if (count < 24) {
-        const seedInquiries = [
-          { name: 'Aarav Sharma', phone: '+91 98765 43210', email: 'aarav.s@gmail.com', city: 'Delhi', country: 'Russia', status: 'New', neetScore: 485, message: 'Interested in Bashkir State Medical University.' },
-          { name: 'Priya Patel', phone: '+91 98123 45678', email: 'priya.p@gmail.com', city: 'Ahmedabad', country: 'Georgia', status: 'In Counseling', neetScore: 512, message: 'Want details about Tbilisi State Medical University.' },
-          { name: 'Rohan Gupta', phone: '+91 97654 32109', email: 'rohan.g@yahoo.com', city: 'Jaipur', country: 'Kazakhstan', status: 'Enrolled', neetScore: 450, message: 'Admitted to Asfendiyarov Kazakh National Medical University.' },
-          { name: 'Ananya Verma', phone: '+91 96543 21098', email: 'ananya.v@gmail.com', city: 'Lucknow', country: 'Uzbekistan', status: 'Contacted', neetScore: 390, message: 'Looking for low tuition fee colleges in Uzbekistan.' },
-          { name: 'Vikram Singh', phone: '+91 95432 10987', email: 'vikram.s@gmail.com', city: 'Chandigarh', country: 'Russia', status: 'In Counseling', neetScore: 420, message: 'Comparing Kazan Federal University and Crimea Federal.' },
-          { name: 'Kavya Reddy', phone: '+91 94321 09876', email: 'kavya.r@gmail.com', city: 'Hyderabad', country: 'Georgia', status: 'New', neetScore: 535, message: 'Interested in Batumi Shota Rustaveli State University.' },
-          { name: 'Siddharth Nair', phone: '+91 93210 98765', email: 'siddharth.n@gmail.com', city: 'Kochi', country: 'Kyrgyzstan', status: 'Enrolled', neetScore: 360, message: 'Enrolled in Osh State University for 2026 batch.' },
-          { name: 'Sneha Kulkarni', phone: '+91 92109 87654', email: 'sneha.k@gmail.com', city: 'Pune', country: 'Philippines', status: 'Contacted', neetScore: 410, message: 'Seeking information on BS+MD course structure.' },
-          { name: 'Aditya Joshi', phone: '+91 91098 76543', email: 'aditya.j@gmail.com', city: 'Indore', country: 'Vietnam', status: 'New', neetScore: 475, message: 'Can I get admission in Can Tho University of Medicine?' },
-          { name: 'Meera Iyer', phone: '+91 90987 65432', email: 'meera.i@gmail.com', city: 'Chennai', country: 'Russia', status: 'In Counseling', neetScore: 495, message: 'Is Orel State University NMC approved?' },
-          { name: 'Rahul Choudhary', phone: '+91 89876 54321', email: 'rahul.c@gmail.com', city: 'Patna', country: 'Kazakhstan', status: 'Contacted', neetScore: 380, message: 'Need hostel and Indian food availability details.' },
-          { name: 'Divya Agarwal', phone: '+91 88765 43210', email: 'divya.a@gmail.com', city: 'Kolkata', country: 'Georgia', status: 'New', neetScore: 520, message: 'Applying for European University Tbilisi.' },
-          { name: 'Arjun Das', phone: '+91 87654 32109', email: 'arjun.d@gmail.com', city: 'Guwahati', country: 'Russia', status: 'In Counseling', neetScore: 440, message: 'Scholarship guidance for MBBS in Russia.' },
-          { name: 'Tanvi Shah', phone: '+91 86543 21098', email: 'tanvi.s@gmail.com', city: 'Surat', country: 'Uzbekistan', status: 'New', neetScore: 405, message: 'Samarkand State Medical University fee structure.' },
-          { name: 'Karan Mehra', phone: '+91 85432 10987', email: 'karan.m@gmail.com', city: 'Amritsar', country: 'Kyrgyzstan', status: 'Contacted', neetScore: 345, message: 'International School of Medicine admission process.' },
-          { name: 'Isha Saxena', phone: '+91 84321 09876', email: 'isha.s@gmail.com', city: 'Bhopal', country: 'Russia', status: 'In Counseling', neetScore: 460, message: 'Volgograd State Medical University hostel facilities.' },
-          { name: 'Manish Kumar', phone: '+91 83210 98765', email: 'manish.k@gmail.com', city: 'Ranchi', country: 'Georgia', status: 'Enrolled', neetScore: 510, message: 'Seat confirmed in Caucasus International University.' },
-          { name: 'Pooja Hegde', phone: '+91 82109 87654', email: 'pooja.h@gmail.com', city: 'Mangalore', country: 'Philippines', status: 'New', neetScore: 425, message: 'Davao Medical School Foundation syllabus comparison.' },
-          { name: 'Varun Rao', phone: '+91 81098 76543', email: 'varun.r@gmail.com', city: 'Visakhapatnam', country: 'Vietnam', status: 'In Counseling', neetScore: 430, message: 'Hong Bang International University MBBS course fees.' },
-          { name: 'Nisha Bhat', phone: '+91 80987 65432', email: 'nisha.b@gmail.com', city: 'Mysore', country: 'Kazakhstan', status: 'Contacted', neetScore: 375, message: 'Kazakh National Medical University Indian mess query.' },
-          { name: 'Gaurav Mishra', phone: '+91 79876 54321', email: 'gaurav.m@gmail.com', city: 'Varanasi', country: 'Russia', status: 'New', neetScore: 490, message: 'Kazan State Medical University direct seat booking.' },
-          { name: 'Riya Sen', phone: '+91 78765 43210', email: 'riya.s@gmail.com', city: 'Dehradun', country: 'Georgia', status: 'In Counseling', neetScore: 505, message: 'Alte University MBBS application requirements.' },
-          { name: 'Deepak Yadav', phone: '+91 77654 32109', email: 'deepak.y@gmail.com', city: 'Noida', country: 'Uzbekistan', status: 'New', neetScore: 395, message: 'Tashkent Medical Academy fee payment installment details.' },
-          { name: 'Shreya Pillai', phone: '+91 76543 21098', email: 'shreya.p@gmail.com', city: 'Thiruvananthapuram', country: 'Russia', status: 'Contacted', neetScore: 470, message: 'First Moscow State Medical University eligibility.' }
-        ];
-
-        for (const item of seedInquiries) {
-          await Inquiry.updateOne(
-            { email: item.email },
-            { $setOnInsert: item },
-            { upsert: true }
-          );
-        }
-        console.log('✅ Synchronized 24 initial student inquiries into MongoDB Atlas database!');
-      }
-    } catch (seedErr) {
-      console.error('Seed error:', seedErr.message);
-    }
+    await seedInquiriesToMongo();
   })
   .catch(err => {
     console.log('MongoDB connection warning (using in-memory fallback):', err.message);
@@ -856,8 +856,15 @@ app.post('/api/inquiries', publicApiLimiter, async (req, res) => {
 // GET ALL INQUIRIES (Admin)
 app.get('/api/inquiries', requireAdmin, async (req, res) => {
   try {
-    let inquiries = isMongoConnected ? await Inquiry.find().sort({ createdAt: -1 }) : memoryInquiries;
-    res.json({ success: true, count: inquiries.length, data: inquiries });
+    if (isMongoConnected) {
+      let inquiries = await Inquiry.find().sort({ createdAt: -1 });
+      if (inquiries.length < 24) {
+        await seedInquiriesToMongo();
+        inquiries = await Inquiry.find().sort({ createdAt: -1 });
+      }
+      return res.json({ success: true, count: inquiries.length, data: inquiries });
+    }
+    res.json({ success: true, count: memoryInquiries.length, data: memoryInquiries });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
