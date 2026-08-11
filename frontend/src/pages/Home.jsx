@@ -1587,7 +1587,7 @@ const Home = ({ onRequestCounselling }) => {
           <div 
             className="glass-card-container"
             style={{ 
-              maxWidth: '880px', 
+              maxWidth: '1180px', 
               margin: '0 auto', 
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
@@ -1595,76 +1595,19 @@ const Home = ({ onRequestCounselling }) => {
             }}
           >
             
-            {/* Left Content Side */}
+            {/* Left Content Side: ACCEPTING 2026 + Request Callback Form */}
             <div className="glass-panel-left" style={{ padding: '32px 28px', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
               
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(224, 82, 56, 0.14)', border: '1px solid rgba(224, 82, 56, 0.28)', padding: '6px 14px', borderRadius: '28px', color: '#e15b3f', fontSize: '11px', fontWeight: '800', marginBottom: '18px', width: 'fit-content', letterSpacing: '0.5px' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(224, 82, 56, 0.14)', border: '1px solid rgba(224, 82, 56, 0.28)', padding: '6px 14px', borderRadius: '28px', color: '#e15b3f', fontSize: '11px', fontWeight: '800', marginBottom: '14px', width: 'fit-content', letterSpacing: '0.5px' }}>
                 <span style={{ display: 'inline-block', width: '8px', height: '8px', background: '#4ade80', borderRadius: '50%', boxShadow: '0 0 10px rgba(74, 222, 128, 0.8)' }}></span>
                 {lang === 'hi' ? '2026 सत्र के लिए आवेदन प्रारंभ' : 'ACCEPTING 2026 APPLICATIONS'}
               </div>
               
-              <h2 style={{ color: '#0f172a', fontSize: '28px', fontWeight: '800', lineHeight: '1.25', marginBottom: '14px', letterSpacing: '-0.4px' }}>
-                {lang === 'hi' ? (
-                  <>आज ही विदेश में अपनी <span style={{ color: '#e15b3f' }}>एमबीबीएस सीट</span> सुरक्षित करें।</>
-                ) : (
-                  <>Secure Your <span style={{ color: '#e15b3f' }}>MBBS Seat</span> Abroad Today.</>
-                )}
-              </h2>
-              
-              <p style={{ color: '#475569', fontSize: '15px', lineHeight: '1.6', marginBottom: '24px' }}>
-                {lang === 'hi'
-                  ? 'सर्वश्रेष्ठ एनएमसी-स्वीकृत विश्वविद्यालय, फीस संरचना और संपूर्ण प्रवेश प्रक्रिया पर 100% निःशुल्क मार्गदर्शन प्राप्त करें।'
-                  : 'Get expert guidance on selecting the best MCI-approved university, fee structures, and the entire admission process—absolutely free.'}
-              </p>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ width: '32px', height: '32px', borderRadius: '10px', background: 'rgba(37, 99, 235, 0.12)', border: '1px solid rgba(37, 99, 235, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb' }}>
-                    <CheckCircle size={18} />
-                  </div>
-                  <span style={{ fontSize: '14px', color: '#334155', fontWeight: '600' }}>
-                    {lang === 'hi' ? 'सीधा विश्वविद्यालय प्रवेश (शून्य छिपी फीस)' : 'Direct University Admissions (No Hidden Fees)'}
-                  </span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ width: '32px', height: '32px', borderRadius: '10px', background: 'rgba(37, 99, 235, 0.12)', border: '1px solid rgba(37, 99, 235, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb' }}>
-                    <CheckCircle size={18} />
-                  </div>
-                  <span style={{ fontSize: '14px', color: '#334155', fontWeight: '600' }}>
-                    {lang === 'hi' ? '100% वीजा और दस्तावेज़ सहायता' : 'Complete Visa & Documentation Support'}
-                  </span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ width: '32px', height: '32px', borderRadius: '10px', background: 'rgba(37, 99, 235, 0.12)', border: '1px solid rgba(37, 99, 235, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb' }}>
-                    <CheckCircle size={18} />
-                  </div>
-                  <span style={{ fontSize: '14px', color: '#334155', fontWeight: '600' }}>
-                    {lang === 'hi' ? 'एकीकृत एफएमजीई/नेक्स्ट परीक्षा कोचिंग' : 'FMGE/NEXT Coaching Integrated'}
-                  </span>
-                </div>
-              </div>
-
-              <div style={{ marginTop: '30px', display: 'flex', alignItems: 'center', gap: '12px', borderTop: '1px solid rgba(226, 232, 240, 0.8)', paddingTop: '22px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #1e293b, #334155)', border: '2px solid #ffffff', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}></div>
-                  <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #0284c7, #38bdf8)', border: '2px solid #ffffff', marginLeft: '-14px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}></div>
-                  <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #e15b3f, #ff8a73)', border: '2px solid #ffffff', marginLeft: '-14px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}></div>
-                </div>
-                <div style={{ fontSize: '13px', color: '#475569', fontWeight: '500' }}>
-                  <span style={{ fontWeight: '800', color: '#0f172a', fontSize: '15px' }}>
-                    <AnimatedCounter target={5000} suffix="+" format={true} />
-                  </span> {lang === 'hi' ? 'सफल डॉक्टर और छात्र नामांकित।' : 'Doctors successfully placed.'}
-                </div>
-              </div>
-            </div>
-
-            {/* Right Form Side */}
-            <div className="glass-panel-right" style={{ padding: '32px 28px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <h3 style={{ color: '#0f172a', fontSize: '18px', fontWeight: '800', marginBottom: '6px' }}>
+              <h2 style={{ color: '#0f172a', fontSize: '26px', fontWeight: '800', lineHeight: '1.25', marginBottom: '6px', letterSpacing: '-0.4px' }}>
                 {lang === 'hi' ? 'कॉल-बैक का अनुरोध करें' : 'Request a Callback'}
-              </h3>
+              </h2>
               <p style={{ color: '#64748b', fontSize: '13px', marginBottom: '18px' }}>
-                {lang === 'hi' ? 'हमारे वरिष्ठ सलाहकार 15–30 मिनट में आपसे संपर्क करेंगे।' : 'Our senior advisor will contact you within 15 mins.'}
+                {lang === 'hi' ? 'हमारे वरिष्ठ सलाहकार 15–30 मिनट में आपसे संपर्क करेंगे।' : 'Our senior medical advisor will contact you within 15 mins.'}
               </p>
 
               {footerLeadSuccess ? (
@@ -1672,14 +1615,14 @@ const Home = ({ onRequestCounselling }) => {
                   {footerLeadSuccess}
                 </div>
               ) : (
-                <form onSubmit={handleFooterLeadSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <form onSubmit={handleFooterLeadSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   {footerLeadError && (
                     <div style={{ background: 'rgba(248, 113, 113, 0.12)', border: '1px solid rgba(248, 113, 113, 0.25)', color: '#991b1b', padding: '12px', borderRadius: '12px', fontSize: '13px' }}>
                       {footerLeadError}
                     </div>
                   )}
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <div className="grid-2col-mobile-1col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                     <div>
                       <label className="premium-label">{lang === 'hi' ? 'पूरा नाम *' : 'Full Name *'}</label>
                       <input 
@@ -1716,7 +1659,7 @@ const Home = ({ onRequestCounselling }) => {
                     />
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <div className="grid-2col-mobile-1col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                     <div>
                       <label className="premium-label">{lang === 'hi' ? 'पसंदीदा देश *' : 'Target Country *'}</label>
                       <select
@@ -1750,9 +1693,9 @@ const Home = ({ onRequestCounselling }) => {
                     disabled={footerLeadLoading}
                     style={{ 
                       width: '100%', 
-                      padding: '14px', 
+                      padding: '13px', 
                       borderRadius: '14px', 
-                      fontSize: '15px', 
+                      fontSize: '14.5px', 
                       fontWeight: '700', 
                       background: 'linear-gradient(135deg, rgba(78, 114, 255, 1) 0%, rgba(59, 130, 246, 1) 100%)', 
                       color: '#ffffff', 
@@ -1764,7 +1707,7 @@ const Home = ({ onRequestCounselling }) => {
                       gap: '8px', 
                       boxShadow: '0 14px 24px rgba(59, 130, 246, 0.24)', 
                       transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                      marginTop: '6px'
+                      marginTop: '4px'
                     }}
                   >
                     {footerLeadLoading 
@@ -1772,11 +1715,17 @@ const Home = ({ onRequestCounselling }) => {
                       : (lang === 'hi' ? 'तत्काल प्रवेश विवरण प्राप्त करें' : 'Get Instant Admission Details')} <ArrowRight size={18} />
                   </button>
                   
-                  <div style={{ textAlign: 'center', marginTop: '10px', fontSize: '11px', color: '#64748b', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+                  <div style={{ textAlign: 'center', marginTop: '6px', fontSize: '11px', color: '#64748b', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
                     <Shield size={12} /> {lang === 'hi' ? '🔒 आपकी जानकारी 100% सुरक्षित और गोपनीय है।' : 'Your information is 100% secure.'}
                   </div>
                 </form>
               )}
+
+            </div>
+
+            {/* Right Content Side: Track Your MBBS Abroad Admission Live Tracker */}
+            <div className="glass-panel-right" style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <AdmissionTracker isCompact={true} />
             </div>
 
           </div>

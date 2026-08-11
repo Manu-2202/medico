@@ -949,6 +949,17 @@ app.get('/api/notifications', requireAdmin, (req, res) => {
   res.json({ success: true, count: memoryNotifications.length, data: memoryNotifications });
 });
 
+// CLEAR ALL NOTIFICATIONS (Admin)
+app.delete('/api/notifications', requireAdmin, (req, res) => {
+  memoryNotifications = [];
+  res.json({ success: true, message: 'All notifications cleared.' });
+});
+
+app.post('/api/notifications/clear', requireAdmin, (req, res) => {
+  memoryNotifications = [];
+  res.json({ success: true, message: 'All notifications cleared.' });
+});
+
 // EXPORT INQUIRIES AS CSV
 app.get('/api/inquiries/export-csv', requireAdmin, async (req, res) => {
   try {

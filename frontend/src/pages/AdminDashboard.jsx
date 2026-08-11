@@ -329,6 +329,18 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleClearNotifications = async () => {
+    setNotifications([]);
+    try {
+      await fetch('/api/notifications/clear', {
+        method: 'POST',
+        headers: getAdminHeaders()
+      });
+    } catch (err) {
+      console.error('Clear notifications error:', err);
+    }
+  };
+
   const handleSaveSiteSettings = async (e) => {
     e.preventDefault();
     setSettingsStatusMsg('Saving live site content and lead email recipients...');
@@ -855,8 +867,8 @@ const AdminDashboard = () => {
                   <div style={{ padding: '10px 16px', background: 'rgba(0,0,0,0.2)', borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ fontSize: '11px', color: '#64748b' }}>⚡ Auto-dispatches to Gmail</span>
                     <button 
-                      onClick={() => setNotifications(prev => prev.map(p => ({ ...p, read: true })))} 
-                      style={{ background: 'none', border: 'none', color: '#94a3b8', fontSize: '11px', cursor: 'pointer', fontWeight: '600' }}
+                      onClick={handleClearNotifications} 
+                      style={{ background: 'none', border: 'none', color: '#f87171', fontSize: '11px', cursor: 'pointer', fontWeight: '700' }}
                     >
                       Clear All
                     </button>
