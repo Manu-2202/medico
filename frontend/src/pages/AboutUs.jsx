@@ -213,7 +213,7 @@ const AboutUs = ({ onRequestCounselling }) => {
       <section style={{
         background: 'linear-gradient(135deg, #0b132b 0%, #1f3864 50%, #0f172a 100%)',
         color: '#ffffff',
-        padding: '85px 0 75px 0',
+        padding: '40px 0 32px 0',
         position: 'relative',
         overflow: 'hidden'
       }}>
@@ -222,119 +222,119 @@ const AboutUs = ({ onRequestCounselling }) => {
         <div style={{ position: 'absolute', bottom: '-80px', left: '-80px', width: '300px', height: '300px', borderRadius: '50%', background: 'rgba(2, 132, 199, 0.15)', filter: 'blur(70px)', pointerEvents: 'none' }} />
 
         <div className="container" style={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
-          <span className="badge-coral" style={{ marginBottom: '18px', background: 'rgba(225, 91, 63, 0.2)', color: '#ff8a73', border: '1px solid rgba(225, 91, 63, 0.4)' }}>
+          <span className="badge-coral" style={{ marginBottom: '12px', background: 'rgba(225, 91, 63, 0.2)', color: '#ff8a73', border: '1px solid rgba(225, 91, 63, 0.4)' }}>
             <Sparkles size={14} /> {lang === 'hi' ? '15+ वर्षों की अद्वितीय पारदर्शिता और विश्वास' : '15+ Years of Unmatched Transparency & Trust'}
           </span>
-          <h1 style={{ color: '#ffffff', fontSize: '46px', fontWeight: '800', marginBottom: '22px', letterSpacing: '-0.5px', lineHeight: '1.2' }}>
+          <h1 style={{ color: '#ffffff', fontSize: '38px', fontWeight: '800', marginBottom: '14px', letterSpacing: '-0.5px', lineHeight: '1.2' }}>
             Empowering Future Doctors With <span style={{ color: 'var(--coral-accent)' }}>Integrity & Care</span>
           </h1>
-          <p style={{ color: '#cbd5e1', fontSize: '19px', maxWidth: '820px', margin: '0 auto 36px auto', lineHeight: '1.65', fontWeight: '400' }}>
+          <p style={{ color: '#cbd5e1', fontSize: '16px', maxWidth: '820px', margin: '0 auto 24px auto', lineHeight: '1.6', fontWeight: '400' }}>
             India’s premier foreign medical education advisory. Founded by doctors for aspiring medical students, we have successfully placed over 10,000+ Indian students in NMC & WHO recognized government state medical universities across 6 countries.
           </p>
 
           {/* Quick Hero Feature Badges */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
-            <div style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.15)', padding: '10px 22px', borderRadius: '30px', fontSize: '14px', fontWeight: '600', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <BadgeCheck color="var(--emerald-accent)" size={18} /> {lang === 'hi' ? '100% प्रत्यक्ष विश्वविद्यालय शुल्क भुगतान' : '100% Direct University Fee Remittance'}
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', flexWrap: 'wrap' }}>
+            <div style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.15)', padding: '8px 18px', borderRadius: '30px', fontSize: '13px', fontWeight: '600', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <BadgeCheck color="var(--emerald-accent)" size={16} /> {lang === 'hi' ? '100% प्रत्यक्ष विश्वविद्यालय शुल्क भुगतान' : '100% Direct University Fee Remittance'}
             </div>
-            <div style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.15)', padding: '10px 22px', borderRadius: '30px', fontSize: '14px', fontWeight: '600', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <BadgeCheck color="var(--emerald-accent)" size={18} /> {lang === 'hi' ? 'एनएमसी 54-माह गजट अनुपालित' : 'NMC 54-Month Gazette Compliant'}
+            <div style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.15)', padding: '8px 18px', borderRadius: '30px', fontSize: '13px', fontWeight: '600', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <BadgeCheck color="var(--emerald-accent)" size={16} /> {lang === 'hi' ? 'एनएमसी 54-माह गजट अनुपालित' : 'NMC 54-Month Gazette Compliant'}
             </div>
-            <div style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.15)', padding: '10px 22px', borderRadius: '30px', fontSize: '14px', fontWeight: '600', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <BadgeCheck color="var(--emerald-accent)" size={18} /> {lang === 'hi' ? 'स्थायी भारतीय प्रतिनिधि' : 'Permanent On-Ground Indian Staff'}
+            <div style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.15)', padding: '8px 18px', borderRadius: '30px', fontSize: '13px', fontWeight: '600', color: '#ffffff', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <BadgeCheck color="var(--emerald-accent)" size={16} /> {lang === 'hi' ? 'स्थायी भारतीय प्रतिनिधि' : 'Permanent On-Ground Indian Staff'}
             </div>
           </div>
         </div>
       </section>
 
       {/* 2. STATS & YEARS OF OPERATION BAR */}
-      <section style={{ background: '#ffffff', padding: '42px 0', borderBottom: '1px solid #e2e8f0', boxShadow: '0 8px 30px rgba(15, 23, 42, 0.04)', marginTop: '-2px' }}>
+      <section style={{ background: '#ffffff', padding: '20px 0', borderBottom: '1px solid #e2e8f0', boxShadow: '0 4px 15px rgba(15, 23, 42, 0.03)' }}>
         <style>{`
           .about-stat-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
-            border-radius: 20px;
-            padding: 28px 24px;
+            border-radius: 18px;
+            padding: 20px 18px;
             text-align: center;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 0 4px 15px rgba(0,0,0,0.02);
           }
           .about-stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 16px 32px rgba(31, 56, 100, 0.08) !important;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(31, 56, 100, 0.08) !important;
             border-color: #cbd5e1 !important;
           }
         `}</style>
         <div className="container">
           {/* Header Badge */}
-          <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(225, 91, 63, 0.1)', border: '1px solid rgba(225, 91, 63, 0.25)', padding: '5px 16px', borderRadius: '30px', fontSize: '12px', fontWeight: '800', color: 'var(--coral-accent)', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
-              <ShieldCheck size={15} /> {lang === 'hi' ? 'प्रमाणित ट्रैक रिकॉर्ड' : 'Quick-Glance Track Record'}
+          <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(225, 91, 63, 0.1)', border: '1px solid rgba(225, 91, 63, 0.25)', padding: '4px 14px', borderRadius: '30px', fontSize: '11px', fontWeight: '800', color: 'var(--coral-accent)', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
+              <ShieldCheck size={14} /> {lang === 'hi' ? 'प्रमाणित ट्रैक रिकॉर्ड' : 'Quick-Glance Track Record'}
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '22px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
 
             {/* Stat 1: Years of Experience */}
             <div className="about-stat-card">
-              <div style={{ width: '52px', height: '52px', borderRadius: '16px', background: 'rgba(225, 91, 63, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto', border: '1px solid rgba(225, 91, 63, 0.2)' }}>
-                <Award size={26} color="var(--coral-accent)" />
+              <div style={{ width: '44px', height: '44px', borderRadius: '14px', background: 'rgba(225, 91, 63, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px auto', border: '1px solid rgba(225, 91, 63, 0.2)' }}>
+                <Award size={22} color="var(--coral-accent)" />
               </div>
-              <div style={{ fontSize: '40px', fontWeight: '800', color: 'var(--navy-primary)', lineHeight: 1, letterSpacing: '-1px' }}>
+              <div style={{ fontSize: '34px', fontWeight: '800', color: 'var(--navy-primary)', lineHeight: 1, letterSpacing: '-1px' }}>
                 <AnimatedCounter target={15} suffix="+" />
               </div>
-              <div style={{ fontSize: '15px', fontWeight: '700', color: 'var(--coral-accent)', marginTop: '10px' }}>
+              <div style={{ fontSize: '14px', fontWeight: '700', color: 'var(--coral-accent)', marginTop: '6px' }}>
                 {lang === 'hi' ? 'अनुभव के वर्ष' : 'Years Experience'}
               </div>
-              <div style={{ fontSize: '13px', color: '#64748b', marginTop: '4px', fontWeight: '500' }}>
+              <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px', fontWeight: '500' }}>
                 {lang === 'hi' ? '15 वर्षों का बेदाग रिकॉर्ड' : 'Unblemished 15-Year Record'}
               </div>
             </div>
 
             {/* Stat 2: Students Placed */}
             <div className="about-stat-card">
-              <div style={{ width: '52px', height: '52px', borderRadius: '16px', background: 'rgba(29, 78, 216, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto', border: '1px solid rgba(29, 78, 216, 0.2)' }}>
-                <GraduationCap size={26} color="#1d4ed8" />
+              <div style={{ width: '44px', height: '44px', borderRadius: '14px', background: 'rgba(29, 78, 216, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px auto', border: '1px solid rgba(29, 78, 216, 0.2)' }}>
+                <GraduationCap size={22} color="#1d4ed8" />
               </div>
-              <div style={{ fontSize: '40px', fontWeight: '800', color: 'var(--navy-primary)', lineHeight: 1, letterSpacing: '-1px' }}>
+              <div style={{ fontSize: '34px', fontWeight: '800', color: 'var(--navy-primary)', lineHeight: 1, letterSpacing: '-1px' }}>
                 <AnimatedCounter target={10000} suffix="+" format={true} />
               </div>
-              <div style={{ fontSize: '15px', fontWeight: '700', color: '#1d4ed8', marginTop: '10px' }}>
+              <div style={{ fontSize: '14px', fontWeight: '700', color: '#1d4ed8', marginTop: '6px' }}>
                 {lang === 'hi' ? 'छात्र प्रवेश' : 'Students Placed'}
               </div>
-              <div style={{ fontSize: '13px', color: '#64748b', marginTop: '4px', fontWeight: '500' }}>
+              <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px', fontWeight: '500' }}>
                 {lang === 'hi' ? 'सफल डॉक्टर और विद्वान' : 'Successful Doctors & Scholars'}
               </div>
             </div>
 
             {/* Stat 3: NMC Approved Universities */}
             <div className="about-stat-card">
-              <div style={{ width: '52px', height: '52px', borderRadius: '16px', background: 'rgba(5, 150, 105, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto', border: '1px solid rgba(5, 150, 105, 0.2)' }}>
-                <Building2 size={26} color="#059669" />
+              <div style={{ width: '44px', height: '44px', borderRadius: '14px', background: 'rgba(5, 150, 105, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px auto', border: '1px solid rgba(5, 150, 105, 0.2)' }}>
+                <Building2 size={22} color="#059669" />
               </div>
-              <div style={{ fontSize: '40px', fontWeight: '800', color: 'var(--navy-primary)', lineHeight: 1, letterSpacing: '-1px' }}>
+              <div style={{ fontSize: '34px', fontWeight: '800', color: 'var(--navy-primary)', lineHeight: 1, letterSpacing: '-1px' }}>
                 <AnimatedCounter target={100} suffix="+" />
               </div>
-              <div style={{ fontSize: '15px', fontWeight: '700', color: '#059669', marginTop: '10px' }}>
+              <div style={{ fontSize: '14px', fontWeight: '700', color: '#059669', marginTop: '6px' }}>
                 {lang === 'hi' ? 'एनएमसी अनुमोदित विश्वविद्यालय' : 'NMC Approved Universities'}
               </div>
-              <div style={{ fontSize: '13px', color: '#64748b', marginTop: '4px', fontWeight: '500' }}>
+              <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px', fontWeight: '500' }}>
                 {lang === 'hi' ? '100% मान्यता प्राप्त विश्वविद्यालय' : '100% Recognized & Accredited'}
               </div>
             </div>
 
-            {/* Stat 4: Study Destinations */}
+            {/* Stat 4: Countries Covered */}
             <div className="about-stat-card">
-              <div style={{ width: '52px', height: '52px', borderRadius: '16px', background: 'rgba(124, 58, 237, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto', border: '1px solid rgba(124, 58, 237, 0.2)' }}>
-                <Globe size={26} color="#7c3aed" />
+              <div style={{ width: '44px', height: '44px', borderRadius: '14px', background: 'rgba(124, 58, 237, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px auto', border: '1px solid rgba(124, 58, 237, 0.2)' }}>
+                <Globe size={22} color="#7c3aed" />
               </div>
-              <div style={{ fontSize: '40px', fontWeight: '800', color: 'var(--navy-primary)', lineHeight: 1, letterSpacing: '-1px' }}>
+              <div style={{ fontSize: '34px', fontWeight: '800', color: 'var(--navy-primary)', lineHeight: 1, letterSpacing: '-1px' }}>
                 <AnimatedCounter target={8} suffix="+" />
               </div>
-              <div style={{ fontSize: '15px', fontWeight: '700', color: '#7c3aed', marginTop: '10px' }}>
+              <div style={{ fontSize: '14px', fontWeight: '700', color: '#7c3aed', marginTop: '6px' }}>
                 {lang === 'hi' ? 'अध्ययन देश' : 'Study Destinations'}
               </div>
-              <div style={{ fontSize: '13px', color: '#64748b', marginTop: '4px', fontWeight: '500' }}>
+              <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px', fontWeight: '500' }}>
                 {lang === 'hi' ? 'वैश्विक अध्ययन देश' : 'Global Study Destinations'}
               </div>
             </div>
@@ -344,53 +344,53 @@ const AboutUs = ({ onRequestCounselling }) => {
       </section>
 
       {/* 3. COMPANY STORY & MISSION — WHY MEDICO OVERSEAS WAS FOUNDED */}
-      <section style={{ padding: '90px 0', background: '#ffffff' }}>
+      <section style={{ padding: '28px 0', background: '#ffffff' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '60px', alignItems: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px', alignItems: 'center' }}>
 
             <div>
-              <span className="badge-coral" style={{ marginBottom: '14px' }}>{lang === 'hi' ? 'हमारी उत्पत्ति और दर्शन' : 'Our Genesis & Philosophy'}</span>
-              <h2 style={{ fontSize: '38px', color: 'var(--navy-primary)', fontWeight: '800', marginBottom: '22px', lineHeight: '1.2' }}>
+              <span className="badge-coral" style={{ marginBottom: '10px' }}>{lang === 'hi' ? 'हमारी उत्पत्ति और दर्शन' : 'Our Genesis & Philosophy'}</span>
+              <h2 style={{ fontSize: '32px', color: 'var(--navy-primary)', fontWeight: '800', marginBottom: '14px', lineHeight: '1.2' }}>
                 {lang === 'hi' ? 'मेडिको ओवरसीज की स्थापना क्यों हुई' : 'Why Medico Overseas Was Founded'}
               </h2>
 
-              <p style={{ color: 'var(--text-body)', fontSize: '16px', lineHeight: '1.75', marginBottom: '20px' }}>
+              <p style={{ color: 'var(--text-body)', fontSize: '15px', lineHeight: '1.65', marginBottom: '14px' }}>
                 In 2012, our founder <strong>Dr. Ramesh Chandra</strong> returned to India after graduating from Bashkir State Medical University, Russia. Upon his return, he witnessed how local admission agents manipulated hopeful Indian families with hidden fee markups, fake promises about private non-recognized institutes, and zero post-admission support.
               </p>
 
-              <p style={{ color: 'var(--text-body)', fontSize: '16px', lineHeight: '1.75', marginBottom: '28px' }}>
+              <p style={{ color: 'var(--text-body)', fontSize: '15px', lineHeight: '1.65', marginBottom: '20px' }}>
                 Driven by a personal commitment to safeguard aspiring doctors, <strong>Medico Overseas was established as a doctor-led consultancy</strong>. We abolished the sub-agent network and instituted a 100% direct university admission framework—ensuring every student pays tuition directly to university bank accounts with absolute price transparency and end-to-end guidance.
               </p>
 
               {/* Core Mission Points */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', background: '#f8fafc', padding: '24px', borderRadius: '18px', borderLeft: '4px solid var(--coral-accent)' }}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-                  <div style={{ background: 'var(--coral-light)', color: 'var(--coral-accent)', padding: '8px', borderRadius: '10px', flexShrink: 0 }}>
-                    <ShieldCheck size={20} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', background: '#f8fafc', padding: '18px', borderRadius: '16px', borderLeft: '4px solid var(--coral-accent)' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                  <div style={{ background: 'var(--coral-light)', color: 'var(--coral-accent)', padding: '6px', borderRadius: '8px', flexShrink: 0 }}>
+                    <ShieldCheck size={18} />
                   </div>
                   <div>
-                    <h4 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--navy-primary)', marginBottom: '2px' }}>{lang === 'hi' ? 'शून्य छुपे शुल्क और प्रत्यक्ष बैंक भुगतान' : 'Zero Hidden Charges & Direct Bank Payments'}</h4>
-                    <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>{lang === 'hi' ? 'माता-पिता बिना किसी मध्यस्थ के सीधे विश्वविद्यालय खाते में ट्यूशन फीस जमा करते हैं।' : 'Parents pay tuition fees straight to the university bank account without middleman markup.'}</p>
+                    <h4 style={{ fontSize: '15px', fontWeight: '800', color: 'var(--navy-primary)', marginBottom: '2px' }}>{lang === 'hi' ? 'शून्य छुपे शुल्क और प्रत्यक्ष बैंक भुगतान' : 'Zero Hidden Charges & Direct Bank Payments'}</h4>
+                    <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>{lang === 'hi' ? 'माता-पिता बिना किसी मध्यस्थ के सीधे विश्वविद्यालय खाते में ट्यूशन फीस जमा करते हैं।' : 'Parents pay tuition fees straight to the university bank account without middleman markup.'}</p>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-                  <div style={{ background: 'var(--cyan-light)', color: 'var(--cyan-accent)', padding: '8px', borderRadius: '10px', flexShrink: 0 }}>
-                    <Users size={20} />
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                  <div style={{ background: 'var(--cyan-light)', color: 'var(--cyan-accent)', padding: '6px', borderRadius: '8px', flexShrink: 0 }}>
+                    <Users size={18} />
                   </div>
                   <div>
-                    <h4 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--navy-primary)', marginBottom: '2px' }}>{lang === 'hi' ? 'स्थायी भारतीय प्रतिनिधि' : 'Permanent On-Ground Indian Representatives'}</h4>
-                    <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>{lang === 'hi' ? 'हॉस्टल चेक-इन और सुरक्षा की निगरानी के लिए मेजबान विश्वविद्यालयों में पूर्णकालिक भारतीय कर्मचारी।' : 'Full-time Indian staff present in host universities to supervise hostel check-ins and safety.'}</p>
+                    <h4 style={{ fontSize: '15px', fontWeight: '800', color: 'var(--navy-primary)', marginBottom: '2px' }}>{lang === 'hi' ? 'स्थायी भारतीय प्रतिनिधि' : 'Permanent On-Ground Indian Representatives'}</h4>
+                    <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>{lang === 'hi' ? 'हॉस्टल चेक-इन और सुरक्षा की निगरानी के लिए मेजबान विश्वविद्यालयों में पूर्णकालिक भारतीय कर्मचारी।' : 'Full-time Indian staff present in host universities to supervise hostel check-ins and safety.'}</p>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-                  <div style={{ background: 'var(--purple-light)', color: 'var(--purple-accent)', padding: '8px', borderRadius: '10px', flexShrink: 0 }}>
-                    <Stethoscope size={20} />
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                  <div style={{ background: 'var(--purple-light)', color: 'var(--purple-accent)', padding: '6px', borderRadius: '8px', flexShrink: 0 }}>
+                    <Stethoscope size={18} />
                   </div>
                   <div>
-                    <h4 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--navy-primary)', marginBottom: '2px' }}>{lang === 'hi' ? 'एकीकृत एफएमजीई और नेक्स्ट परीक्षा कोचिंग' : 'Integrated FMGE & NEXT Exam Coaching'}</h4>
-                    <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>{lang === 'hi' ? 'शीर्ष भारतीय डॉक्टरों द्वारा पहले वर्ष एमबीबीएस से व्यापक मेडिकल लाइसेंसिंग तैयारी।' : 'Comprehensive medical licensing prep provided from 1st Year MBBS by top Indian doctors.'}</p>
+                    <h4 style={{ fontSize: '15px', fontWeight: '800', color: 'var(--navy-primary)', marginBottom: '2px' }}>{lang === 'hi' ? 'एकीकृत एफएमजीई और नेक्स्ट परीक्षा कोचिंग' : 'Integrated FMGE & NEXT Exam Coaching'}</h4>
+                    <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>{lang === 'hi' ? 'शीर्ष भारतीय डॉक्टरों द्वारा पहले वर्ष एमबीबीएस से व्यापक मेडिकल लाइसेंसिंग तैयारी।' : 'Comprehensive medical licensing prep provided from 1st Year MBBS by top Indian doctors.'}</p>
                   </div>
                 </div>
               </div>
@@ -399,33 +399,33 @@ const AboutUs = ({ onRequestCounselling }) => {
 
             {/* Visual Grid & Story Card */}
             <div style={{ position: 'relative' }}>
-              <div style={{ borderRadius: '24px', overflow: 'hidden', boxShadow: '0 25px 50px rgba(15, 23, 42, 0.15)', border: '1px solid #e2e8f0' }}>
+              <div style={{ borderRadius: '20px', overflow: 'hidden', boxShadow: '0 15px 35px rgba(15, 23, 42, 0.12)', border: '1px solid #e2e8f0' }}>
                 <img
                   src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=900&q=80"
                   alt="Medico Overseas Team & Doctors"
-                  style={{ width: '100%', height: '420px', objectFit: 'cover' }}
+                  style={{ width: '100%', height: '340px', objectFit: 'cover' }}
                 />
               </div>
 
               {/* Floating Highlight Card */}
               <div style={{
                 position: 'absolute',
-                bottom: '-28px',
-                left: '-24px',
+                bottom: '-16px',
+                left: '-16px',
                 background: 'linear-gradient(135deg, #0e233a, #1f3864)',
                 color: '#ffffff',
-                padding: '24px',
-                borderRadius: '20px',
-                boxShadow: '0 15px 35px rgba(0,0,0,0.25)',
-                maxWidth: '320px',
+                padding: '18px',
+                borderRadius: '16px',
+                boxShadow: '0 12px 28px rgba(0,0,0,0.22)',
+                maxWidth: '300px',
                 border: '1px solid rgba(255,255,255,0.15)'
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                  <Award color="var(--gold-star)" size={28} />
-                  <span style={{ fontSize: '24px', fontWeight: '800', color: 'var(--coral-accent)' }}>100%</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                  <Award color="var(--gold-star)" size={24} />
+                  <span style={{ fontSize: '20px', fontWeight: '800', color: 'var(--coral-accent)' }}>100%</span>
                 </div>
-                <div style={{ fontSize: '15px', fontWeight: '700', color: '#ffffff', marginBottom: '4px' }}>NMC Gazette & Legal Protection</div>
-                <div style={{ fontSize: '13px', color: '#cbd5e1', lineHeight: '1.4' }}>Signed student legal agreement ensuring zero fee escalation during the 6-year course.</div>
+                <div style={{ fontSize: '14px', fontWeight: '700', color: '#ffffff', marginBottom: '2px' }}>NMC Gazette & Legal Protection</div>
+                <div style={{ fontSize: '12px', color: '#cbd5e1', lineHeight: '1.35' }}>Signed student legal agreement ensuring zero fee escalation during the 6-year course.</div>
               </div>
             </div>
 
@@ -435,25 +435,25 @@ const AboutUs = ({ onRequestCounselling }) => {
       </section>
 
       {/* 4. TEAM / COUNSELLOR PROFILES — BUILDS TRUST WITH PARENTS */}
-      <section style={{ padding: '90px 0', background: '#f8fafc' }}>
+      <section style={{ padding: '28px 0', background: '#f8fafc' }}>
         <div className="container">
 
-          <div className="section-header">
-            <span className="badge-coral" style={{ marginBottom: '12px' }}>{lang === 'hi' ? 'डॉक्टर और काउंसलर प्रोफाइल' : 'Doctor & Counselor Profiles'}</span>
-            <h2 className="section-title">
+          <div className="section-header" style={{ marginBottom: '20px' }}>
+            <span className="badge-coral" style={{ marginBottom: '8px' }}>{lang === 'hi' ? 'डॉक्टर और काउंसलर प्रोफाइल' : 'Doctor & Counselor Profiles'}</span>
+            <h2 className="section-title" style={{ fontSize: '32px', marginBottom: '8px' }}>
               {lang === 'hi' ? 'हमारे नेतृत्व और शैक्षणिक सलाहकारों से मिलें' : 'Meet Our Leadership & Academic Counselors'}
             </h2>
-            <p className="section-desc">
+            <p className="section-desc" style={{ fontSize: '15px' }}>
               {lang === 'hi'
                 ? 'हमारी टीम में चिकित्सा डॉक्टर, अंतरराष्ट्रीय शिक्षा वकील और वरिष्ठ अभिभावक संपर्क अधिकारी शामिल हैं।'
                 : 'Our team consists of medical doctors, international education lawyers, and senior parent liaisons who provide transparent guidance to parents and students.'}
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
             {teamMembers.map((member, idx) => (
-              <div key={idx} className="glass-card" style={{ borderRadius: '24px', overflow: 'hidden', background: '#ffffff', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column' }}>
-                <div style={{ position: 'relative', height: '280px', overflow: 'hidden', background: '#0e233a' }}>
+              <div key={idx} className="glass-card" style={{ borderRadius: '20px', overflow: 'hidden', background: '#ffffff', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column' }}>
+                <div style={{ position: 'relative', height: '230px', overflow: 'hidden', background: '#0e233a' }}>
                   <img
                     src={member.img}
                     alt={member.name}
@@ -461,40 +461,40 @@ const AboutUs = ({ onRequestCounselling }) => {
                   />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,23,42,0.85) 0%, transparent 60%)' }} />
 
-                  <span style={{ position: 'absolute', top: '16px', right: '16px', background: 'var(--navy-primary)', color: '#ffffff', padding: '5px 14px', borderRadius: '20px', fontSize: '12px', fontWeight: '800', boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
+                  <span style={{ position: 'absolute', top: '12px', right: '12px', background: 'var(--navy-primary)', color: '#ffffff', padding: '4px 12px', borderRadius: '20px', fontSize: '11px', fontWeight: '800', boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}>
                     {member.badge}
                   </span>
 
-                  <div style={{ position: 'absolute', bottom: '16px', left: '20px', right: '20px', color: '#ffffff' }}>
-                    <div style={{ fontSize: '12px', color: 'var(--coral-accent)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  <div style={{ position: 'absolute', bottom: '12px', left: '16px', right: '16px', color: '#ffffff' }}>
+                    <div style={{ fontSize: '11px', color: 'var(--coral-accent)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                       {member.experience}
                     </div>
-                    <h3 style={{ fontSize: '22px', color: '#ffffff', fontWeight: '800', lineHeight: '1.2', marginTop: '2px' }}>
+                    <h3 style={{ fontSize: '19px', color: '#ffffff', fontWeight: '800', lineHeight: '1.2', marginTop: '2px' }}>
                       {member.name}
                     </h3>
                   </div>
                 </div>
 
-                <div style={{ padding: '26px', display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'space-between' }}>
+                <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'space-between' }}>
                   <div>
-                    <div style={{ fontSize: '14px', color: 'var(--navy-primary)', fontWeight: '700', marginBottom: '6px' }}>
+                    <div style={{ fontSize: '13px', color: 'var(--navy-primary)', fontWeight: '700', marginBottom: '4px' }}>
                       {member.title}
                     </div>
-                    <div style={{ fontSize: '13px', color: 'var(--text-muted)', fontStyle: 'italic', marginBottom: '16px', background: '#f8fafc', padding: '8px 12px', borderRadius: '8px', borderLeft: '3px solid var(--cyan-accent)' }}>
+                    <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontStyle: 'italic', marginBottom: '12px', background: '#f8fafc', padding: '6px 10px', borderRadius: '6px', borderLeft: '3px solid var(--cyan-accent)' }}>
                       {member.credentials}
                     </div>
-                    <p style={{ fontSize: '14.5px', color: 'var(--text-body)', lineHeight: '1.65', marginBottom: '20px' }}>
+                    <p style={{ fontSize: '13.5px', color: 'var(--text-body)', lineHeight: '1.55', marginBottom: '14px' }}>
                       {member.desc}
                     </p>
                   </div>
 
-                  <div style={{ paddingTop: '16px', borderTop: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ fontSize: '13px', color: 'var(--navy-primary)', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <Phone size={15} color="var(--coral-accent)" /> {member.phone}
+                  <div style={{ paddingTop: '12px', borderTop: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ fontSize: '12px', color: 'var(--navy-primary)', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      <Phone size={14} color="var(--coral-accent)" /> {member.phone}
                     </div>
                     <button
                       onClick={onRequestCounselling}
-                      style={{ background: 'var(--coral-light)', color: 'var(--coral-accent)', border: 'none', padding: '8px 14px', borderRadius: '20px', fontSize: '12px', fontWeight: '800', cursor: 'pointer' }}
+                      style={{ background: 'var(--coral-light)', color: 'var(--coral-accent)', border: 'none', padding: '6px 12px', borderRadius: '20px', fontSize: '11px', fontWeight: '800', cursor: 'pointer' }}
                     >
                       {lang === 'hi' ? '1-ऑन-1 कॉल बुक करें' : 'Book 1-on-1 Call'}
                     </button>
@@ -508,15 +508,15 @@ const AboutUs = ({ onRequestCounselling }) => {
       </section>
 
       {/* 5. ACCREDITATIONS & PARTNERSHIPS WITH UNIVERSITIES */}
-      <section style={{ padding: '90px 0', background: '#ffffff' }}>
+      <section style={{ padding: '28px 0', background: '#ffffff' }}>
         <div className="container">
 
-          <div className="section-header">
-            <span className="badge-navy" style={{ marginBottom: '12px' }}>{lang === 'hi' ? 'वैश्विक मान्यता और अनुपालन' : 'Global Recognitions & Compliance'}</span>
-            <h2 className="section-title">
+          <div className="section-header" style={{ marginBottom: '20px' }}>
+            <span className="badge-navy" style={{ marginBottom: '8px' }}>{lang === 'hi' ? 'वैश्विक मान्यता और अनुपालन' : 'Global Recognitions & Compliance'}</span>
+            <h2 className="section-title" style={{ fontSize: '32px', marginBottom: '8px' }}>
               {lang === 'hi' ? 'मान्यताएं और भागीदार विश्वविद्यालय' : 'Accreditations & Partner Universities'}
             </h2>
-            <p className="section-desc">
+            <p className="section-desc" style={{ fontSize: '15px' }}>
               {lang === 'hi'
                 ? 'हम केवल शीर्ष अंतर्राष्ट्रीय मेडिकल परिषदों और सूचीबद्ध संस्थाओं द्वारा मान्यता प्राप्त सरकारी मेडिकल अकादमियों के साथ साझेदारी करते हैं।'
                 : 'We partner exclusively with government medical academies recognized by top international medical councils and listing bodies.'}
@@ -524,46 +524,46 @@ const AboutUs = ({ onRequestCounselling }) => {
           </div>
 
           {/* Accreditations Cards Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '26px', marginBottom: '70px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '18px', marginBottom: '28px' }}>
             {accreditations.map((acc, idx) => {
               const IconComponent = acc.icon;
               return (
-                <div key={idx} className="glass-card" style={{ padding: '30px', borderRadius: '20px', borderTop: `4px solid ${acc.color}`, background: '#ffffff' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                    <div style={{ width: '52px', height: '52px', borderRadius: '14px', background: `${acc.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <IconComponent size={28} color={acc.color} />
+                <div key={idx} className="glass-card" style={{ padding: '22px', borderRadius: '18px', borderTop: `4px solid ${acc.color}`, background: '#ffffff' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
+                    <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: `${acc.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <IconComponent size={24} color={acc.color} />
                     </div>
-                    <span style={{ fontSize: '11px', fontWeight: '800', background: `${acc.color}15`, color: acc.color, padding: '4px 10px', borderRadius: '12px', textTransform: 'uppercase' }}>
+                    <span style={{ fontSize: '10px', fontWeight: '800', background: `${acc.color}15`, color: acc.color, padding: '3px 8px', borderRadius: '10px', textTransform: 'uppercase' }}>
                       {acc.tag}
                     </span>
                   </div>
-                  <h3 style={{ fontSize: '19px', color: 'var(--navy-primary)', fontWeight: '800', marginBottom: '10px' }}>{acc.name}</h3>
-                  <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: '1.6' }}>{acc.desc}</p>
+                  <h3 style={{ fontSize: '17px', color: 'var(--navy-primary)', fontWeight: '800', marginBottom: '6px' }}>{acc.name}</h3>
+                  <p style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: '1.5' }}>{acc.desc}</p>
                 </div>
               );
             })}
           </div>
 
           {/* Partner Universities Section Header & Filter */}
-          <div style={{ background: 'linear-gradient(135deg, #0e233a 0%, #1f3864 100%)', borderRadius: '28px', padding: '48px 36px', color: '#ffffff', boxShadow: '0 20px 45px rgba(15, 23, 42, 0.15)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px', marginBottom: '36px' }}>
+          <div style={{ background: 'linear-gradient(135deg, #0e233a 0%, #1f3864 100%)', borderRadius: '24px', padding: '32px 28px', color: '#ffffff', boxShadow: '0 15px 35px rgba(15, 23, 42, 0.12)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '20px' }}>
               <div>
-                <span className="badge-coral" style={{ background: 'rgba(225, 91, 63, 0.2)', color: '#ff8a73', border: '1px solid rgba(225, 91, 63, 0.4)', marginBottom: '8px' }}>
+                <span className="badge-coral" style={{ background: 'rgba(225, 91, 63, 0.2)', color: '#ff8a73', border: '1px solid rgba(225, 91, 63, 0.4)', marginBottom: '6px' }}>
                   Direct Partner Institutions
                 </span>
-                <h3 style={{ color: '#ffffff', fontSize: '28px', fontWeight: '800' }}>
+                <h3 style={{ color: '#ffffff', fontSize: '24px', fontWeight: '800' }}>
                   Official Government State Medical Universities
                 </h3>
               </div>
 
               {/* Destination Filter Tabs */}
-              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                 <button
                   onClick={() => setActiveCategoryTab('all')}
                   style={{
-                    padding: '8px 18px',
+                    padding: '6px 14px',
                     borderRadius: '20px',
-                    fontSize: '13px',
+                    fontSize: '12px',
                     fontWeight: '700',
                     border: 'none',
                     background: activeCategoryTab === 'all' ? 'var(--coral-accent)' : 'rgba(255,255,255,0.12)',
@@ -577,9 +577,9 @@ const AboutUs = ({ onRequestCounselling }) => {
                 <button
                   onClick={() => setActiveCategoryTab('russia')}
                   style={{
-                    padding: '8px 18px',
+                    padding: '6px 14px',
                     borderRadius: '20px',
-                    fontSize: '13px',
+                    fontSize: '12px',
                     fontWeight: '700',
                     border: 'none',
                     background: activeCategoryTab === 'russia' ? 'var(--coral-accent)' : 'rgba(255,255,255,0.12)',
@@ -593,9 +593,9 @@ const AboutUs = ({ onRequestCounselling }) => {
                 <button
                   onClick={() => setActiveCategoryTab('georgia')}
                   style={{
-                    padding: '8px 18px',
+                    padding: '6px 14px',
                     borderRadius: '20px',
-                    fontSize: '13px',
+                    fontSize: '12px',
                     fontWeight: '700',
                     border: 'none',
                     background: activeCategoryTab === 'georgia' ? 'var(--coral-accent)' : 'rgba(255,255,255,0.12)',
@@ -609,9 +609,9 @@ const AboutUs = ({ onRequestCounselling }) => {
                 <button
                   onClick={() => setActiveCategoryTab('asia')}
                   style={{
-                    padding: '8px 18px',
+                    padding: '6px 14px',
                     borderRadius: '20px',
-                    fontSize: '13px',
+                    fontSize: '12px',
                     fontWeight: '700',
                     border: 'none',
                     background: activeCategoryTab === 'asia' ? 'var(--coral-accent)' : 'rgba(255,255,255,0.12)',
@@ -626,43 +626,43 @@ const AboutUs = ({ onRequestCounselling }) => {
             </div>
 
             {/* University Cards Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '22px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '18px' }}>
               {filteredUniversities.map((uni, idx) => (
                 <div key={idx} style={{
                   background: 'rgba(255,255,255,0.06)',
-                  borderRadius: '20px',
-                  padding: '24px',
+                  borderRadius: '18px',
+                  padding: '20px',
                   border: '1px solid rgba(255,255,255,0.12)',
                   display: 'flex',
                   flexDirection: 'column',
-                  justify: 'space-between',
+                  justifyContent: 'space-between',
                   backdropFilter: 'blur(10px)',
                   transition: 'all 0.3s ease'
                 }}>
                   <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                      <span style={{ fontSize: '13px', color: '#93c5fd', fontWeight: '700' }}>{uni.country} • {uni.est}</span>
-                      <span style={{ background: 'rgba(249,115,22,0.25)', color: '#ff9a7b', padding: '4px 10px', borderRadius: '12px', fontSize: '12px', fontWeight: '800' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                      <span style={{ fontSize: '12px', color: '#93c5fd', fontWeight: '700' }}>{uni.country} • {uni.est}</span>
+                      <span style={{ background: 'rgba(249,115,22,0.25)', color: '#ff9a7b', padding: '3px 8px', borderRadius: '10px', fontSize: '11px', fontWeight: '800' }}>
                         {uni.students}
                       </span>
                     </div>
-                    <h4 style={{ color: '#ffffff', fontSize: '18px', fontWeight: '800', marginBottom: '10px', lineHeight: '1.3' }}>
+                    <h4 style={{ color: '#ffffff', fontSize: '16px', fontWeight: '800', marginBottom: '8px', lineHeight: '1.3' }}>
                       {uni.name}
                     </h4>
-                    <p style={{ fontSize: '13px', color: '#cbd5e1', lineHeight: '1.5', marginBottom: '16px' }}>
+                    <p style={{ fontSize: '12.5px', color: '#cbd5e1', lineHeight: '1.45', marginBottom: '14px' }}>
                       {uni.highlight}
                     </p>
                   </div>
 
-                  <div style={{ paddingTop: '14px', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ fontSize: '13px', color: '#94a3b8' }}>
+                  <div style={{ paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ fontSize: '12px', color: '#94a3b8' }}>
                       Tuition Approx: <span style={{ color: '#ffffff', fontWeight: '700' }}>{uni.fee}</span>
                     </div>
                     <button
                       onClick={onRequestCounselling}
-                      style={{ background: 'transparent', color: 'var(--coral-accent)', border: 'none', fontSize: '13px', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}
+                      style={{ background: 'transparent', color: 'var(--coral-accent)', border: 'none', fontSize: '12px', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}
                     >
-                      Check Eligibility <ChevronRight size={16} />
+                      Check Eligibility <ChevronRight size={14} />
                     </button>
                   </div>
                 </div>
@@ -675,15 +675,15 @@ const AboutUs = ({ onRequestCounselling }) => {
       </section>
 
       {/* 6. OFFICE LOCATIONS WITH EMBEDDED MAPS */}
-      <section style={{ padding: '90px 0', background: '#f8fafc' }}>
+      <section style={{ padding: '28px 0', background: '#f8fafc' }}>
         <div className="container">
 
-          <div className="section-header">
-            <span className="badge-navy" style={{ marginBottom: '12px' }}>{lang === 'hi' ? 'भौतिक शाखाएं और विदेशी डेस्क' : 'Physical Branches & Overseas Desks'}</span>
-            <h2 className="section-title">
+          <div className="section-header" style={{ marginBottom: '20px' }}>
+            <span className="badge-navy" style={{ marginBottom: '8px' }}>{lang === 'hi' ? 'भौतिक शाखाएं और विदेशी डेस्क' : 'Physical Branches & Overseas Desks'}</span>
+            <h2 className="section-title" style={{ fontSize: '32px', marginBottom: '8px' }}>
               {lang === 'hi' ? 'हमारे पैन-इंडिया कार्यालय और वैश्विक छात्र हब' : 'Our Pan-India Offices & Global Student Hubs'}
             </h2>
-            <p className="section-desc">
+            <p className="section-desc" style={{ fontSize: '15px' }}>
               {lang === 'hi'
                 ? 'नई दिल्ली, हैदराबाद, या मुंबई में हमारे किसी भी परामर्श केंद्र में जाएं, या ताशकंद और मॉस्को में हमारे अंतर्राष्ट्रीय डेस्क से जुड़ें।'
                 : 'Visit any of our counseling centers in New Delhi, Hyderabad, or Mumbai, or connect with our international operations desks in Tashkent and Moscow.'}
@@ -691,81 +691,80 @@ const AboutUs = ({ onRequestCounselling }) => {
           </div>
 
           {/* Location Selector Tabs */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', flexWrap: 'wrap', marginBottom: '36px' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '20px' }}>
             {officeBranches.map((b, idx) => (
               <button
                 key={idx}
                 onClick={() => setActiveMapTab(idx)}
                 style={{
-                  padding: '14px 28px',
-                  borderRadius: '35px',
+                  padding: '10px 22px',
+                  borderRadius: '30px',
                   border: activeMapTab === idx ? 'none' : '1px solid #cbd5e1',
                   background: activeMapTab === idx ? 'var(--navy-primary)' : '#ffffff',
                   color: activeMapTab === idx ? '#ffffff' : 'var(--navy-primary)',
                   fontWeight: '800',
-                  fontSize: '14px',
+                  fontSize: '13px',
                   cursor: 'pointer',
-                  boxShadow: activeMapTab === idx ? '0 8px 25px rgba(31, 56, 100, 0.25)' : 'none',
+                  boxShadow: activeMapTab === idx ? '0 6px 18px rgba(31, 56, 100, 0.2)' : 'none',
                   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '8px'
-
+                  gap: '6px'
                 }}
               >
-                <MapPin size={16} color={activeMapTab === idx ? 'var(--coral-accent)' : 'var(--navy-primary)'} />
+                <MapPin size={15} color={activeMapTab === idx ? 'var(--coral-accent)' : 'var(--navy-primary)'} />
                 {b.city}
               </button>
             ))}
           </div>
 
           {/* Active Location Info & Map Container */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '36px', background: '#ffffff', borderRadius: '28px', padding: '40px', border: '1px solid #e2e8f0', boxShadow: '0 15px 40px rgba(15, 23, 42, 0.05)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px', background: '#ffffff', borderRadius: '24px', padding: '28px', border: '1px solid #e2e8f0', boxShadow: '0 10px 30px rgba(15, 23, 42, 0.04)' }}>
 
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <span className="badge-coral" style={{ width: 'fit-content', marginBottom: '14px' }}>
+              <span className="badge-coral" style={{ width: 'fit-content', marginBottom: '10px' }}>
                 {officeBranches[activeMapTab].tag}
               </span>
-              <h3 style={{ fontSize: '28px', color: 'var(--navy-primary)', fontWeight: '800', marginBottom: '18px' }}>
+              <h3 style={{ fontSize: '24px', color: 'var(--navy-primary)', fontWeight: '800', marginBottom: '14px' }}>
                 {officeBranches[activeMapTab].city}
               </h3>
 
-              <div style={{ display: 'flex', gap: '14px', fontSize: '15px', color: 'var(--text-body)', marginBottom: '18px', lineHeight: '1.6' }}>
-                <MapPin size={24} color="var(--coral-accent)" style={{ flexShrink: 0, marginTop: '2px' }} />
+              <div style={{ display: 'flex', gap: '12px', fontSize: '14px', color: 'var(--text-body)', marginBottom: '14px', lineHeight: '1.5' }}>
+                <MapPin size={20} color="var(--coral-accent)" style={{ flexShrink: 0, marginTop: '2px' }} />
                 <div>
                   <strong style={{ display: 'block', color: 'var(--navy-primary)' }}>Address:</strong>
                   {officeBranches[activeMapTab].address}
-                  <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
+                  <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>
                     📍 Landmark: {officeBranches[activeMapTab].landmark}
                   </div>
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '14px', fontSize: '15px', color: 'var(--navy-primary)', fontWeight: '700', marginBottom: '14px' }}>
-                <Phone size={22} color="var(--coral-accent)" style={{ flexShrink: 0 }} />
+              <div style={{ display: 'flex', gap: '12px', fontSize: '14px', color: 'var(--navy-primary)', fontWeight: '700', marginBottom: '12px' }}>
+                <Phone size={18} color="var(--coral-accent)" style={{ flexShrink: 0 }} />
                 <div>
-                  <strong style={{ display: 'block', color: 'var(--text-muted)', fontSize: '12px', fontWeight: '600' }}>Direct Helpline:</strong>
+                  <strong style={{ display: 'block', color: 'var(--text-muted)', fontSize: '11px', fontWeight: '600' }}>Direct Helpline:</strong>
                   {officeBranches[activeMapTab].phone}
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '14px', fontSize: '15px', color: 'var(--navy-primary)', fontWeight: '700', marginBottom: '14px' }}>
-                <Mail size={22} color="var(--coral-accent)" style={{ flexShrink: 0 }} />
+              <div style={{ display: 'flex', gap: '12px', fontSize: '14px', color: 'var(--navy-primary)', fontWeight: '700', marginBottom: '12px' }}>
+                <Mail size={18} color="var(--coral-accent)" style={{ flexShrink: 0 }} />
                 <div>
-                  <strong style={{ display: 'block', color: 'var(--text-muted)', fontSize: '12px', fontWeight: '600' }}>Official Email:</strong>
+                  <strong style={{ display: 'block', color: 'var(--text-muted)', fontSize: '11px', fontWeight: '600' }}>Official Email:</strong>
                   {officeBranches[activeMapTab].email}
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '14px', fontSize: '14px', color: 'var(--text-muted)', marginBottom: '32px' }}>
-                <Clock size={20} color="var(--cyan-accent)" style={{ flexShrink: 0 }} />
+              <div style={{ display: 'flex', gap: '12px', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '20px' }}>
+                <Clock size={18} color="var(--cyan-accent)" style={{ flexShrink: 0 }} />
                 <div>
                   <strong>Counseling Hours:</strong> {officeBranches[activeMapTab].hours}
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
-                <button className="btn-primary" onClick={onRequestCounselling} style={{ padding: '14px 32px', fontSize: '15px' }}>
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                <button className="btn-primary" onClick={onRequestCounselling} style={{ padding: '12px 24px', fontSize: '14px' }}>
                   {lang === 'hi' ? 'कार्यालय यात्रा शेड्यूल करें' : 'Schedule Office Visit'}
                 </button>
                 <a
@@ -773,22 +772,22 @@ const AboutUs = ({ onRequestCounselling }) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-outline"
-                  style={{ padding: '12px 24px', fontSize: '14px' }}
+                  style={{ padding: '10px 20px', fontSize: '13px' }}
                 >
-                  {lang === 'hi' ? 'दिशा खोलें' : 'Open Directions'} <ExternalLink size={16} />
+                  {lang === 'hi' ? 'दिशा खोलें' : 'Open Directions'} <ExternalLink size={15} />
                 </a>
               </div>
             </div>
 
             {/* Embedded Google Map iframe */}
-            <div style={{ height: '420px', minHeight: '420px', width: '100%', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 12px 30px rgba(0,0,0,0.1)', border: '1px solid #cbd5e1', background: '#f1f5f9' }}>
+            <div style={{ height: '360px', minHeight: '360px', width: '100%', borderRadius: '18px', overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,0.08)', border: '1px solid #cbd5e1', background: '#f1f5f9' }}>
               <iframe
                 key={activeMapTab}
                 title={officeBranches[activeMapTab].city}
                 src={officeBranches[activeMapTab].mapUrl}
                 width="100%"
                 height="100%"
-                style={{ border: 0, display: 'block', width: '100%', height: '100%', minHeight: '420px' }}
+                style={{ border: 0, display: 'block', width: '100%', height: '100%', minHeight: '360px' }}
                 allowFullScreen=""
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
@@ -799,9 +798,6 @@ const AboutUs = ({ onRequestCounselling }) => {
 
         </div>
       </section>
-
-
-
 
     </div>
   );

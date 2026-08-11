@@ -10,9 +10,9 @@ const TrustBar = () => {
     <section 
       style={{ 
         background: '#ffffff', 
-        padding: '36px 0', 
+        padding: '18px 0 !important', 
         position: 'relative',
-        boxShadow: '0 4px 20px rgba(31, 56, 100, 0.04)',
+        boxShadow: '0 4px 15px rgba(31, 56, 100, 0.03)',
         borderTop: '1px solid #e2e8f0',
         borderBottom: '1px solid #e2e8f0'
       }}
@@ -21,15 +21,15 @@ const TrustBar = () => {
         .trust-stat-card {
           background: #ffffff;
           border: 1px solid #e2e8f0;
-          border-radius: 20px;
-          padding: 28px 24px;
+          border-radius: 18px;
+          padding: 18px 16px;
           text-align: center;
           transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-          box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.02);
         }
         .trust-stat-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 16px 32px rgba(31, 56, 100, 0.08) !important;
+          transform: translateY(-4px);
+          box-shadow: 0 12px 24px rgba(31, 56, 100, 0.08) !important;
           border-color: #cbd5e1 !important;
         }
       `}</style>
@@ -37,9 +37,9 @@ const TrustBar = () => {
       <div className="container">
         
         {/* Header Badge */}
-        <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(225, 91, 63, 0.1)', border: '1px solid rgba(225, 91, 63, 0.25)', padding: '6px 18px', borderRadius: '30px', fontSize: '12px', fontWeight: '800', color: 'var(--coral-accent)', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
-            <ShieldCheck size={15} /> {lang === 'hi' ? 'प्रमाणित ट्रैक रिकॉर्ड' : 'Quick-Glance Track Record'}
+        <div style={{ textAlign: 'center', marginBottom: '14px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(225, 91, 63, 0.1)', border: '1px solid rgba(225, 91, 63, 0.25)', padding: '4px 14px', borderRadius: '30px', fontSize: '11px', fontWeight: '800', color: 'var(--coral-accent)', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
+            <ShieldCheck size={14} /> {lang === 'hi' ? 'प्रमाणित ट्रैक रिकॉर्ड' : 'Quick-Glance Track Record'}
           </div>
         </div>
 
