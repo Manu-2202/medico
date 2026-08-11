@@ -749,12 +749,12 @@ const Home = ({ onRequestCounselling }) => {
           {/* SLIDE 4: Modern Vector Wave Curved Poster Banner (Exact Match to User Reference Image) */}
           {currentSlide === 3 && (
             <div style={{ 
-              background: 'linear-gradient(180deg, #ffffff 0%, #f8fafc 60%, #f1f5f9 100%)',
+              background: '#ffffff',
               minHeight: '560px', position: 'relative', overflow: 'hidden'
             }}>
               {/* SVG Layered Curved Waves (Orange Ribbon, Silver Separator, and Deep Navy Base) */}
               <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1 }}>
-                <svg viewBox="0 0 1440 450" preserveAspectRatio="none" style={{ width: '100%', height: '100%' }}>
+                <svg viewBox="0 0 1440 620" preserveAspectRatio="none" style={{ width: '100%', height: '100%' }}>
                   <defs>
                     <linearGradient id="orangeWaveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                       <stop offset="0%" stopColor="#ff7849" />
@@ -774,20 +774,20 @@ const Home = ({ onRequestCounselling }) => {
                   </defs>
 
                   {/* Layer 1: Vibrant Orange Vector Curve */}
-                  <path fill="url(#orangeWaveGrad)" d="M -100,240 Q 250,180 500,290 T 1100,260 T 1540,320 L 1540,500 L -100,500 Z" />
+                  <path fill="url(#orangeWaveGrad)" d="M -100,410 Q 250,350 500,470 T 1100,430 T 1540,490 L 1540,700 L -100,700 Z" />
                   
                   {/* Layer 2: Silver Metallic Separator Line */}
-                  <path fill="url(#silverStripeGrad)" d="M -100,270 Q 250,210 500,315 T 1100,285 T 1540,345 L 1540,360 Q 1100,300 500,330 T -100,285 Z" opacity="0.9" />
+                  <path fill="url(#silverStripeGrad)" d="M -100,440 Q 250,380 500,495 T 1100,455 T 1540,515 L 1540,530 Q 1100,470 500,510 T -100,440 Z" opacity="0.95" />
 
                   {/* Layer 3: Deep Royal Navy Wave Base */}
-                  <path fill="url(#navyWaveGrad)" d="M -100,285 Q 250,225 500,330 T 1100,300 T 1540,360 L 1540,500 L -100,500 Z" />
+                  <path fill="url(#navyWaveGrad)" d="M -100,455 Q 250,395 500,510 T 1100,470 T 1540,530 L 1540,700 L -100,700 Z" />
                 </svg>
               </div>
 
               {/* Main Content Grid */}
-              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', padding: '50px 48px 80px 48px', minHeight: '560px', position: 'relative', zIndex: 2 }}>
+              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', padding: '40px 60px 90px 60px', minHeight: '560px', position: 'relative', zIndex: 2 }}>
                 
-                {/* Left Text Column */}
+                {/* Left Text Column - Pure Clean White Area for 100% Readability */}
                 <div>
                   <div style={{ color: '#ea580c', fontSize: '13px', fontWeight: '900', letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ width: '22px', height: '3px', background: '#ea580c', borderRadius: '3px' }} />
@@ -802,7 +802,7 @@ const Home = ({ onRequestCounselling }) => {
                     )}
                   </h1>
 
-                  <p style={{ color: '#475569', fontSize: '16px', lineHeight: '1.65', marginBottom: '32px', maxWidth: '520px', fontWeight: '500' }}>
+                  <p style={{ color: '#1e293b', fontSize: '16px', lineHeight: '1.65', marginBottom: '32px', maxWidth: '520px', fontWeight: '600' }}>
                     {lang === 'hi'
                       ? 'विश्वविद्यालय चयन, पात्रता जांच, और एमईए वीजा अपोस्टिल से लेकर भारतीय हॉस्टल मेस तक पूर्ण सहायता।'
                       : 'Complete end-to-end support from university selection, eligibility check, and MEA visa apostille to Indian hostel mess setup.'}
