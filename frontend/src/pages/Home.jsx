@@ -746,69 +746,135 @@ const Home = ({ onRequestCounselling }) => {
             </div>
           )}
 
-          {/* SLIDE 4: Deep Emerald Forest with Premium Glass Cards */}
+          {/* SLIDE 4: Modern Vector Wave Curved Poster Banner (Exact Match to User Reference Image) */}
           {currentSlide === 3 && (
             <div style={{ 
-              background: 'linear-gradient(135deg, #022c22 0%, #064e3b 45%, #065f46 100%)',
+              background: 'linear-gradient(180deg, #ffffff 0%, #f8fafc 60%, #f1f5f9 100%)',
               minHeight: '560px', position: 'relative', overflow: 'hidden'
             }}>
-              {/* Wave pattern */}
-              <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(rgba(52,211,153,0.07) 1px, transparent 1px)', backgroundSize: '24px 24px', pointerEvents: 'none' }} />
-              <div style={{ position: 'absolute', top: '-120px', right: '-120px', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(16,185,129,0.25) 0%, transparent 65%)', pointerEvents: 'none' }} />
-              <div style={{ position: 'absolute', bottom: '-80px', left: '20%', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,95,70,0.5) 0%, transparent 65%)', pointerEvents: 'none' }} />
+              {/* SVG Layered Curved Waves (Orange Ribbon, Silver Separator, and Deep Navy Base) */}
+              <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1 }}>
+                <svg viewBox="0 0 1440 450" preserveAspectRatio="none" style={{ width: '100%', height: '100%' }}>
+                  <defs>
+                    <linearGradient id="orangeWaveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#ff7849" />
+                      <stop offset="50%" stopColor="#f97316" />
+                      <stop offset="100%" stopColor="#ea580c" />
+                    </linearGradient>
+                    <linearGradient id="silverStripeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#cbd5e1" />
+                      <stop offset="50%" stopColor="#ffffff" />
+                      <stop offset="100%" stopColor="#94a3b8" />
+                    </linearGradient>
+                    <linearGradient id="navyWaveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#1e3a8a" />
+                      <stop offset="40%" stopColor="#0f172a" />
+                      <stop offset="100%" stopColor="#0b132b" />
+                    </linearGradient>
+                  </defs>
 
-              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', padding: '60px 48px', minHeight: '560px', position: 'relative', zIndex: 2 }}>
+                  {/* Layer 1: Vibrant Orange Vector Curve */}
+                  <path fill="url(#orangeWaveGrad)" d="M -100,240 Q 250,180 500,290 T 1100,260 T 1540,320 L 1540,500 L -100,500 Z" />
+                  
+                  {/* Layer 2: Silver Metallic Separator Line */}
+                  <path fill="url(#silverStripeGrad)" d="M -100,270 Q 250,210 500,315 T 1100,285 T 1540,345 L 1540,360 Q 1100,300 500,330 T -100,285 Z" opacity="0.9" />
+
+                  {/* Layer 3: Deep Royal Navy Wave Base */}
+                  <path fill="url(#navyWaveGrad)" d="M -100,285 Q 250,225 500,330 T 1100,300 T 1540,360 L 1540,500 L -100,500 Z" />
+                </svg>
+              </div>
+
+              {/* Main Content Grid */}
+              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', padding: '50px 48px 80px 48px', minHeight: '560px', position: 'relative', zIndex: 2 }}>
+                
+                {/* Left Text Column */}
                 <div>
-                  <div style={{ color: '#6ee7b7', fontSize: '13px', fontWeight: '800', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ width: '24px', height: '2px', background: '#6ee7b7', display: 'inline-block', borderRadius: '2px' }} />
+                  <div style={{ color: '#ea580c', fontSize: '13px', fontWeight: '900', letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ width: '22px', height: '3px', background: '#ea580c', borderRadius: '3px' }} />
                     {lang === 'hi' ? 'अपनी मेडिकल यात्रा शुरू करें' : 'BEGIN YOUR MEDICAL JOURNEY'}
-                    <span style={{ width: '24px', height: '2px', background: '#6ee7b7', display: 'inline-block', borderRadius: '2px' }} />
                   </div>
 
-                  <h1 style={{ color: '#ffffff', fontSize: '48px', fontWeight: '900', lineHeight: '1.15', marginBottom: '20px', letterSpacing: '-1px', textShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
+                  <h1 style={{ color: '#0f172a', fontSize: '46px', fontWeight: '900', lineHeight: '1.15', marginBottom: '18px', letterSpacing: '-1px' }}>
                     {lang === 'hi' ? (
-                      <>विश्वस्तरीय एमबीबीएस <br /> <span style={{ color: '#6ee7b7', textShadow: '0 0 30px rgba(110,231,183,0.4)' }}>बिना भारी डोनेशन के</span></>
+                      <>विश्वस्तरीय एमबीबीएस <br /><span style={{ color: '#f97316' }}>बिना भारी डोनेशन के</span></>
                     ) : (
-                      <>World-Class MBBS <br /> <span style={{ color: '#6ee7b7', textShadow: '0 0 30px rgba(110,231,183,0.4)' }}>Without Heavy Capitation</span></>
+                      <>World-Class MBBS <br /><span style={{ color: '#f97316' }}>Without Heavy Capitation</span></>
                     )}
                   </h1>
 
-                  <p style={{ color: '#a7f3d0', fontSize: '16px', lineHeight: '1.7', marginBottom: '36px', maxWidth: '520px' }}>
+                  <p style={{ color: '#475569', fontSize: '16px', lineHeight: '1.65', marginBottom: '32px', maxWidth: '520px', fontWeight: '500' }}>
                     {lang === 'hi'
                       ? 'विश्वविद्यालय चयन, पात्रता जांच, और एमईए वीजा अपोस्टिल से लेकर भारतीय हॉस्टल मेस तक पूर्ण सहायता।'
                       : 'Complete end-to-end support from university selection, eligibility check, and MEA visa apostille to Indian hostel mess setup.'}
                   </p>
 
-                  <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', marginBottom: '36px' }}>
-                    <button className="btn-primary" onClick={onRequestCounselling} style={{ background: 'linear-gradient(135deg, #10b981, #059669)', color: '#ffffff', padding: '15px 42px', fontSize: '16px', borderRadius: '14px', border: 'none', fontWeight: '800', boxShadow: '0 10px 30px rgba(16,185,129,0.5)' }}>
-                      {lang === 'hi' ? 'निःशुल्क परामर्श प्राप्त करें' : 'Get Free Counselling'}
+                  <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
+                    <button 
+                      className="btn-primary" 
+                      onClick={onRequestCounselling} 
+                      style={{ 
+                        background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)', 
+                        color: '#ffffff', 
+                        padding: '16px 42px', 
+                        fontSize: '16px', 
+                        borderRadius: '50px', 
+                        border: 'none', 
+                        fontWeight: '800', 
+                        boxShadow: '0 12px 30px rgba(249, 115, 22, 0.45)',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '10px'
+                      }}
+                    >
+                      {lang === 'hi' ? 'निःशुल्क परामर्श प्राप्त करें' : 'Get Free Counselling'} <ArrowRight size={18} />
                     </button>
                   </div>
-
-                  {/* Trust indicators */}
-                  <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-                    {[['✅', 'NMC Approved'], ['🏥', 'WHO Listed'], ['📋', 'MCI Guided']].map(([icon, text], i) => (
-                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)', padding: '8px 14px', borderRadius: '10px', backdropFilter: 'blur(10px)' }}>
-                        <span style={{ fontSize: '14px' }}>{icon}</span>
-                        <span style={{ fontSize: '12px', color: '#a7f3d0', fontWeight: '700' }}>{text}</span>
-                      </div>
-                    ))}
-                  </div>
                 </div>
 
+                {/* Right Column: Doctor Photo in Navy Ring Frame */}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
                   <div style={{ position: 'relative' }}>
-                    <div style={{ position: 'absolute', inset: '-16px', borderRadius: '50%', background: 'linear-gradient(135deg, rgba(16,185,129,0.6), rgba(6,95,70,0.6))', filter: 'blur(20px)' }} />
-                    <div style={{ width: '320px', height: '320px', borderRadius: '50%', background: 'rgba(255,255,255,0.08)', border: '4px solid rgba(110,231,183,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', boxShadow: '0 20px 50px rgba(0,0,0,0.5)', backdropFilter: 'blur(10px)', position: 'relative' }}>
-                      <img src={slideDoctorPhotos[3].img} alt={slideDoctorPhotos[3].alt} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }} />
+                    {/* Outer Soft Drop Shadow */}
+                    <div style={{ position: 'absolute', inset: '-12px', borderRadius: '50%', background: 'rgba(15, 23, 42, 0.12)', filter: 'blur(16px)' }} />
+                    
+                    <div style={{ 
+                      width: '330px', 
+                      height: '330px', 
+                      borderRadius: '50%', 
+                      background: '#ffffff', 
+                      border: '8px solid #0f172a', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      overflow: 'hidden', 
+                      boxShadow: '0 20px 45px rgba(15, 23, 42, 0.25)', 
+                      position: 'relative' 
+                    }}>
+                      <img 
+                        src={slideDoctorPhotos[3].img} 
+                        alt={slideDoctorPhotos[3].alt} 
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }} 
+                      />
                     </div>
-                    {/* ISO badge */}
-                    <div style={{ position: 'absolute', bottom: '10px', right: '-20px', background: 'linear-gradient(135deg, #10b981, #047857)', padding: '10px 16px', borderRadius: '14px', boxShadow: '0 8px 24px rgba(0,0,0,0.3)', textAlign: 'center' }}>
-                      <div style={{ fontSize: '12px', fontWeight: '900', color: '#ffffff' }}>ISO 9001</div>
-                      <div style={{ fontSize: '10px', color: '#a7f3d0', fontWeight: '700' }}>Certified</div>
+
+                    {/* Floating Trust Card */}
+                    <div style={{ position: 'absolute', bottom: '10px', right: '-15px', background: '#ffffff', border: '1px solid #e2e8f0', padding: '10px 16px', borderRadius: '16px', boxShadow: '0 10px 25px rgba(0,0,0,0.15)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #10b981, #059669)', color: '#fff', display: 'grid', placeItems: 'center', fontWeight: '900', fontSize: '16px' }}>✓</div>
+                      <div>
+                        <div style={{ fontSize: '13px', fontWeight: '800', color: '#0f172a' }}>100% Direct</div>
+                        <div style={{ fontSize: '11px', color: '#64748b', fontWeight: '600' }}>Govt University</div>
+                      </div>
                     </div>
                   </div>
                 </div>
+
+              </div>
+
+              {/* Bottom Dark Navy Bar Credentials */}
+              <div style={{ position: 'absolute', bottom: '12px', left: 0, right: 0, zIndex: 3, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '32px', color: '#93c5fd', fontSize: '12px', fontWeight: '700', flexWrap: 'wrap', padding: '0 24px' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><ShieldCheck size={14} color="#f97316" /> NMC & WHO Approved Universities</span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Award size={14} color="#f97316" /> 100% Direct Fee Deposit to University</span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><GraduationCap size={14} color="#f97316" /> Integrated FMGE / NEXT Coaching</span>
               </div>
             </div>
           )}
