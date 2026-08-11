@@ -16,13 +16,14 @@ const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
   const isOverallEligible = isNeetQualified && isPcbEligible;
 
   const universitiesDatabase = [
+    // RUSSIA UNIVERSITIES
     {
       country: 'Russia',
       country_hi: 'रूस',
       flag: '🇷🇺',
-      college: 'Bashkir & Kazan Federal State University',
+      college: 'Bashkir State Medical University',
       feeYear: '₹3.5 Lakhs / Year',
-      totalPackage: '₹18 Lakhs to ₹28 Lakhs',
+      totalPackage: '₹18 Lakhs to ₹22 Lakhs',
       categoryTag: 'Low',
       duration: '6 Years',
       fmgePassRate: 'Very High (78%+)',
@@ -30,25 +31,81 @@ const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
       climate: 'Snowy Winter (-10°C to +25°C)'
     },
     {
+      country: 'Russia',
+      country_hi: 'रूस',
+      flag: '🇷🇺',
+      college: 'Kazan Federal University',
+      feeYear: '₹4.2 Lakhs / Year',
+      totalPackage: '₹24 Lakhs to ₹28 Lakhs',
+      categoryTag: 'Medium',
+      duration: '6 Years',
+      fmgePassRate: 'High (76%+)',
+      mess: 'Indian Hostel Mess',
+      climate: 'Snowy Winter (-12°C to +24°C)'
+    },
+    {
+      country: 'Russia',
+      country_hi: 'रूस',
+      flag: '🇷🇺',
+      college: 'Crimea Federal University',
+      feeYear: '₹3.2 Lakhs / Year',
+      totalPackage: '₹17 Lakhs to ₹21 Lakhs',
+      categoryTag: 'Low',
+      duration: '6 Years',
+      fmgePassRate: 'Very High (82%+)',
+      mess: 'Dedicated Indian Canteen',
+      climate: 'Black Sea Coastal Climate (+2°C to +28°C)'
+    },
+    {
+      country: 'Russia',
+      country_hi: 'रूस',
+      flag: '🇷🇺',
+      college: 'Orenburg State Medical University',
+      feeYear: '₹3.8 Lakhs / Year',
+      totalPackage: '₹20 Lakhs to ₹24 Lakhs',
+      categoryTag: 'Medium',
+      duration: '6 Years',
+      fmgePassRate: 'High (75%+)',
+      mess: 'North & South Indian Meals',
+      climate: 'Continental Winter (-15°C to +26°C)'
+    },
+
+    // GEORGIA UNIVERSITIES
+    {
       country: 'Georgia',
       country_hi: 'जॉर्जिया',
       flag: '🇬🇪',
-      college: 'Tbilisi State & Batumi Shota Rustaveli Univ',
-      feeYear: '₹4.5 Lakhs / Year',
-      totalPackage: '₹22 Lakhs to ₹32 Lakhs',
+      college: 'Tbilisi State Medical University',
+      feeYear: '₹4.8 Lakhs / Year',
+      totalPackage: '₹26 Lakhs to ₹32 Lakhs',
       categoryTag: 'High',
       duration: '6 Years',
-      fmgePassRate: 'Highest in Europe (82%+)',
+      fmgePassRate: 'Highest in Europe (84%+)',
       mess: 'Indian Cooks & Veg/Non-Veg',
       climate: 'Moderate European (+5°C to +28°C)'
     },
     {
+      country: 'Georgia',
+      country_hi: 'जॉर्जिया',
+      flag: '🇬🇪',
+      college: 'Batumi Shota Rustaveli State University',
+      feeYear: '₹4.2 Lakhs / Year',
+      totalPackage: '₹22 Lakhs to ₹26 Lakhs',
+      categoryTag: 'Medium',
+      duration: '6 Years',
+      fmgePassRate: 'Very High (80%+)',
+      mess: 'Indian Mess Catering',
+      climate: 'Subtropical Mild (+8°C to +26°C)'
+    },
+
+    // KAZAKHSTAN UNIVERSITIES
+    {
       country: 'Kazakhstan',
       country_hi: 'कजाकिस्तान',
       flag: '🇰🇿',
-      college: 'Astana Medical Univ & Kazakh National Univ',
-      feeYear: '₹3.2 Lakhs / Year',
-      totalPackage: '₹16 Lakhs to ₹22 Lakhs',
+      college: 'Astana Medical University',
+      feeYear: '₹3.4 Lakhs / Year',
+      totalPackage: '₹17 Lakhs to ₹22 Lakhs',
       categoryTag: 'Low',
       duration: '5 Years',
       fmgePassRate: 'High (75%+)',
@@ -56,12 +113,27 @@ const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
       climate: 'Continental (+10°C to +30°C)'
     },
     {
+      country: 'Kazakhstan',
+      country_hi: 'कजाकिस्तान',
+      flag: '🇰🇿',
+      college: 'Kazakh National Medical University',
+      feeYear: '₹3.2 Lakhs / Year',
+      totalPackage: '₹16 Lakhs to ₹20 Lakhs',
+      categoryTag: 'Low',
+      duration: '5 Years',
+      fmgePassRate: 'High (74%+)',
+      mess: 'Fresh Indian Catering',
+      climate: 'Pleasant City Climate'
+    },
+
+    // UZBEKISTAN UNIVERSITIES
+    {
       country: 'Uzbekistan',
       country_hi: 'उज्बेकिस्तान',
       flag: '🇺🇿',
-      college: 'Tashkent Medical Academy & Samarkand State',
+      college: 'Tashkent Medical Academy',
       feeYear: '₹2.8 Lakhs / Year',
-      totalPackage: '₹14 Lakhs to ₹20 Lakhs',
+      totalPackage: '₹14 Lakhs to ₹18 Lakhs',
       categoryTag: 'Low',
       duration: '5 Years',
       fmgePassRate: 'High (72%+)',
@@ -69,10 +141,25 @@ const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
       climate: 'Sunny & Pleasant (+8°C to +32°C)'
     },
     {
+      country: 'Uzbekistan',
+      country_hi: 'उज्बेकिस्तान',
+      flag: '🇺🇿',
+      college: 'Samarkand State Medical University',
+      feeYear: '₹2.7 Lakhs / Year',
+      totalPackage: '₹13 Lakhs to ₹17 Lakhs',
+      categoryTag: 'Low',
+      duration: '5 Years',
+      fmgePassRate: 'High (70%+)',
+      mess: 'Indian Hostel Canteen',
+      climate: 'Sunny & Warm (+10°C to +33°C)'
+    },
+
+    // KYRGYZSTAN UNIVERSITIES
+    {
       country: 'Kyrgyzstan',
       country_hi: 'किर्गिस्तान',
       flag: '🇰🇬',
-      college: 'Osh State University & Kyrgyz State Academy',
+      college: 'Osh State University',
       feeYear: '₹2.5 Lakhs / Year',
       totalPackage: '₹14 Lakhs to ₹18 Lakhs',
       categoryTag: 'Low',
@@ -81,6 +168,21 @@ const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
       mess: 'North & South Indian Food',
       climate: 'Pleasant Valley Climate'
     },
+    {
+      country: 'Kyrgyzstan',
+      country_hi: 'किर्गिस्तान',
+      flag: '🇰🇬',
+      college: 'Kyrgyz State Medical Academy (KSMA)',
+      feeYear: '₹2.6 Lakhs / Year',
+      totalPackage: '₹14 Lakhs to ₹18 Lakhs',
+      categoryTag: 'Low',
+      duration: '5 Years',
+      fmgePassRate: 'High (72%+)',
+      mess: 'Indian Mess Facilities',
+      climate: 'Mountain Valley Climate'
+    },
+
+    // ARMENIA UNIVERSITIES
     {
       country: 'Armenia',
       country_hi: 'आर्मेनिया',
@@ -94,6 +196,8 @@ const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
       mess: 'Indian Hostel & Kitchen',
       climate: 'European Mountain Climate'
     },
+
+    // VIETNAM UNIVERSITIES
     {
       country: 'Vietnam',
       country_hi: 'वियतनाम',
@@ -110,18 +214,10 @@ const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
   ];
 
   const filteredUniversities = universitiesDatabase.filter(u => {
+    if (defaultCountry && u.country.toLowerCase() !== defaultCountry.toLowerCase()) return false;
     if (budgetFilter === 'Low' && u.categoryTag !== 'Low') return false;
     if (budgetFilter === 'High' && u.categoryTag !== 'High') return false;
     return true;
-  }).sort((a, b) => {
-    if (defaultCountry) {
-      const target = defaultCountry.toLowerCase();
-      const aMatch = a.country.toLowerCase() === target;
-      const bMatch = b.country.toLowerCase() === target;
-      if (aMatch && !bMatch) return -1;
-      if (!aMatch && bMatch) return 1;
-    }
-    return 0;
   });
 
   return (
