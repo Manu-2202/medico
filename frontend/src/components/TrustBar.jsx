@@ -1,89 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { Award, GraduationCap, Building2, Globe, ShieldCheck } from 'lucide-react';
 import { useLanguage } from '../utils/languageContext';
+import AutoCountUp from './AutoCountUp';
 
 const TrustBar = () => {
   const { lang, t } = useLanguage();
-  const sectionRef = useRef(null);
-
-  // Counter states (Initialized at 0 so auto-increment counts up smoothly from 0)
-  const [yearsCount, setYearsCount] = useState(0);
-  const [studentsCount, setStudentsCount] = useState(0);
-  const [univCount, setUnivCount] = useState(0);
-  const [countriesCount, setCountriesCount] = useState(0);
-
-  const animationRef = useRef(null);
-  const hasAnimatedRef = useRef(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting) {
-          runAutoIncrementAnimation();
-        } else {
-          if (animationRef.current) cancelAnimationFrame(animationRef.current);
-          setYearsCount(0);
-          setStudentsCount(0);
-          setUnivCount(0);
-          setCountriesCount(0);
-        }
-      },
-      { 
-        threshold: 0.15
-      }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => {
-      if (sectionRef.current) observer.unobserve(sectionRef.current);
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    };
-  }, []);
-
-  const runAutoIncrementAnimation = () => {
-    if (animationRef.current) cancelAnimationFrame(animationRef.current);
-
-    const duration = 2200;
-    const startTime = performance.now();
-
-    const targetYears = 15;
-    const targetStudents = 10000;
-    const targetUniv = 100;
-    const targetCountries = 8;
-
-    const step = (currentTime) => {
-      const elapsedTime = currentTime - startTime;
-      const progress = Math.min(elapsedTime / duration, 1);
-      const easeOut = 1 - Math.pow(1 - progress, 3);
-
-      setYearsCount(Math.floor(targetYears * easeOut));
-      setStudentsCount(Math.floor(targetStudents * easeOut));
-      setUnivCount(Math.floor(targetUniv * easeOut));
-      setCountriesCount(Math.floor(targetCountries * easeOut));
-
-      if (progress < 1) {
-        animationRef.current = requestAnimationFrame(step);
-      } else {
-        setYearsCount(targetYears);
-        setStudentsCount(targetStudents);
-        setUnivCount(targetUniv);
-        setCountriesCount(targetCountries);
-      }
-    };
-
-    animationRef.current = requestAnimationFrame(step);
-  };
 
   return (
     <section 
-      ref={sectionRef}
       style={{ 
         background: '#ffffff', 
-        padding: '30px 0', 
+        padding: '36px 0', 
         position: 'relative',
         boxShadow: '0 4px 20px rgba(31, 56, 100, 0.04)',
         borderTop: '1px solid #e2e8f0',
@@ -111,7 +38,7 @@ const TrustBar = () => {
         
         {/* Header Badge */}
         <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(225, 91, 63, 0.1)', border: '1px solid rgba(225, 91, 63, 0.25)', padding: '5px 16px', borderRadius: '30px', fontSize: '12px', fontWeight: '800', color: 'var(--coral-accent)', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(225, 91, 63, 0.1)', border: '1px solid rgba(225, 91, 63, 0.25)', padding: '6px 18px', borderRadius: '30px', fontSize: '12px', fontWeight: '800', color: 'var(--coral-accent)', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
             <ShieldCheck size={15} /> {lang === 'hi' ? 'प्रमाणित ट्रैक रिकॉर्ड' : 'Quick-Glance Track Record'}
           </div>
         </div>
@@ -125,7 +52,7 @@ const TrustBar = () => {
               <Award size={26} color="var(--coral-accent)" />
             </div>
             <div style={{ fontSize: '40px', fontWeight: '800', color: 'var(--navy-primary)', lineHeight: 1, letterSpacing: '-1px' }}>
-              {yearsCount}+
+              <AutoCountUp end={15} suffix="+" duration={2000} />
             </div>
             <div style={{ fontSize: '15px', fontWeight: '700', color: 'var(--coral-accent)', marginTop: '10px' }}>
               {t('yearsExp')}
@@ -141,7 +68,7 @@ const TrustBar = () => {
               <GraduationCap size={26} color="#1d4ed8" />
             </div>
             <div style={{ fontSize: '40px', fontWeight: '800', color: 'var(--navy-primary)', lineHeight: 1, letterSpacing: '-1px' }}>
-              {studentsCount.toLocaleString()}+
+              <AutoCountUp end={10000} suffix="+" duration={2200} />
             </div>
             <div style={{ fontSize: '15px', fontWeight: '700', color: '#1d4ed8', marginTop: '10px' }}>
               {t('studentsPlaced')}
@@ -157,7 +84,7 @@ const TrustBar = () => {
               <Building2 size={26} color="#059669" />
             </div>
             <div style={{ fontSize: '40px', fontWeight: '800', color: 'var(--navy-primary)', lineHeight: 1, letterSpacing: '-1px' }}>
-              {univCount}+
+              <AutoCountUp end={100} suffix="+" duration={2000} />
             </div>
             <div style={{ fontSize: '15px', fontWeight: '700', color: '#059669', marginTop: '10px' }}>
               {t('nmcUnivs')}
@@ -173,7 +100,7 @@ const TrustBar = () => {
               <Globe size={26} color="#7c3aed" />
             </div>
             <div style={{ fontSize: '40px', fontWeight: '800', color: 'var(--navy-primary)', lineHeight: 1, letterSpacing: '-1px' }}>
-              {countriesCount}+
+              <AutoCountUp end={8} suffix="+" duration={1800} />
             </div>
             <div style={{ fontSize: '15px', fontWeight: '700', color: '#7c3aed', marginTop: '10px' }}>
               {t('countriesServed')}

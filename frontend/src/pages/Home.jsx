@@ -580,12 +580,24 @@ const Home = ({ onRequestCounselling }) => {
 
                   {/* Stats row */}
                   <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
-                    {[['5000+', 'Students Placed'], ['7+', 'Countries'], ['98%', 'Success Rate']].map(([num, label], i) => (
-                      <div key={i} style={{ textAlign: 'left' }}>
-                        <div style={{ fontSize: '26px', fontWeight: '900', color: '#f97316', lineHeight: 1 }}>{num}</div>
-                        <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600', marginTop: '4px' }}>{label}</div>
+                    <div style={{ textAlign: 'left' }}>
+                      <div style={{ fontSize: '26px', fontWeight: '900', color: '#f97316', lineHeight: 1 }}>
+                        <AnimatedCounter target={5000} suffix="+" />
                       </div>
-                    ))}
+                      <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600', marginTop: '4px' }}>Students Placed</div>
+                    </div>
+                    <div style={{ textAlign: 'left' }}>
+                      <div style={{ fontSize: '26px', fontWeight: '900', color: '#f97316', lineHeight: 1 }}>
+                        <AnimatedCounter target={7} suffix="+" />
+                      </div>
+                      <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600', marginTop: '4px' }}>Countries</div>
+                    </div>
+                    <div style={{ textAlign: 'left' }}>
+                      <div style={{ fontSize: '26px', fontWeight: '900', color: '#f97316', lineHeight: 1 }}>
+                        <AnimatedCounter target={98} suffix="%" />
+                      </div>
+                      <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600', marginTop: '4px' }}>Success Rate</div>
+                    </div>
                   </div>
                 </div>
 
@@ -722,7 +734,9 @@ const Home = ({ onRequestCounselling }) => {
                       <img src={slideDoctorPhotos[2].img} alt={slideDoctorPhotos[2].alt} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', borderRadius: '20px' }} />
                     </div>
                     <div style={{ position: 'absolute', top: '20px', right: '-20px', background: 'rgba(15,23,42,0.9)', border: '1px solid rgba(255,255,255,0.15)', padding: '12px 18px', borderRadius: '16px', boxShadow: '0 10px 30px rgba(0,0,0,0.4)', backdropFilter: 'blur(10px)', textAlign: 'center' }}>
-                      <div style={{ fontSize: '24px', fontWeight: '900', color: '#fbbf24' }}>5000+</div>
+                      <div style={{ fontSize: '24px', fontWeight: '900', color: '#fbbf24' }}>
+                        <AnimatedCounter target={5000} suffix="+" />
+                      </div>
                       <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '700' }}>Students Placed</div>
                     </div>
                   </div>
