@@ -667,7 +667,8 @@ const AdminDashboard = () => {
             { id: 'settings', label: t('tabSettings'), icon: Mail },
             { id: 'blogs', label: t('tabBlogs'), icon: FileText },
             { id: 'countries', label: t('tabCountries'), icon: Globe },
-            { id: 'testimonials', label: t('tabTestimonials'), icon: MessageSquare }
+            { id: 'testimonials', label: t('tabTestimonials'), icon: MessageSquare },
+            { id: 'profile', label: 'Admin Profile', icon: User }
           ].map((item) => {
             const IconComponent = item.icon;
             const isActive = activeTab === item.id;
@@ -729,101 +730,17 @@ const AdminDashboard = () => {
       {/* 2. MAIN CONTENT AREA */}
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, overflowY: 'auto' }}>
         
-        {/* Top App Header */}
-        <header style={{ height: '70px', padding: '0 32px', background: '#111827', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', sticky: 'top', top: 0, zIndex: 20 }}>
-          <div>
-            <h1 style={{ color: '#ffffff', fontSize: '20px', fontWeight: '800', margin: 0 }}>
-              {t('adminWelcome')}
-            </h1>
-            <p style={{ color: '#64748b', fontSize: '12px', margin: 0, marginTop: '2px' }}>
-              {t('adminSub')}
-            </p>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-            {/* Search Box */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', padding: '8px 14px', borderRadius: '10px', width: '240px' }}>
-              <Search size={15} color="#64748b" />
-              <input 
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                placeholder="Search leads, emails..."
-                style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '13px', outline: 'none', width: '100%' }}
-              />
-            </div>
-
-            {/* Notification Bell & Dropdown */}
-            <div style={{ position: 'relative' }}>
-              <button 
-                onClick={() => setShowNotifications(!showNotifications)} 
-                title="Live Lead Notifications"
-                style={{ position: 'relative', background: showNotifications ? 'rgba(59, 130, 246, 0.2)' : 'rgba(255,255,255,0.05)', border: showNotifications ? '1px solid #3b82f6' : '1px solid rgba(255,255,255,0.08)', borderRadius: '10px', padding: '9px', color: showNotifications ? '#3b82f6' : '#cbd5e1', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
-              >
-                <Bell size={18} />
-                {notifications.filter(n => !n.read).length > 0 && (
-                  <span style={{ position: 'absolute', top: '3px', right: '3px', width: '9px', height: '9px', borderRadius: '50%', background: '#ef4444', border: '2px solid #111827' }} />
-                )}
-              </button>
-
-              {/* Notification Popover Dropdown */}
-              {showNotifications && (
-                <div style={{ position: 'absolute', top: '48px', right: 0, width: '360px', background: '#111827', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', zIndex: 100, overflow: 'hidden', animation: 'fadeIn 0.2s ease-out' }}>
-                  <div style={{ padding: '14px 16px', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(255,255,255,0.02)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Bell size={16} color="#3b82f6" />
-                      <span style={{ fontWeight: '700', fontSize: '14px', color: '#fff' }}>Live Lead Notifications</span>
-                    </div>
-                    <button 
-                      onClick={() => playNotificationSound()} 
-                      title="Test Audio Chime"
-                      style={{ background: 'rgba(59, 130, 246, 0.15)', border: '1px solid rgba(59, 130, 246, 0.3)', color: '#60a5fa', padding: '4px 10px', borderRadius: '8px', fontSize: '11px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
-                    >
-                      <Volume2 size={12} /> Test Chime
-                    </button>
-                  </div>
-
-                  <div style={{ maxHeight: '320px', overflowY: 'auto' }}>
-                    {notifications.length === 0 ? (
-                      <div style={{ padding: '24px 16px', textAlign: 'center', color: '#64748b', fontSize: '13px' }}>
-                        No new notifications yet. Incoming leads will ring here in real-time.
-                      </div>
-                    ) : (
-                      notifications.slice(0, 10).map((n, idx) => (
-                        <div key={n.id || idx} style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.04)', background: n.read ? 'transparent' : 'rgba(59, 130, 246, 0.05)', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <span style={{ fontWeight: '700', fontSize: '13px', color: '#60a5fa' }}>{n.title || '🚨 New Student Lead'}</span>
-                            <span style={{ fontSize: '11px', color: '#64748b' }}>{new Date(n.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                          </div>
-                          <p style={{ margin: 0, fontSize: '12px', color: '#cbd5e1', lineHeight: '1.4' }}>{n.message}</p>
-                        </div>
-                      ))
-                    )}
-                  </div>
-
-                  <div style={{ padding: '10px 16px', background: 'rgba(0,0,0,0.2)', borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontSize: '11px', color: '#64748b' }}>⚡ Auto-dispatches to Gmail</span>
-                    <button 
-                      onClick={handleClearNotifications} 
-                      style={{ background: 'none', border: 'none', color: '#f87171', fontSize: '11px', cursor: 'pointer', fontWeight: '700' }}
-                    >
-                      Clear All
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Refresh Button */}
-            <button onClick={() => fetchInquiries()} title="Refresh Data" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '10px', padding: '9px', color: '#cbd5e1', cursor: 'pointer' }}>
-              <RefreshCw size={18} />
-            </button>
-
-            {/* Download CSV */}
-            <button onClick={exportCSV} className="btn-action-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '9px 16px', borderRadius: '10px', background: '#3b82f6', color: '#fff', fontWeight: '700', fontSize: '13px', border: 'none', cursor: 'pointer' }}>
-              <Download size={15} /> {t('btnExportCsv')}
-            </button>
-          </div>
-        </header>
+        {/* Dedicated Admin Header */}
+        <CmsHeader 
+          profileData={profileData}
+          notifications={notifications}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          onLogout={handleLogout}
+          onExportCsv={exportCSV}
+          onClearNotifications={handleClearNotifications}
+          onOpenProfile={() => setActiveTab('profile')}
+        />
 
         {/* Dynamic Workspace Tab Render */}
         <div style={{ padding: '32px', display: 'flex', flexDirection: 'column', gap: '28px' }}>
@@ -1422,22 +1339,114 @@ const AdminDashboard = () => {
             </div>
           )}
 
-          {/* TAB 6: TESTIMONIALS CMS */}
-          {activeTab === 'testimonials' && (
-            <div style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '20px', padding: '28px', maxWidth: '750px' }}>
-              <h2 style={{ color: '#ffffff', fontSize: '22px', fontWeight: '800', marginBottom: '20px' }}>Student Testimonials CMS</h2>
-              <form onSubmit={handleCreateTestimonial} style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '24px' }}>
-                <input placeholder="Student Name" required value={newTestimonial.name} onChange={e => setNewTestimonial({...newTestimonial, name: e.target.value})} style={{ background: '#0b0f19', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px', color: '#fff' }} />
-                <input placeholder="University Name" required value={newTestimonial.university} onChange={e => setNewTestimonial({...newTestimonial, university: e.target.value})} style={{ background: '#0b0f19', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px', color: '#fff' }} />
-                <textarea placeholder="Review quote..." required value={newTestimonial.quote} onChange={e => setNewTestimonial({...newTestimonial, quote: e.target.value})} style={{ background: '#0b0f19', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px', color: '#fff' }}></textarea>
-                <button type="submit" style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '12px 20px', borderRadius: '10px', fontWeight: '700', width: 'fit-content', cursor: 'pointer' }}>Add Testimonial</button>
+          {/* TAB 7: ADMIN PROFILE UPDATE */}
+          {activeTab === 'profile' && (
+            <div style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '20px', padding: '28px', maxWidth: '800px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '20px' }}>
+                <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#3b82f6', color: '#fff', display: 'grid', placeItems: 'center', fontWeight: '800', fontSize: '20px' }}>
+                  <User size={24} />
+                </div>
+                <div>
+                  <h2 style={{ color: '#ffffff', fontSize: '22px', fontWeight: '800', margin: 0 }}>Admin Profile & Security Settings</h2>
+                  <p style={{ color: '#94a3b8', fontSize: '13px', margin: 0 }}>Update your admin profile photo, full name, email address, and security password.</p>
+                </div>
+              </div>
+
+              {profileStatusMsg && (
+                <div style={{ background: profileStatusMsg.includes('❌') ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)', border: `1px solid ${profileStatusMsg.includes('❌') ? '#f87171' : '#34d399'}`, color: profileStatusMsg.includes('❌') ? '#fca5a5' : '#4ade80', padding: '12px 16px', borderRadius: '12px', marginBottom: '20px', fontSize: '14px', fontWeight: '600' }}>
+                  {profileStatusMsg}
+                </div>
+              )}
+
+              <form onSubmit={handleSaveAdminProfile} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                
+                {/* Profile Photo Avatar Upload */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '20px', background: '#0b0f19', padding: '18px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  {profileData.photo ? (
+                    <img src={profileData.photo} alt="Avatar" style={{ width: '64px', height: '64px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #3b82f6' }} />
+                  ) : (
+                    <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#3b82f6', color: '#fff', display: 'grid', placeItems: 'center', fontWeight: '800', fontSize: '24px' }}>
+                      {(profileData.name || 'A').charAt(0)}
+                    </div>
+                  )}
+                  <div>
+                    <label style={{ display: 'block', color: '#ffffff', fontSize: '13px', fontWeight: '700', marginBottom: '6px' }}>
+                      Profile Avatar / Photo
+                    </label>
+                    <input 
+                      type="file" 
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onload = () => setProfileData(prev => ({ ...prev, photo: reader.result }));
+                          reader.readAsDataURL(file);
+                        }
+                      }}
+                      style={{ fontSize: '12px', color: '#94a3b8' }}
+                    />
+                  </div>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                  <div>
+                    <label style={{ display: 'block', color: '#cbd5e1', fontSize: '12.5px', fontWeight: '700', marginBottom: '6px' }}>Full Name *</label>
+                    <input 
+                      type="text" 
+                      required
+                      value={profileData.name} 
+                      onChange={e => setProfileData({ ...profileData, name: e.target.value })} 
+                      style={{ width: '100%', background: '#0b0f19', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', padding: '12px', color: '#fff', fontSize: '14px', outline: 'none' }} 
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', color: '#cbd5e1', fontSize: '12.5px', fontWeight: '700', marginBottom: '6px' }}>Email Address *</label>
+                    <input 
+                      type="email" 
+                      required
+                      value={profileData.email} 
+                      onChange={e => setProfileData({ ...profileData, email: e.target.value })} 
+                      style={{ width: '100%', background: '#0b0f19', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', padding: '12px', color: '#fff', fontSize: '14px', outline: 'none' }} 
+                    />
+                  </div>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                  <div>
+                    <label style={{ display: 'block', color: '#cbd5e1', fontSize: '12.5px', fontWeight: '700', marginBottom: '6px' }}>New Security Password</label>
+                    <input 
+                      type="password" 
+                      placeholder="Leave blank to keep current password"
+                      value={profileData.newPassword || ''} 
+                      onChange={e => setProfileData({ ...profileData, newPassword: e.target.value })} 
+                      style={{ width: '100%', background: '#0b0f19', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', padding: '12px', color: '#fff', fontSize: '14px', outline: 'none' }} 
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', color: '#cbd5e1', fontSize: '12.5px', fontWeight: '700', marginBottom: '6px' }}>Confirm New Password</label>
+                    <input 
+                      type="password" 
+                      placeholder="Confirm new password"
+                      value={profileData.confirmPassword || ''} 
+                      onChange={e => setProfileData({ ...profileData, confirmPassword: e.target.value })} 
+                      style={{ width: '100%', background: '#0b0f19', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', padding: '12px', color: '#fff', fontSize: '14px', outline: 'none' }} 
+                    />
+                  </div>
+                </div>
+
+                <button type="submit" style={{ background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)', color: '#fff', border: 'none', padding: '14px 24px', borderRadius: '12px', fontWeight: '700', fontSize: '14px', cursor: 'pointer', width: 'fit-content', marginTop: '8px', boxShadow: '0 4px 16px rgba(37,99,235,0.3)' }}>
+                  Save Profile Details
+                </button>
+
               </form>
             </div>
           )}
 
-
-
         </div>
+
+        {/* Dedicated Admin Footer */}
+        <CmsFooter />
 
       </main>
 
