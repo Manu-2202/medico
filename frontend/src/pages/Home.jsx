@@ -557,7 +557,7 @@ const Home = ({ onRequestCounselling }) => {
               {/* Grid mesh overlay */}
               <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)', backgroundSize: '60px 60px', pointerEvents: 'none' }} />
               
-              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', minHeight: '540px', padding: '55px 70px', position: 'relative', zIndex: 2 }}>
+              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', minHeight: '540px', padding: '16px 70px 40px 70px', position: 'relative', zIndex: 2 }}>
                 <div style={{ color: '#ffffff' }}>
                   {/* Badge */}
                   <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(225,91,63,0.2)', border: '1px solid rgba(225,91,63,0.5)', padding: '6px 16px', borderRadius: '30px', fontSize: '12px', fontWeight: '800', color: '#ff8a73', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '20px', backdropFilter: 'blur(10px)' }}>
@@ -635,7 +635,7 @@ const Home = ({ onRequestCounselling }) => {
               <div style={{ position: 'absolute', top: '-100px', left: '30%', width: '500px', height: '500px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(99,102,241,0.3) 0%, transparent 65%)', pointerEvents: 'none' }} />
               <div style={{ position: 'absolute', bottom: '-80px', right: '10%', width: '350px', height: '350px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(249,115,22,0.25) 0%, transparent 65%)', pointerEvents: 'none' }} />
 
-              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', padding: '55px 70px', minHeight: '540px', position: 'relative', zIndex: 2 }}>
+              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', padding: '16px 70px 40px 70px', minHeight: '540px', position: 'relative', zIndex: 2 }}>
                 <div style={{ color: '#ffffff' }}>
                   <div style={{ display: 'inline-block', background: 'linear-gradient(90deg, #f97316, #ef4444)', color: '#ffffff', padding: '6px 18px', borderRadius: '30px', fontSize: '12px', fontWeight: '800', letterSpacing: '0.5px', marginBottom: '22px', textTransform: 'uppercase', boxShadow: '0 4px 15px rgba(249,115,22,0.4)' }}>
                     {lang === 'hi' ? '🌍 एनएमसी एवं डब्ल्यूएचओ मान्यता प्राप्त' : '🌍 NMC & WHO ACCREDITED UNIVERSITIES'}
@@ -697,7 +697,7 @@ const Home = ({ onRequestCounselling }) => {
               <div style={{ position: 'absolute', top: '-100px', right: '20%', width: '550px', height: '550px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(245,158,11,0.2) 0%, transparent 65%)', pointerEvents: 'none' }} />
               <div style={{ position: 'absolute', bottom: '-80px', left: '-50px', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(59,130,246,0.25) 0%, transparent 65%)', pointerEvents: 'none' }} />
 
-              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', padding: '55px 70px', minHeight: '540px', position: 'relative', zIndex: 2 }}>
+              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', padding: '16px 70px 40px 70px', minHeight: '540px', position: 'relative', zIndex: 2 }}>
                 <div>
                   <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(245, 158, 11, 0.15)', backdropFilter: 'blur(10px)', border: '1px solid rgba(245, 158, 11, 0.4)', padding: '6px 18px', borderRadius: '30px', fontSize: '12px', fontWeight: '800', color: '#fbbf24', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '22px' }}>
                     🏆 {lang === 'hi' ? 'भारत का अग्रणी परामर्श' : "India's Premier Consultancy"}
@@ -784,7 +784,7 @@ const Home = ({ onRequestCounselling }) => {
               </div>
 
               {/* Main Content Grid */}
-              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', padding: '40px 70px 80px 70px', minHeight: '540px', position: 'relative', zIndex: 2 }}>
+              <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', alignItems: 'center', padding: '16px 70px 50px 70px', minHeight: '540px', position: 'relative', zIndex: 2 }}>
                 
                 {/* Left Text Column - Pure Clean White Area for 100% Readability */}
                 <div>

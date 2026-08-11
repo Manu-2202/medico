@@ -6,6 +6,8 @@ import { useLanguage } from '../utils/languageContext';
 const Navbar = ({ onRequestCounselling }) => {
   const { lang, toggleLanguage, t } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [destinationsOpen, setDestinationsOpen] = useState(false);
   const [examsOpen, setExamsOpen] = useState(false);
@@ -21,11 +23,25 @@ const Navbar = ({ onRequestCounselling }) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 40);
+
+      if (currentScrollY <= 60) {
+        setIsHeaderVisible(true);
+      } else if (currentScrollY < lastScrollY) {
+        // Scrolling UP -> Reveal sticky navbar!
+        setIsHeaderVisible(true);
+      } else {
+        // Scrolling DOWN -> Hide header for maximum screen reading area
+        setIsHeaderVisible(false);
+      }
+
+      setLastScrollY(currentScrollY);
     };
-    window.addEventListener('scroll', handleScroll);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   useEffect(() => {
     fetch('/api/site-settings')
@@ -77,7 +93,7 @@ const Navbar = ({ onRequestCounselling }) => {
   });
 
   return (
-    <header style={{ position: 'sticky', top: 0, zIndex: 1000, background: '#ffffff', boxShadow: isScrolled ? '0 4px 20px rgba(31, 56, 100, 0.14)' : 'none', transition: 'all 0.3s ease', overflow: 'visible', margin: 0, padding: 0 }}>
+    <header style={{ position: 'sticky', top: 0, zIndex: 1000, background: '#ffffff', boxShadow: isScrolled ? '0 8px 30px rgba(31, 56, 100, 0.16)' : 'none', transform: isHeaderVisible ? 'translateY(0)' : 'translateY(-100%)', transition: 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease', overflow: 'visible', margin: 0, padding: 0 }}>
       
       {/* Top Utility Contact Bar */}
       <div style={{ background: '#eef2f6', color: '#1e3a8a', fontSize: '11px', padding: '5px 0', borderBottom: '1px solid #e2e8f0' }}>
