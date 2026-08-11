@@ -21,26 +21,26 @@ const ExamDetail = ({ onRequestCounselling }) => {
         keywords={seoKeywords}
       />
       {/* Exam Hero Banner */}
-      <section style={{ position: 'relative', background: `linear-gradient(rgba(15, 29, 54, 0.88), rgba(31, 56, 100, 0.95)), url(${exam.bannerImg}) center/cover no-repeat`, color: '#ffffff', padding: '80px 0 60px 0' }}>
+      <section style={{ position: 'relative', background: `linear-gradient(rgba(15, 29, 54, 0.88), rgba(31, 56, 100, 0.95)), url(${exam.bannerImg}) center/cover no-repeat`, color: '#ffffff', padding: '40px 0 32px 0' }}>
         <div className="container">
           <span className="badge-coral" style={{ marginBottom: '16px' }}>{exam.badge}</span>
-          <h1 style={{ color: '#ffffff', fontSize: '42px', fontWeight: '800', marginBottom: '14px' }}>
+          <h1 style={{ color: '#ffffff', fontSize: '36px', fontWeight: '800', marginBottom: '12px' }}>
             {exam.title}
           </h1>
-          <p style={{ color: '#cbd5e1', fontSize: '18px', maxWidth: '800px', marginBottom: '30px' }}>
+          <p style={{ color: '#cbd5e1', fontSize: '16px', maxWidth: '800px', marginBottom: '20px' }}>
             {exam.subtitle}
           </p>
-          <button className="btn-primary" onClick={onRequestCounselling} style={{ padding: '14px 32px' }}>
+          <button className="btn-primary" onClick={onRequestCounselling} style={{ padding: '12px 28px' }}>
             <GraduationCap size={18} /> Request Free Study Material & Guidance
           </button>
         </div>
       </section>
 
       {/* Main Content Layout */}
-      <section style={{ padding: '70px 0', background: '#f8fafc' }}>
-        <div className="container" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '40px' }}>
+      <section style={{ padding: '24px 0', background: '#f8fafc' }}>
+        <div className="container" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px' }}>
           
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             
             {/* Overview */}
             <div className="glass-card" style={{ padding: '36px', borderRadius: '20px' }}>

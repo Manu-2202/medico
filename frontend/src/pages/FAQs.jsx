@@ -75,7 +75,7 @@ const FAQs = ({ onRequestCounselling }) => {
       />
 
       {/* FAQs Hero Banner */}
-      <section style={{ background: 'linear-gradient(135deg, var(--navy-dark), var(--navy-primary))', color: '#ffffff', padding: '70px 0 50px 0', textAlign: 'center' }}>
+      <section style={{ background: 'linear-gradient(135deg, var(--navy-dark), var(--navy-primary))', color: '#ffffff', padding: '36px 0 28px 0', textAlign: 'center' }}>
         <div className="container">
           <span className="badge-coral" style={{ marginBottom: '12px' }}><HelpCircle size={14} /> {lang === 'hi' ? 'ब्लॉग एफएक्यू' : 'Blog FAQ'}</span>
           <h1 style={{ color: '#ffffff', fontSize: '40px', marginBottom: '14px' }}>

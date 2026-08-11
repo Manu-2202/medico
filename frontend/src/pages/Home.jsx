@@ -962,7 +962,7 @@ const Home = ({ onRequestCounselling }) => {
       <TrustBar />
 
       {/* 3. "WHY STUDY MBBS ABROAD" SECTION — 6 EXTRACTED BENEFIT CARDS WITH COMPACT SPACING & GRAY HOVER */}
-      <section style={{ padding: '36px 0', background: '#f8fafc' }}>
+      <section style={{ padding: '20px 0', background: '#f8fafc' }}>
         <style>{`
           .why-mbbs-card {
             background: #ffffff;
@@ -981,21 +981,21 @@ const Home = ({ onRequestCounselling }) => {
         `}</style>
         <div className="container">
 
-          <div style={{ textAlign: 'center', maxWidth: '750px', margin: '0 auto 20px auto' }}>
-            <span className="badge-coral" style={{ marginBottom: '10px' }}>
+          <div style={{ textAlign: 'center', maxWidth: '750px', margin: '0 auto 16px auto' }}>
+            <span className="badge-coral" style={{ marginBottom: '8px' }}>
               {lang === 'hi' ? 'मुख्य लाभ' : 'Key Benefits'}
             </span>
-            <h2 style={{ fontSize: '32px', color: 'var(--navy-primary)', fontWeight: '800', marginBottom: '12px' }}>
+            <h2 style={{ fontSize: '28px', color: 'var(--navy-primary)', fontWeight: '800', marginBottom: '8px' }}>
               {lang === 'hi' ? 'विदेश में एमबीबीएस क्यों करें?' : 'Why Study MBBS Abroad?'}
             </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '15px', lineHeight: '1.6' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14.5px', lineHeight: '1.5' }}>
               {lang === 'hi'
                 ? 'हर साल 25,000 से अधिक भारतीय चिकित्सा छात्र शीर्ष डब्ल्यूएचओ और एनएमसी-अनुमोदित विदेशी विश्वविद्यालयों को चुनते हैं। यहां 6 प्राथमिक कारण दिए गए हैं:'
                 : 'Over 25,000 Indian medical aspirants choose top WHO & NMC-approved foreign medical universities every year. Here are 6 primary reasons:'}
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '18px' }}>
 
             {/* Card 1 */}
             <div className="why-study-card theme-coral">
@@ -1092,24 +1092,24 @@ const Home = ({ onRequestCounselling }) => {
       </section>
 
       {/* 4. DESTINATIONS PREVIEW GRID — 6 INTERACTIVE 3D FLIP CARDS */}
-      <section id="destinations" style={{ padding: '40px 0', background: '#ffffff' }}>
+      <section id="destinations" style={{ padding: '20px 0', background: '#ffffff' }}>
         <div className="container">
 
-          <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 24px auto' }}>
-            <span className="badge-navy" style={{ marginBottom: '12px' }}>
+          <div style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 16px auto' }}>
+            <span className="badge-navy" style={{ marginBottom: '8px' }}>
               {lang === 'hi' ? 'इंटरैक्टिव देश खोजकर्ता' : 'Interactive Country Explorer'}
             </span>
-            <h2 style={{ fontSize: '36px', color: 'var(--navy-primary)', fontWeight: '800', marginBottom: '16px' }}>
+            <h2 style={{ fontSize: '28px', color: 'var(--navy-primary)', fontWeight: '800', marginBottom: '10px' }}>
               {lang === 'hi' ? 'शीर्ष एमबीबीएस अध्ययन देशों का अन्वेषण करें' : 'Explore Top MBBS Destinations'}
             </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '16px', lineHeight: '1.6' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14.5px', lineHeight: '1.5' }}>
               {lang === 'hi'
                 ? 'पूरी फीस विवरण, प्रवेश तिथियां और मुख्य विशेषताएं देखने के लिए नीचे दिए गए कार्ड पर क्लिक करें!'
                 : 'Hover or tap any card below to flip and reveal full fee breakdown, intake dates, and university highlights!'}
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '18px' }}>
             {destinations.map((d, idx) => (
               <div key={idx} className="destination-flip-card">
                 <div className="destination-flip-card-inner">
@@ -1237,7 +1237,7 @@ const Home = ({ onRequestCounselling }) => {
       </section>
 
       {/* 5. ADMISSION PROCESS — SIMPLE & HIGH-IMPACT 5-STEP JOURNEY */}
-      <section style={{ padding: '42px 0', background: 'linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)', color: '#1e293b', position: 'relative', overflow: 'hidden' }}>
+      <section style={{ padding: '20px 0', background: 'linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)', color: '#1e293b', position: 'relative', overflow: 'hidden' }}>
         <style>{`
           .admission-step-card {
             background: #ffffff;
