@@ -111,7 +111,7 @@ const Navbar = ({ onRequestCounselling }) => {
       </div>
 
       {/* Main Header Container */}
-      <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 16px', height: '72px' }}>
+      <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 16px', height: '84px' }}>
         
         {/* Brand Logo */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', zIndex: 10 }}>
@@ -120,12 +120,12 @@ const Navbar = ({ onRequestCounselling }) => {
             alt="Medico Overseas Logo" 
             className="brand-logo-img"
             style={{ 
-              height: '58px', 
+              height: '80px', 
               width: 'auto', 
-              maxWidth: '240px',
+              maxWidth: '320px',
               objectFit: 'contain',
               display: 'block',
-              filter: 'drop-shadow(0 2px 8px rgba(31, 56, 100, 0.15))',
+              filter: 'drop-shadow(0 3px 10px rgba(31, 56, 100, 0.18))',
               transition: 'all 0.3s ease'
             }} 
           />
