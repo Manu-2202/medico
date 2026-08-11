@@ -596,6 +596,145 @@ const sendStudentConfirmationEmail = async (inquiry) => {
   }
 };
 
+// DISPOSABLE / SPAM EMAIL DOMAINS BLOCKLIST
+const DISPOSABLE_EMAIL_DOMAINS = new Set([
+  'tempmail.com', '10minutemail.com', 'mailinator.com', 'guerrillamail.com', 
+  'trashmail.com', 'yopmail.com', 'dispostable.com', 'sharklasers.com', 
+  'getnada.com', 'fakeinbox.com', 'throwawaymail.com', 'maildrop.cc', 
+  'inboxbear.com', 'bupmail.com', 'byom.de', 'crazymailing.com', 
+  'dayrep.com', 'einrot.com', 'emailondeck.com', 'fleckens.hu', 
+  'getairmail.com', 'gishpuppy.com', 'jourrapide.com', 'loproducts.net', 
+  'mailcatch.com', 'mailnesia.com', 'mailnull.com', 'mytemp.email', 
+  'nowmymail.com', 'objectmail.com', 'proxymail.eu', 'rcpt.at', 
+  'trashmail.net', 'wegwerfemail.de', 'superrito.com', 'teleworm.us',
+  'temp-mail.org', 'tempmailo.com', 'generator.email', 'dropmail.me'
+]);
+
+const isSpamOrDisposableEmail = (email) => {
+  if (!email || typeof email !== 'string') return false;
+  const clean = email.trim().toLowerCase();
+  
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(clean)) return true;
+
+  const parts = clean.split('@');
+  if (parts.length !== 2) return true;
+  const user = parts[0];
+  const domain = parts[1];
+
+  if (DISPOSABLE_EMAIL_DOMAINS.has(domain)) return true;
+
+  const fakePatterns = ['asdf', 'qwerty', 'test', 'temp', 'fake', 'dummy', 'none', 'noemail', 'abcd', '1234'];
+  if (fakePatterns.includes(user) || fakePatterns.includes(domain.split('.')[0])) return true;
+
+  if (user.length < 2) return true;
+
+  return false;
+};
+
+const isFakePhoneNumber = (phone) => {
+  if (!phone) return false;
+  const digits = (phone + '').replace(/[^0-9]/g, '');
+  
+  if (digits.length < 10) return true;
+
+  const dummyNumbers = [
+    '0000000000', '1111111111', '2222222222', '3333333333', '4444444444',
+    '5555555555', '6666666666', '7777777777', '8888888888', '9999999999',
+    '1234567890', '0123456789', '9876543210', '1234512345'
+  ];
+
+  if (dummyNumbers.some(d => digits.includes(d))) return true;
+
+  return false;
+};
+
+// Send automated status update email to student when counselor changes status pipeline
+const sendStatusUpdateEmail = async (inquiry, newStatus) => {
+  if (!inquiry || !inquiry.email || !inquiry.email.includes('@')) {
+    console.log('[Status Email] Skipping — no valid student email provided:', inquiry?.email);
+    return;
+  }
+
+  try {
+    const { transporter, sender } = await getActiveTransporter();
+    const updatedAt = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
+    let statusDescription = 'Your application record has been updated by our senior admissions desk.';
+    let actionBadge = 'APPLICATION UPDATED';
+    let badgeColor = '#2563eb';
+
+    if (newStatus === 'Contacted') {
+      statusDescription = 'Our senior medical counselor has reviewed your preferences and initiated active counseling.';
+      actionBadge = 'COUNSELOR CONTACTED';
+      badgeColor = '#d97706';
+    } else if (newStatus === 'In Counseling') {
+      statusDescription = 'Your profile is currently under active 1-on-1 counseling for university selection, document verification, and seat allocation.';
+      actionBadge = 'IN COUNSELING';
+      badgeColor = '#0284c7';
+    } else if (newStatus === 'Enrolled') {
+      statusDescription = 'Congratulations! Your MBBS university seat allocation and enrollment process has been officially initiated!';
+      actionBadge = 'ENROLLED & PROCESSED 🎉';
+      badgeColor = '#16a34a';
+    } else if (newStatus === 'Archived') {
+      statusDescription = 'Your inquiry record has been archived. Reach out anytime if you wish to resume your application.';
+      actionBadge = 'ARCHIVED';
+      badgeColor = '#64748b';
+    }
+
+    const info = await transporter.sendMail({
+      from: sender,
+      to: inquiry.email,
+      subject: `[Status Update] Your MBBS Application for ${inquiry.country} is now: ${newStatus}`,
+      priority: 'high',
+      headers: {
+        'X-Priority': '1 (Highest)',
+        'X-MSMail-Priority': 'High',
+        'Importance': 'High'
+      },
+      text: `Respected ${inquiry.name},\n\nYour MBBS Abroad application status has been updated to: ${newStatus}\n\nTarget Destination: ${inquiry.country}\nUpdated On: ${updatedAt} IST\n\nIf you have any questions, please contact our Senior Admissions Counselor at +91 98765 43210.\n\nWarm regards,\nMedico Overseas Counseling Board`,
+      html: `
+        <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 620px; margin: 0 auto; border-radius: 18px; overflow: hidden; box-shadow: 0 8px 32px rgba(31,56,100,0.14); border: 1px solid #e2e8f0; background: #ffffff;">
+          <div style="background: linear-gradient(135deg, #0b132b 0%, #1f3864 100%); padding: 32px; color: #ffffff; text-align: center;">
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin: 0 auto 12px;">
+              <tr>
+                <td align="center" valign="middle" width="50" height="50" style="background-color: #2563eb; color: #ffffff; border-radius: 14px; font-weight: 900; font-size: 26px; font-family: Arial, sans-serif;">
+                  M
+                </td>
+              </tr>
+            </table>
+            <h1 style="margin: 0; font-size: 24px; font-weight: 900; color: #ffffff; font-family: Arial, sans-serif;">Medico Overseas</h1>
+            <p style="color: #93c5fd; margin: 4px 0 14px; font-size: 13px; font-family: Arial, sans-serif;">Official Student Admission Status Update</p>
+            <div style="display: inline-block; background-color: ${badgeColor}; color: #ffffff; padding: 6px 18px; border-radius: 30px; font-size: 12px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; font-family: Arial, sans-serif;">
+              ${actionBadge}: ${newStatus}
+            </div>
+          </div>
+          <div style="padding: 32px; color: #1e293b; line-height: 1.7; font-size: 15px;">
+            <p style="font-size: 17px; font-weight: 700; color: #1f3864; margin-top: 0;">
+              Respected ${inquiry.name},
+            </p>
+            <p style="color: #334155;">
+              This is an official update regarding your MBBS admission application for <strong>${inquiry.country}</strong>.
+            </p>
+            <div style="background: #f8fafc; border-left: 4px solid ${badgeColor}; padding: 18px; border-radius: 10px; margin: 20px 0;">
+              <div style="font-size: 12px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Current Pipeline Status</div>
+              <div style="font-size: 18px; font-weight: 800; color: #0f172a; margin: 4px 0 8px 0;">${newStatus}</div>
+              <p style="margin: 0; font-size: 13.5px; color: #475569;">${statusDescription}</p>
+            </div>
+            <p style="color: #64748b; font-size: 13px; border-top: 1px solid #f1f5f9; padding-top: 16px; margin-top: 24px;">
+              📍 Registered Destination: <strong>${inquiry.country}</strong> &nbsp;|&nbsp; Updated: <strong>${updatedAt} IST</strong>
+            </p>
+          </div>
+        </div>
+      `
+    });
+
+    console.log(`[Status Email] ✅ Sent status update email to ${inquiry.email} for status: ${newStatus}`);
+  } catch (err) {
+    console.error('[Status Email] Error sending status email:', err.message);
+  }
+};
+
 // API ROUTES
 
 // Health check
@@ -880,6 +1019,20 @@ app.post('/api/inquiries', publicApiLimiter, async (req, res) => {
       return res.status(400).json({ success: false, message: 'Name, Phone Number, and Preferred Country are required.' });
     }
 
+    if (email && isSpamOrDisposableEmail(email)) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Please provide a valid personal or official email address. Disposable or temporary emails (e.g. tempmail.com) are not allowed.' 
+      });
+    }
+
+    if (isFakePhoneNumber(phone)) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Please provide a valid 10-digit mobile phone number.' 
+      });
+    }
+
     let inquiry;
     if (isMongoConnected) {
       inquiry = await Inquiry.create({ name, phone, email, city, country, neetScore, message, sourcePage });
@@ -978,20 +1131,32 @@ app.get('/api/inquiries/export-csv', requireAdmin, async (req, res) => {
   }
 });
 
-// UPDATE INQUIRY STATUS
+// UPDATE INQUIRY STATUS & AUTOMATICALLY DISPATCH STATUS UPDATE EMAIL TO STUDENT
 app.patch('/api/inquiries/:id', async (req, res) => {
   try {
     const { status } = req.body;
     const { id } = req.params;
 
+    let updatedInquiry = null;
+
     if (isMongoConnected) {
-      const updated = await Inquiry.findByIdAndUpdate(id, { status }, { new: true });
-      return res.json({ success: true, data: updated });
+      updatedInquiry = await Inquiry.findByIdAndUpdate(id, { status }, { new: true });
     } else {
-      const item = memoryInquiries.find(i => i._id === id);
-      if (item) item.status = status;
-      return res.json({ success: true, data: item });
+      updatedInquiry = memoryInquiries.find(i => i._id === id);
+      if (updatedInquiry) updatedInquiry.status = status;
     }
+
+    if (!updatedInquiry) {
+      return res.status(404).json({ success: false, message: 'Inquiry record not found.' });
+    }
+
+    // Respond back to frontend CRM immediately
+    res.json({ success: true, data: updatedInquiry });
+
+    // Send automated status update email to student's email asynchronously
+    setImmediate(async () => {
+      await sendStatusUpdateEmail(updatedInquiry, status);
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
