@@ -489,17 +489,34 @@ html, body {
   box-sizing: border-box;
 }
 
+/* ---- NAVBAR BRAND LOGO (Desktop) ---- */
+.brand-logo-img {
+  height: 170px;
+  width: auto;
+  max-width: 340px;
+  object-fit: contain;
+  display: block;
+  margin-top: -40px;
+  margin-bottom: -40px;
+  filter: drop-shadow(0 4px 14px rgba(31, 56, 100, 0.18));
+  transition: all 0.3s ease;
+}
+
 /* Header & Utility Bar Mobile Tweaks */
 @media (max-width: 768px) {
   .desktop-cta-btn {
     display: none !important;
   }
-  /* Utility bar stays visible on mobile - just wraps */
+  /* Logo bigger on mobile */
   .brand-logo-img {
     height: 120px !important;
     max-width: 240px !important;
-    margin-top: -30px !important;
-    margin-bottom: -30px !important;
+    margin-top: -28px !important;
+    margin-bottom: -28px !important;
+  }
+  /* Compact header height on mobile */
+  header .container[style] {
+    height: 54px !important;
   }
 }
 

@@ -77,7 +77,7 @@ const Navbar = ({ onRequestCounselling }) => {
   });
 
   return (
-    <header style={{ position: 'sticky', top: 0, zIndex: 1000, background: 'whitesmoke', boxShadow: isScrolled ? '0 6px 24px rgba(31, 56, 100, 0.12)' : '0 2px 8px rgba(0,0,0,0.06)', transition: 'all 0.3s ease', overflow: 'visible' }}>
+    <header style={{ position: 'sticky', top: 0, zIndex: 1000, background: 'whitesmoke', boxShadow: isScrolled ? '0 4px 20px rgba(31, 56, 100, 0.14)' : 'none', transition: 'all 0.3s ease', overflow: 'visible' }}>
       
       {/* Top Utility Contact Bar */}
       <div style={{ background: '#eef2f6', color: '#1e3a8a', fontSize: '11px', padding: '5px 0', borderBottom: '1px solid #e2e8f0' }}>
@@ -108,7 +108,7 @@ const Navbar = ({ onRequestCounselling }) => {
       </div>
 
       {/* Main Header Container */}
-      <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0px 16px', height: '60px' }}>
+      <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0px 16px', height: '60px', borderBottom: '1px solid #e2e8f0' }}>
         
         {/* Brand Logo */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', zIndex: 10 }}>
