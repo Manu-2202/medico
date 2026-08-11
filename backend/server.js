@@ -399,23 +399,43 @@ const sendLeadEmail = async (inquiry) => {
     const info = await transporter.sendMail({
       from: sender,
       to: recipients.join(', '),
-      subject: `New Student Inquiry: ${inquiry.name} - MBBS in ${inquiry.country}`,
+      subject: `🚨 NEW LEAD: ${inquiry.name} - MBBS in ${inquiry.country}`,
+      priority: 'high',
+      headers: {
+        'X-Priority': '1 (Highest)',
+        'X-MSMail-Priority': 'High',
+        'Importance': 'High'
+      },
       text: `New MBBS Lead Inquiry Received!\n\nName: ${inquiry.name}\nPhone: ${inquiry.phone}\nEmail: ${inquiry.email || 'Not provided'}\nCity: ${inquiry.city || 'Not specified'}\nPreferred Country: ${inquiry.country}\nNEET Score: ${inquiry.neetScore || 'Not provided'}\nMessage: ${inquiry.message || 'None'}\nReceived: ${submittedAt}\nSource: ${inquiry.sourcePage || 'Website'}`,
       html: `
         <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 620px; margin: 0 auto; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.12); border: 1px solid #e2e8f0;">
           <div style="background: linear-gradient(135deg, #0b132b, #1f3864); padding: 26px 30px; color: #ffffff;">
-            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 12px;">
-              <div style="background: #2563eb; color: #ffffff; width: 44px; height: 44px; border-radius: 12px; font-weight: 900; font-size: 24px; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(37,99,235,0.4);">M</div>
-              <div>
-                <h2 style="margin: 0; font-size: 20px; font-weight: 900; color: #ffffff; letter-spacing: -0.3px;">Medico Overseas</h2>
-                <span style="color: #93c5fd; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Official Admissions Portal</span>
-              </div>
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom: 14px;">
+              <tr>
+                <td width="48" style="vertical-align: middle; padding-right: 12px;">
+                  <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td align="center" valign="middle" width="44" height="44" style="background-color: #2563eb; color: #ffffff; border-radius: 12px; font-weight: 900; font-size: 22px; font-family: Arial, sans-serif; text-align: center;">
+                        M
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                <td style="vertical-align: middle;">
+                  <div style="font-size: 20px; font-weight: 900; color: #ffffff; font-family: Arial, sans-serif; line-height: 1.2;">Medico Overseas</div>
+                  <div style="font-size: 11px; color: #93c5fd; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-family: Arial, sans-serif; margin-top: 2px;">Official Admissions Portal</div>
+                </td>
+              </tr>
+            </table>
+            <div style="border-top: 1px solid rgba(255,255,255,0.15); padding-top: 12px;">
+              <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td style="vertical-align: middle;"><h3 style="margin: 0; font-size: 16px; font-weight: 800; color: #ffffff; font-family: Arial, sans-serif;">🎓 New Student Lead Alert</h3></td>
+                  <td align="right" style="vertical-align: middle;"><span style="background-color: #22c55e; color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; font-family: Arial, sans-serif;">NEW INQUIRY</span></td>
+                </tr>
+              </table>
             </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
-              <h3 style="margin: 0; font-size: 16px; font-weight: 800; color: #ffffff;">🎓 New Student Lead Alert</h3>
-              <span style="background: #22c55e; color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase;">NEW INQUIRY</span>
-            </div>
-            <p style="margin: 6px 0 0; color: #93c5fd; font-size: 12px;">Received at ${submittedAt} IST via Medico Overseas Website</p>
+            <p style="margin: 8px 0 0; color: #93c5fd; font-size: 12px;">Received at ${submittedAt} IST via Medico Overseas Website</p>
           </div>
           <div style="padding: 26px 30px; background: #ffffff; color: #0f172a;">
             <table style="width: 100%; border-collapse: collapse; font-size: 15px;">
@@ -465,17 +485,27 @@ const sendStudentConfirmationEmail = async (inquiry) => {
       from: sender,
       to: inquiry.email,
       subject: `Welcome to Medico Overseas - Your MBBS Admission Guidance, ${inquiry.name}`,
+      priority: 'high',
+      headers: {
+        'X-Priority': '1 (Highest)',
+        'X-MSMail-Priority': 'High',
+        'Importance': 'High'
+      },
       text: `Respected ${inquiry.name},\n\nThank you for reaching out to Medico Overseas regarding MBBS opportunities in ${inquiry.country}.\n\nOur senior medical counseling board has received your inquiry. A senior counselor will contact you shortly on ${inquiry.phone} to assist you with transparent information regarding university choices, tuition fees, hostels, and NMC guidelines.\n\nWarm regards,\nMedico Overseas Admissions Team\nPhone: +91 98765 43210\nWebsite: https://medicooverseas.com`,
       html: `
         <div style="font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 620px; margin: 0 auto; border-radius: 18px; overflow: hidden; box-shadow: 0 8px 32px rgba(31, 56, 100, 0.12); border: 1px solid #e2e8f0; background: #ffffff;">
           <!-- Header Banner -->
           <div style="background: linear-gradient(135deg, #0b132b 0%, #1f3864 100%); padding: 36px 32px; color: #ffffff; text-align: center;">
-            <div style="display: inline-flex; align-items: center; justify-content: center; background: #2563eb; color: #ffffff; width: 52px; height: 52px; border-radius: 14px; font-weight: 900; font-size: 28px; box-shadow: 0 6px 16px rgba(37,99,235,0.5); margin-bottom: 12px;">
-              M
-            </div>
-            <h1 style="margin: 0; font-size: 26px; font-weight: 900; color: #ffffff; letter-spacing: -0.5px;">Medico Overseas</h1>
-            <p style="color: #93c5fd; margin: 6px 0 14px; font-size: 14px; font-weight: 500;">Your Trusted Partner for NMC & WHO Recognized MBBS Abroad</p>
-            <div style="display: inline-block; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); padding: 5px 16px; border-radius: 30px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: #f97316;">
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin: 0 auto 14px;">
+              <tr>
+                <td align="center" valign="middle" width="52" height="52" style="background-color: #2563eb; color: #ffffff; border-radius: 14px; font-weight: 900; font-size: 28px; font-family: Arial, sans-serif; text-align: center; box-shadow: 0 6px 16px rgba(37,99,235,0.5);">
+                  M
+                </td>
+              </tr>
+            </table>
+            <h1 style="margin: 0; font-size: 26px; font-weight: 900; color: #ffffff; letter-spacing: -0.5px; font-family: Arial, sans-serif;">Medico Overseas</h1>
+            <p style="color: #93c5fd; margin: 6px 0 14px; font-size: 14px; font-weight: 500; font-family: Arial, sans-serif;">Your Trusted Partner for NMC & WHO Recognized MBBS Abroad</p>
+            <div style="display: inline-block; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); padding: 5px 16px; border-radius: 30px; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: #f97316; font-family: Arial, sans-serif;">
               🎓 Official Medical Admissions Board
             </div>
           </div>

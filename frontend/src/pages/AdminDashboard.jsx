@@ -532,13 +532,15 @@ const AdminDashboard = () => {
   }));
 
   const filteredInquiries = inquiries.filter((inq) => {
-    const matchesStatus = statusFilter === 'All' || inq.status === statusFilter;
+    const leadStatus = inq.status || 'New';
+    const matchesStatus = statusFilter === 'All' || leadStatus === statusFilter;
     const query = searchQuery.trim().toLowerCase();
     const matchesSearch = query === '' ||
-      inq.name?.toLowerCase().includes(query) ||
-      inq.phone?.toLowerCase().includes(query) ||
-      inq.email?.toLowerCase().includes(query) ||
-      inq.country?.toLowerCase().includes(query);
+      (inq.name || '').toLowerCase().includes(query) ||
+      (inq.phone || '').toLowerCase().includes(query) ||
+      (inq.email || '').toLowerCase().includes(query) ||
+      (inq.country || '').toLowerCase().includes(query) ||
+      (inq.city || '').toLowerCase().includes(query);
     return matchesStatus && matchesSearch;
   });
 
