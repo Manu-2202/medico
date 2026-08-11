@@ -1603,21 +1603,21 @@ const Home = ({ onRequestCounselling }) => {
                 {lang === 'hi' ? '2026 सत्र के लिए आवेदन प्रारंभ' : 'ACCEPTING 2026 APPLICATIONS'}
               </div>
               
-              <h2 style={{ color: '#0f172a', fontSize: '26px', fontWeight: '800', lineHeight: '1.25', marginBottom: '6px', letterSpacing: '-0.4px' }}>
+              <h2 style={{ color: '#ffffff', fontSize: '26px', fontWeight: '800', lineHeight: '1.25', marginBottom: '6px', letterSpacing: '-0.4px' }}>
                 {lang === 'hi' ? 'कॉल-बैक का अनुरोध करें' : 'Request a Callback'}
               </h2>
-              <p style={{ color: '#64748b', fontSize: '13px', marginBottom: '18px' }}>
+              <p style={{ color: '#94a3b8', fontSize: '13px', marginBottom: '18px' }}>
                 {lang === 'hi' ? 'हमारे वरिष्ठ सलाहकार 15–30 मिनट में आपसे संपर्क करेंगे।' : 'Our senior medical advisor will contact you within 15 mins.'}
               </p>
 
               {footerLeadSuccess ? (
-                <div style={{ background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.25)', color: '#15803d', padding: '14px', borderRadius: '14px', textAlign: 'center', fontWeight: '700', fontSize: '14px' }}>
+                <div style={{ background: 'rgba(16, 185, 129, 0.15)', border: '1px solid rgba(16, 185, 129, 0.3)', color: '#4ade80', padding: '14px', borderRadius: '14px', textAlign: 'center', fontWeight: '700', fontSize: '14px' }}>
                   {footerLeadSuccess}
                 </div>
               ) : (
                 <form onSubmit={handleFooterLeadSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   {footerLeadError && (
-                    <div style={{ background: 'rgba(248, 113, 113, 0.12)', border: '1px solid rgba(248, 113, 113, 0.25)', color: '#991b1b', padding: '12px', borderRadius: '12px', fontSize: '13px' }}>
+                    <div style={{ background: 'rgba(248, 113, 113, 0.15)', border: '1px solid rgba(248, 113, 113, 0.3)', color: '#fca5a5', padding: '12px', borderRadius: '12px', fontSize: '13px' }}>
                       {footerLeadError}
                     </div>
                   )}
@@ -1697,7 +1697,7 @@ const Home = ({ onRequestCounselling }) => {
                       borderRadius: '14px', 
                       fontSize: '14.5px', 
                       fontWeight: '700', 
-                      background: 'linear-gradient(135deg, rgba(78, 114, 255, 1) 0%, rgba(59, 130, 246, 1) 100%)', 
+                      background: 'linear-gradient(135deg, #e15b3f 0%, #c84327 100%)', 
                       color: '#ffffff', 
                       border: 'none', 
                       cursor: 'pointer', 
@@ -1705,7 +1705,7 @@ const Home = ({ onRequestCounselling }) => {
                       alignItems: 'center', 
                       justifyContent: 'center', 
                       gap: '8px', 
-                      boxShadow: '0 14px 24px rgba(59, 130, 246, 0.24)', 
+                      boxShadow: '0 10px 25px rgba(225, 91, 63, 0.4)', 
                       transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                       marginTop: '4px'
                     }}
@@ -1715,7 +1715,7 @@ const Home = ({ onRequestCounselling }) => {
                       : (lang === 'hi' ? 'तत्काल प्रवेश विवरण प्राप्त करें' : 'Get Instant Admission Details')} <ArrowRight size={18} />
                   </button>
                   
-                  <div style={{ textAlign: 'center', marginTop: '6px', fontSize: '11px', color: '#64748b', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+                  <div style={{ textAlign: 'center', marginTop: '6px', fontSize: '11px', color: '#94a3b8', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
                     <Shield size={12} /> {lang === 'hi' ? '🔒 आपकी जानकारी 100% सुरक्षित और गोपनीय है।' : 'Your information is 100% secure.'}
                   </div>
                 </form>

@@ -31,12 +31,12 @@ const AdmissionTracker = ({ isCompact = false }) => {
 
   return (
     <div style={{
-      background: 'linear-gradient(135deg, #0b132b 0%, #0f172a 100%)',
+      background: isCompact ? 'transparent' : 'linear-gradient(135deg, #0b132b 0%, #0f172a 100%)',
       color: '#ffffff',
-      borderRadius: '24px',
-      padding: isCompact ? '28px 24px' : '36px 28px',
-      boxShadow: '0 20px 50px rgba(11, 19, 43, 0.5)',
-      border: '1px solid rgba(255, 255, 255, 0.12)',
+      borderRadius: isCompact ? '0px' : '24px',
+      padding: isCompact ? '12px 6px' : '36px 28px',
+      boxShadow: isCompact ? 'none' : '0 20px 50px rgba(11, 19, 43, 0.5)',
+      border: isCompact ? 'none' : '1px solid rgba(255, 255, 255, 0.12)',
       height: '100%',
       display: 'flex',
       flexDirection: 'column',
