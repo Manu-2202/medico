@@ -16,7 +16,7 @@ const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
   const isOverallEligible = isNeetQualified && isPcbEligible;
 
   const universitiesDatabase = [
-    // RUSSIA UNIVERSITIES
+    // RUSSIA UNIVERSITIES (3 CARDS)
     {
       country: 'Russia',
       country_hi: 'रूस',
@@ -54,23 +54,10 @@ const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
       duration: '6 Years',
       fmgePassRate: 'Very High (82%+)',
       mess: 'Dedicated Indian Canteen',
-      climate: 'Black Sea Coastal Climate (+2°C to +28°C)'
-    },
-    {
-      country: 'Russia',
-      country_hi: 'रूस',
-      flag: '🇷🇺',
-      college: 'Orenburg State Medical University',
-      feeYear: '₹3.8 Lakhs / Year',
-      totalPackage: '₹20 Lakhs to ₹24 Lakhs',
-      categoryTag: 'Medium',
-      duration: '6 Years',
-      fmgePassRate: 'High (75%+)',
-      mess: 'North & South Indian Meals',
-      climate: 'Continental Winter (-15°C to +26°C)'
+      climate: 'Coastal Climate (+2°C to +28°C)'
     },
 
-    // GEORGIA UNIVERSITIES
+    // GEORGIA UNIVERSITIES (3 CARDS)
     {
       country: 'Georgia',
       country_hi: 'जॉर्जिया',
@@ -81,7 +68,7 @@ const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
       categoryTag: 'High',
       duration: '6 Years',
       fmgePassRate: 'Highest in Europe (84%+)',
-      mess: 'Indian Cooks & Veg/Non-Veg',
+      mess: 'Indian Cooks & Mess',
       climate: 'Moderate European (+5°C to +28°C)'
     },
     {
@@ -97,8 +84,21 @@ const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
       mess: 'Indian Mess Catering',
       climate: 'Subtropical Mild (+8°C to +26°C)'
     },
+    {
+      country: 'Georgia',
+      country_hi: 'जॉर्जिया',
+      flag: '🇬🇪',
+      college: 'Georgian National University (SEU)',
+      feeYear: '₹4.5 Lakhs / Year',
+      totalPackage: '₹24 Lakhs to ₹28 Lakhs',
+      categoryTag: 'High',
+      duration: '6 Years',
+      fmgePassRate: 'High (81%+)',
+      mess: 'Indian Hostel Food',
+      climate: 'Pleasant City Climate'
+    },
 
-    // KAZAKHSTAN UNIVERSITIES
+    // KAZAKHSTAN UNIVERSITIES (3 CARDS)
     {
       country: 'Kazakhstan',
       country_hi: 'कजाकिस्तान',
@@ -125,8 +125,21 @@ const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
       mess: 'Fresh Indian Catering',
       climate: 'Pleasant City Climate'
     },
+    {
+      country: 'Kazakhstan',
+      country_hi: 'कजाकिस्तान',
+      flag: '🇰🇿',
+      college: 'Semey State Medical University',
+      feeYear: '₹2.9 Lakhs / Year',
+      totalPackage: '₹15 Lakhs to ₹18 Lakhs',
+      categoryTag: 'Low',
+      duration: '5 Years',
+      fmgePassRate: 'High (72%+)',
+      mess: 'Indian Mess Cooks',
+      climate: 'Continental (-10°C to +28°C)'
+    },
 
-    // UZBEKISTAN UNIVERSITIES
+    // UZBEKISTAN UNIVERSITIES (3 CARDS)
     {
       country: 'Uzbekistan',
       country_hi: 'उज्बेकिस्तान',
@@ -153,8 +166,21 @@ const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
       mess: 'Indian Hostel Canteen',
       climate: 'Sunny & Warm (+10°C to +33°C)'
     },
+    {
+      country: 'Uzbekistan',
+      country_hi: 'उज्बेकिस्तान',
+      flag: '🇺🇿',
+      college: 'Bukhara State Medical Institute',
+      feeYear: '₹2.5 Lakhs / Year',
+      totalPackage: '₹12 Lakhs to ₹15 Lakhs',
+      categoryTag: 'Low',
+      duration: '5 Years',
+      fmgePassRate: 'High (71%+)',
+      mess: 'Indian Food Catering',
+      climate: 'Warm Climate (+12°C to +34°C)'
+    },
 
-    // KYRGYZSTAN UNIVERSITIES
+    // KYRGYZSTAN UNIVERSITIES (3 CARDS)
     {
       country: 'Kyrgyzstan',
       country_hi: 'किर्गिस्तान',
@@ -181,8 +207,21 @@ const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
       mess: 'Indian Mess Facilities',
       climate: 'Mountain Valley Climate'
     },
+    {
+      country: 'Kyrgyzstan',
+      country_hi: 'किर्गिस्तान',
+      flag: '🇰🇬',
+      college: 'International School of Medicine (ISM)',
+      feeYear: '₹2.8 Lakhs / Year',
+      totalPackage: '₹15 Lakhs to ₹19 Lakhs',
+      categoryTag: 'Low',
+      duration: '5 Years',
+      fmgePassRate: 'High (73%+)',
+      mess: 'Indian Hostel Canteen',
+      climate: 'Cool Mountain Air'
+    },
 
-    // ARMENIA UNIVERSITIES
+    // ARMENIA UNIVERSITIES (3 CARDS)
     {
       country: 'Armenia',
       country_hi: 'आर्मेनिया',
@@ -196,13 +235,39 @@ const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
       mess: 'Indian Hostel & Kitchen',
       climate: 'European Mountain Climate'
     },
+    {
+      country: 'Armenia',
+      country_hi: 'आर्मेनिया',
+      flag: '🇦🇲',
+      college: 'St. Tereza Medical University',
+      feeYear: '₹2.8 Lakhs / Year',
+      totalPackage: '₹15 Lakhs to ₹19 Lakhs',
+      categoryTag: 'Low',
+      duration: '6 Years',
+      fmgePassRate: 'High (72%+)',
+      mess: 'Indian Food Mess',
+      climate: 'Mountain Climate'
+    },
+    {
+      country: 'Armenia',
+      country_hi: 'आर्मेनिया',
+      flag: '🇦🇲',
+      college: 'Mkhitar Gosh International University',
+      feeYear: '₹2.9 Lakhs / Year',
+      totalPackage: '₹16 Lakhs to ₹20 Lakhs',
+      categoryTag: 'Medium',
+      duration: '6 Years',
+      fmgePassRate: 'High (74%+)',
+      mess: 'Indian Mess Service',
+      climate: 'Mild European Climate'
+    },
 
-    // VIETNAM UNIVERSITIES
+    // VIETNAM UNIVERSITIES (3 CARDS)
     {
       country: 'Vietnam',
       country_hi: 'वियतनाम',
       flag: '🇻🇳',
-      college: 'Can Tho University of Medicine and Pharmacy',
+      college: 'Can Tho University of Medicine & Pharmacy',
       feeYear: '₹3.0 Lakhs / Year',
       totalPackage: '₹16 Lakhs to ₹22 Lakhs',
       categoryTag: 'Medium',
@@ -210,6 +275,32 @@ const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
       fmgePassRate: 'Emerging High',
       mess: 'Fresh Indian Catering',
       climate: 'Tropical Warm Weather'
+    },
+    {
+      country: 'Vietnam',
+      country_hi: 'वियतनाम',
+      flag: '🇻🇳',
+      college: 'Hong Bang International University',
+      feeYear: '₹3.5 Lakhs / Year',
+      totalPackage: '₹18 Lakhs to ₹24 Lakhs',
+      categoryTag: 'Medium',
+      duration: '6 Years',
+      fmgePassRate: 'High (75%+)',
+      mess: 'Indian Kitchen Service',
+      climate: 'Warm Coastal Climate'
+    },
+    {
+      country: 'Vietnam',
+      country_hi: 'वियतनाम',
+      flag: '🇻🇳',
+      college: 'Hue University of Medicine & Pharmacy',
+      feeYear: '₹3.2 Lakhs / Year',
+      totalPackage: '₹17 Lakhs to ₹23 Lakhs',
+      categoryTag: 'Medium',
+      duration: '6 Years',
+      fmgePassRate: 'Emerging High',
+      mess: 'Indian Mess Catering',
+      climate: 'Tropical Mild Climate'
     }
   ];
 
@@ -218,7 +309,7 @@ const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
     if (budgetFilter === 'Low' && u.categoryTag !== 'Low') return false;
     if (budgetFilter === 'High' && u.categoryTag !== 'High') return false;
     return true;
-  });
+  }).slice(0, 3);
 
   return (
     <div style={{ background: '#ffffff', borderRadius: '24px', padding: '32px 28px', border: '1px solid #fed7aa', boxShadow: '0 12px 40px rgba(234, 88, 12, 0.12)', margin: '30px 0' }}>
@@ -392,69 +483,65 @@ const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
         )}
       </div>
 
-      {/* Recommended University Cards Grid */}
+      {/* Recommended University Cards Grid - EXACTLY 3 CLEAN CARDS */}
       <div>
         <h3 style={{ fontSize: '18px', fontWeight: '800', color: 'var(--navy-primary)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Award size={20} color="var(--coral-accent)" /> 
-          {lang === 'hi' ? 'आपकी योग्यता के अनुसार अनुशंसित विश्वविद्यालय:' : 'Recommended Universities Matching Your Budget & Scores:'}
+          {lang === 'hi' ? 'अनुशंसित शीर्ष 3 मेडिकल विश्वविद्यालय:' : `Top Recommended Medical Universities (${defaultCountry || 'Featured'}):`}
         </h3>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '18px' }}>
-          {filteredUniversities.map((u, idx) => {
-            const isTargetMatched = defaultCountry && u.country.toLowerCase() === defaultCountry.toLowerCase();
-            return (
-              <div 
-                key={idx} 
-                style={{ 
-                  background: isTargetMatched ? '#fffdfa' : '#f8fafc', 
-                  borderRadius: '16px', 
-                  border: isTargetMatched ? '2px solid #f97316' : '1px solid #e2e8f0', 
-                  padding: '18px', 
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  justifyContent: 'space-between', 
-                  transition: 'all 0.3s ease',
-                  boxShadow: isTargetMatched ? '0 10px 30px rgba(249, 115, 22, 0.15)' : 'none'
-                }}
-              >
-                <div>
-                  {isTargetMatched && (
-                    <div style={{ background: '#f97316', color: '#ffffff', fontSize: '10px', fontWeight: '900', textTransform: 'uppercase', padding: '3px 8px', borderRadius: '6px', width: 'fit-content', marginBottom: '8px', letterSpacing: '0.5px' }}>
-                      🌟 Selected Destination Details
-                    </div>
-                  )}
-
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                    <span style={{ fontSize: '24px' }}>{u.flag}</span>
-                    <span style={{ background: 'rgba(225, 91, 63, 0.12)', color: 'var(--coral-accent)', fontSize: '11px', fontWeight: '800', padding: '3px 9px', borderRadius: '10px' }}>
-                      {u.duration} MBBS
-                    </span>
-                  </div>
-
-                  <h4 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--navy-primary)', margin: '0 0 6px 0' }}>
-                    {lang === 'hi' ? u.country_hi : u.country} - {u.college}
-                  </h4>
-
-                  <div style={{ fontSize: '13.5px', fontWeight: '800', color: '#16a34a', marginBottom: '10px' }}>
-                    Tuition: {u.feeYear} ({u.totalPackage})
-                  </div>
-
-                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '12px', color: '#475569', display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                    <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><CheckCircle2 size={13} color="#10b981" /> FMGE Pass Rate: {u.fmgePassRate}</li>
-                    <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Utensils size={13} color="#f97316" /> Mess: {u.mess}</li>
-                    <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><CloudSun size={13} color="#0ea5e9" /> Climate: {u.climate}</li>
-                  </ul>
+          {filteredUniversities.map((u, idx) => (
+            <div 
+              key={idx} 
+              style={{ 
+                background: '#ffffff', 
+                borderRadius: '16px', 
+                border: '1.5px solid #e2e8f0', 
+                padding: '20px', 
+                display: 'flex', 
+                flexDirection: 'column', 
+                justifyContent: 'space-between', 
+                transition: 'all 0.3s ease',
+                boxShadow: '0 6px 18px rgba(15, 23, 42, 0.05)'
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                  <span style={{ fontSize: '26px' }}>{u.flag}</span>
+                  <span style={{ background: 'rgba(225, 91, 63, 0.12)', color: 'var(--coral-accent)', fontSize: '11px', fontWeight: '800', padding: '3px 10px', borderRadius: '12px' }}>
+                    {u.duration} MBBS
+                  </span>
                 </div>
 
-                <button
-                  onClick={() => onRequestCounselling && onRequestCounselling(u.country)}
-                  style={{ marginTop: '14px', width: '100%', padding: '9px', background: isTargetMatched ? 'linear-gradient(135deg, #e15b3f 0%, #c84327 100%)' : 'var(--navy-primary)', color: '#ffffff', border: 'none', borderRadius: '10px', fontWeight: '700', fontSize: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', boxShadow: isTargetMatched ? '0 6px 18px rgba(225,91,63,0.3)' : 'none' }}
-                >
-                  {lang === 'hi' ? 'प्रवेश विवरण प्राप्त करें' : 'Get Complete Fee Details'} <ArrowRight size={14} />
-                </button>
+                <h4 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--navy-primary)', margin: '0 0 8px 0', lineHeight: '1.35' }}>
+                  {u.college}
+                </h4>
+
+                <div style={{ fontSize: '14px', fontWeight: '800', color: '#16a34a', marginBottom: '12px', background: '#f0fdf4', padding: '6px 10px', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
+                  Tuition: {u.feeYear}
+                </div>
+
+                <div style={{ fontSize: '12.5px', color: '#475569', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <CheckCircle2 size={14} color="#10b981" />
+                    <span><strong style={{ color: '#0f172a' }}>FMGE Rate:</strong> {u.fmgePassRate}</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Utensils size={14} color="#f97316" />
+                    <span><strong style={{ color: '#0f172a' }}>Mess:</strong> {u.mess}</span>
+                  </div>
+                </div>
               </div>
-            );
-          })}
+
+              <button
+                onClick={() => onRequestCounselling && onRequestCounselling(u.country)}
+                style={{ marginTop: '16px', width: '100%', padding: '10px', background: 'var(--navy-primary)', color: '#ffffff', border: 'none', borderRadius: '10px', fontWeight: '700', fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', transition: 'all 0.2s ease' }}
+              >
+                {lang === 'hi' ? 'प्रवेश विवरण प्राप्त करें' : 'Get Complete Fee Details'} <ArrowRight size={14} />
+              </button>
+            </div>
+          ))}
         </div>
       </div>
 
