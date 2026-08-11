@@ -60,10 +60,10 @@ const Navbar = ({ onRequestCounselling }) => {
   );
 
   const getNavTabStyle = (isActive) => ({
-    fontWeight: isActive ? '800' : '700',
-    color: isActive ? 'var(--coral-accent)' : '#1e3a8a',
-    background: isActive ? 'rgba(225, 91, 63, 0.12)' : 'transparent',
-    border: isActive ? '1px solid rgba(225, 91, 63, 0.22)' : '1px solid transparent',
+    fontWeight: isActive ? '800' : '600',
+    color: isActive ? '#ff6b4a' : '#e2e8f0',
+    background: isActive ? 'rgba(225, 91, 63, 0.2)' : 'transparent',
+    border: isActive ? '1px solid rgba(225, 91, 63, 0.35)' : '1px solid transparent',
     padding: '7px 16px',
     borderRadius: '24px',
     fontSize: '14.5px',
@@ -73,35 +73,35 @@ const Navbar = ({ onRequestCounselling }) => {
     whiteSpace: 'nowrap',
     textDecoration: 'none',
     transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
-    boxShadow: isActive ? '0 2px 8px rgba(225, 91, 63, 0.12)' : 'none'
+    boxShadow: isActive ? '0 2px 10px rgba(225, 91, 63, 0.25)' : 'none'
   });
 
   return (
-    <header style={{ position: 'sticky', top: 0, zIndex: 1000, background: 'whitesmoke', boxShadow: isScrolled ? '0 6px 24px rgba(31, 56, 100, 0.12)' : '0 2px 12px rgba(0,0,0,0.04)', transition: 'all 0.3s ease' }}>
+    <header style={{ position: 'sticky', top: 0, zIndex: 1000, background: '#121723', borderBottom: '1px solid rgba(255,255,255,0.08)', boxShadow: isScrolled ? '0 6px 24px rgba(0, 0, 0, 0.4)' : '0 2px 12px rgba(0,0,0,0.2)', transition: 'all 0.3s ease' }}>
       
       {/* Top Utility Contact Bar */}
-      <div className="top-utility-bar" style={{ background: 'whitesmoke', color: '#1e3a8a', fontSize: '11px', padding: '6px 0', borderBottom: '1px solid #e2e8f0' }}>
+      <div className="top-utility-bar" style={{ background: '#0b0f19', color: '#e2e8f0', fontSize: '11px', padding: '6px 0', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'nowrap', overflowX: 'auto', gap: '12px' }}>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexShrink: 0 }}>
-            <a href={`tel:${siteSettings.helplinePhone}`} style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#1e3a8a', fontWeight: '700', whiteSpace: 'nowrap' }}>
+            <a href={`tel:${siteSettings.helplinePhone}`} style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#f1f5f9', fontWeight: '700', whiteSpace: 'nowrap' }}>
               <Phone size={12} color="var(--coral-accent)" /> {lang === 'hi' ? 'हेल्पलाइन:' : 'Helpline:'} {siteSettings.helplinePhone}
             </a>
-            <a href={`mailto:${siteSettings.helplineEmail}`} style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#1e3a8a', fontWeight: '600', whiteSpace: 'nowrap' }}>
+            <a href={`mailto:${siteSettings.helplineEmail}`} style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#cbd5e1', fontWeight: '600', whiteSpace: 'nowrap' }}>
               <Mail size={12} color="var(--coral-accent)" /> {siteSettings.helplineEmail}
             </a>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#475569', whiteSpace: 'nowrap', fontWeight: '700' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#94a3b8', whiteSpace: 'nowrap', fontWeight: '600' }}>
               {lang === 'hi' ? '🏆 आईएसओ 9001:2015 प्रमाणित परामर्श' : '🏆 ISO 9001:2015 Certified Consultancy'}
             </span>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(225, 91, 63, 0.12)', color: 'var(--coral-accent)', border: '1px solid rgba(225, 91, 63, 0.25)', padding: '2px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: '700', whiteSpace: 'nowrap' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(225, 91, 63, 0.2)', color: '#ff6b4a', border: '1px solid rgba(225, 91, 63, 0.35)', padding: '2px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: '700', whiteSpace: 'nowrap' }}>
               <ShieldCheck size={12} /> {lang === 'hi' ? '100% एनएमसी एवं डब्ल्यूएचओ मान्यता प्राप्त' : '100% NMC & WHO Recognized Universities'}
             </span>
             <button 
               onClick={toggleLanguage} 
-              style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#1e3a8a', borderRadius: '4px', padding: '2px 8px', fontSize: '11px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+              style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.18)', color: '#ffffff', borderRadius: '4px', padding: '2px 8px', fontSize: '11px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
             >
               <Globe size={11} color="var(--coral-accent)" /> {lang === 'en' ? 'हिंदी' : 'English'}
             </button>
@@ -127,7 +127,7 @@ const Navbar = ({ onRequestCounselling }) => {
               display: 'block',
               marginTop: '-45px',
               marginBottom: '-45px',
-              filter: 'drop-shadow(0 4px 14px rgba(31, 56, 100, 0.22))',
+              filter: 'drop-shadow(0 4px 14px rgba(0, 0, 0, 0.5))',
               transition: 'all 0.3s ease'
             }} 
           />
@@ -154,26 +154,26 @@ const Navbar = ({ onRequestCounselling }) => {
             </div>
 
             {destinationsOpen && (
-              <div style={{ position: 'absolute', top: '100%', left: 0, width: '230px', background: '#ffffff', borderRadius: '14px', boxShadow: '0 12px 36px rgba(31, 56, 100, 0.2)', border: '1px solid #e2e8f0', padding: '10px 0', zIndex: 100 }}>
-                <Link to="/destinations/mbbs-in-russia" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 18px', color: 'var(--navy-primary)', fontWeight: '600', fontSize: '14px' }} className="dropdown-item">
+              <div style={{ position: 'absolute', top: '100%', left: 0, width: '230px', background: '#1a2030', borderRadius: '14px', boxShadow: '0 12px 36px rgba(0, 0, 0, 0.6)', border: '1px solid rgba(255,255,255,0.12)', padding: '10px 0', zIndex: 100 }}>
+                <Link to="/destinations/mbbs-in-russia" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 18px', color: '#e2e8f0', fontWeight: '600', fontSize: '14px' }} className="dropdown-item">
                   <span>🇷🇺</span> MBBS in Russia
                 </Link>
-                <Link to="/destinations/mbbs-in-georgia" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 18px', color: 'var(--navy-primary)', fontWeight: '600', fontSize: '14px' }} className="dropdown-item">
+                <Link to="/destinations/mbbs-in-georgia" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 18px', color: '#e2e8f0', fontWeight: '600', fontSize: '14px' }} className="dropdown-item">
                   <span>🇬🇪</span> MBBS in Georgia
                 </Link>
-                <Link to="/destinations/mbbs-in-kazakhstan" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 18px', color: 'var(--navy-primary)', fontWeight: '600', fontSize: '14px' }} className="dropdown-item">
+                <Link to="/destinations/mbbs-in-kazakhstan" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 18px', color: '#e2e8f0', fontWeight: '600', fontSize: '14px' }} className="dropdown-item">
                   <span>🇰🇿</span> MBBS in Kazakhstan
                 </Link>
-                <Link to="/destinations/mbbs-in-uzbekistan" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 18px', color: 'var(--navy-primary)', fontWeight: '600', fontSize: '14px' }} className="dropdown-item">
+                <Link to="/destinations/mbbs-in-uzbekistan" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 18px', color: '#e2e8f0', fontWeight: '600', fontSize: '14px' }} className="dropdown-item">
                   <span>🇺🇿</span> MBBS in Uzbekistan
                 </Link>
-                <Link to="/destinations/mbbs-in-kyrgyzstan" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 18px', color: 'var(--navy-primary)', fontWeight: '600', fontSize: '14px' }} className="dropdown-item">
+                <Link to="/destinations/mbbs-in-kyrgyzstan" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 18px', color: '#e2e8f0', fontWeight: '600', fontSize: '14px' }} className="dropdown-item">
                   <span>🇰🇬</span> MBBS in Kyrgyzstan
                 </Link>
-                <Link to="/destinations/mbbs-in-armenia" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 18px', color: 'var(--navy-primary)', fontWeight: '600', fontSize: '14px' }} className="dropdown-item">
+                <Link to="/destinations/mbbs-in-armenia" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 18px', color: '#e2e8f0', fontWeight: '600', fontSize: '14px' }} className="dropdown-item">
                   <span>🇦🇲</span> MBBS in Armenia
                 </Link>
-                <Link to="/destinations/mbbs-in-vietnam" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 18px', color: 'var(--navy-primary)', fontWeight: '600', fontSize: '14px' }} className="dropdown-item">
+                <Link to="/destinations/mbbs-in-vietnam" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 18px', color: '#e2e8f0', fontWeight: '600', fontSize: '14px' }} className="dropdown-item">
                   <span>🇻🇳</span> MBBS in Vietnam
                 </Link>
               </div>
@@ -191,11 +191,11 @@ const Navbar = ({ onRequestCounselling }) => {
             </div>
 
             {examsOpen && (
-              <div style={{ position: 'absolute', top: '100%', left: 0, width: '230px', background: '#ffffff', borderRadius: '14px', boxShadow: '0 12px 36px rgba(31, 56, 100, 0.2)', border: '1px solid #e2e8f0', padding: '10px 0', zIndex: 100 }}>
-                <Link to="/exams/fmge-exam" style={{ display: 'block', padding: '10px 18px', color: 'var(--navy-primary)', fontWeight: '600', fontSize: '14px' }} className="dropdown-item">
+              <div style={{ position: 'absolute', top: '100%', left: 0, width: '230px', background: '#1a2030', borderRadius: '14px', boxShadow: '0 12px 36px rgba(0, 0, 0, 0.6)', border: '1px solid rgba(255,255,255,0.12)', padding: '10px 0', zIndex: 100 }}>
+                <Link to="/exams/fmge-exam" style={{ display: 'block', padding: '10px 18px', color: '#e2e8f0', fontWeight: '600', fontSize: '14px' }} className="dropdown-item">
                   🩺 FMGE / NEXT Exam
                 </Link>
-                <Link to="/exams/nmat-exam" style={{ display: 'block', padding: '10px 18px', color: 'var(--navy-primary)', fontWeight: '600', fontSize: '14px' }} className="dropdown-item">
+                <Link to="/exams/nmat-exam" style={{ display: 'block', padding: '10px 18px', color: '#e2e8f0', fontWeight: '600', fontSize: '14px' }} className="dropdown-item">
                   📝 NMAT Exam
                 </Link>
               </div>
