@@ -1171,14 +1171,7 @@ const Home = ({ onRequestCounselling }) => {
             })}
           </div>
 
-          <div style={{ textAlign: 'center', marginTop: '24px', marginBottom: '22px' }}>
-            <button className="btn-primary" onClick={() => onRequestCounselling()} style={{ padding: '12px 32px', fontSize: '14px', borderRadius: '24px' }}>
-              <GraduationCap size={16} /> {lang === 'hi' ? 'अपनी 5-चरणीय प्रवेश यात्रा शुरू करें' : 'Start Your 5-Step Admission Journey'}
-            </button>
-          </div>
 
-          {/* LIVE STUDENT ADMISSION TRACKER */}
-          <AdmissionTracker />
 
         </div>
       </section>
