@@ -582,19 +582,19 @@ const Home = ({ onRequestCounselling }) => {
                   <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
                     <div style={{ textAlign: 'left' }}>
                       <div style={{ fontSize: '26px', fontWeight: '900', color: '#f97316', lineHeight: 1 }}>
-                        <AnimatedCounter target={5000} suffix="+" />
+                        5,000+
                       </div>
                       <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600', marginTop: '4px' }}>Students Placed</div>
                     </div>
                     <div style={{ textAlign: 'left' }}>
                       <div style={{ fontSize: '26px', fontWeight: '900', color: '#f97316', lineHeight: 1 }}>
-                        <AnimatedCounter target={7} suffix="+" />
+                        6+
                       </div>
                       <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600', marginTop: '4px' }}>Countries</div>
                     </div>
                     <div style={{ textAlign: 'left' }}>
                       <div style={{ fontSize: '26px', fontWeight: '900', color: '#f97316', lineHeight: 1 }}>
-                        <AnimatedCounter target={98} suffix="%" />
+                        98%
                       </div>
                       <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600', marginTop: '4px' }}>Success Rate</div>
                     </div>
@@ -735,7 +735,7 @@ const Home = ({ onRequestCounselling }) => {
                     </div>
                     <div style={{ position: 'absolute', top: '20px', right: '-20px', background: 'rgba(15,23,42,0.9)', border: '1px solid rgba(255,255,255,0.15)', padding: '12px 18px', borderRadius: '16px', boxShadow: '0 10px 30px rgba(0,0,0,0.4)', backdropFilter: 'blur(10px)', textAlign: 'center' }}>
                       <div style={{ fontSize: '24px', fontWeight: '900', color: '#fbbf24' }}>
-                        <AnimatedCounter target={5000} suffix="+" />
+                        5,000+
                       </div>
                       <div style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '700' }}>Students Placed</div>
                     </div>
