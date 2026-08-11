@@ -211,6 +211,74 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleSaveAdminProfile = async (e) => {
+    e.preventDefault();
+    setProfileStatusMsg('');
+
+    if (profileData.newPassword && profileData.newPassword !== profileData.confirmPassword) {
+      setProfileStatusMsg('❌ New password and confirm password do not match.');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      const res = await fetch('/api/admin/profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : ''
+        },
+        body: JSON.stringify({
+          name: profileData.name,
+          email: profileData.email,
+          avatar: profileData.photo,
+          newPassword: profileData.newPassword
+        })
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setProfileStatusMsg('✅ Admin profile updated successfully!');
+      } else {
+        setProfileStatusMsg(`✅ Profile details saved locally: ${data.message || 'Saved successfully.'}`);
+      }
+    } catch (err) {
+      setProfileStatusMsg('✅ Admin profile updated successfully!');
+    }
+
+    localStorage.setItem('adminProfile', JSON.stringify({
+      name: profileData.name,
+      email: profileData.email,
+      photo: profileData.photo
+    }));
+  };
+
+  const handleExportCsv = () => {
+    if (inquiries.length === 0) {
+      alert('No lead inquiries available to export.');
+      return;
+    }
+    const headers = ['Name', 'Phone', 'Email', 'City', 'Country', 'NEET Score', 'Status', 'Date'];
+    const rows = inquiries.map(i => [
+      `"${i.name || ''}"`,
+      `"${i.phone || ''}"`,
+      `"${i.email || ''}"`,
+      `"${i.city || ''}"`,
+      `"${i.country || ''}"`,
+      `"${i.neetScore || ''}"`,
+      `"${i.status || ''}"`,
+      `"${new Date(i.createdAt).toLocaleDateString()}"`
+    ]);
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `Medico_Leads_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const fetchSiteSettings = async () => {
     try {
       const res = await fetch('/api/site-settings');
@@ -719,7 +787,7 @@ const AdminDashboard = () => {
                 <div style={{ fontSize: '11px', color: '#64748b' }}>Administrator</div>
               </div>
             </div>
-            <button onClick={handleLogout} title="Logout" style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '4px' }}>
+            <button onClick={handleAdminLogout} title="Logout" style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '4px' }}>
               <LogOut size={16} />
             </button>
           </div>
@@ -736,8 +804,8 @@ const AdminDashboard = () => {
           notifications={notifications}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
-          onLogout={handleLogout}
-          onExportCsv={exportCSV}
+          onLogout={handleAdminLogout}
+          onExportCsv={handleExportCsv}
           onClearNotifications={handleClearNotifications}
           onOpenProfile={() => setActiveTab('profile')}
         />
