@@ -6,7 +6,7 @@ import {
   TrendingUp, Activity, Filter, ChevronLeft, ChevronRight, Printer, Shield, ArrowUpRight, Volume2, X,
   Calculator
 } from 'lucide-react';
-import EligibilityCalculator from '../components/EligibilityCalculator';
+
 
 import { useLanguage } from '../utils/languageContext';
 import { playAlertSound, unlockAudio, triggerSystemNotification, requestNotificationPermission } from '../utils/soundNotification';
@@ -667,8 +667,7 @@ const AdminDashboard = () => {
             { id: 'settings', label: t('tabSettings'), icon: Mail },
             { id: 'blogs', label: t('tabBlogs'), icon: FileText },
             { id: 'countries', label: t('tabCountries'), icon: Globe },
-            { id: 'testimonials', label: t('tabTestimonials'), icon: MessageSquare },
-            { id: 'calculator', label: 'Eligibility Calculator', icon: Calculator }
+            { id: 'testimonials', label: t('tabTestimonials'), icon: MessageSquare }
           ].map((item) => {
             const IconComponent = item.icon;
             const isActive = activeTab === item.id;
@@ -1436,16 +1435,7 @@ const AdminDashboard = () => {
             </div>
           )}
 
-          {/* TAB 7: ELIGIBILITY & BUDGET CALCULATOR (moved here from the public site — internal counselling tool) */}
-          {activeTab === 'calculator' && (
-            <div style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '20px', padding: '28px' }}>
-              <h2 style={{ color: '#ffffff', fontSize: '22px', fontWeight: '800', marginBottom: '4px' }}>MBBS Abroad Eligibility & Budget Calculator</h2>
-              <p style={{ color: '#94a3b8', fontSize: '13px', marginBottom: '20px' }}>
-                Internal counselling tool — use this while on a call with a student/parent to instantly check NEET eligibility and shortlist countries by budget. This tool is admin-only and no longer appears on the public website.
-              </p>
-              <EligibilityCalculator onRequestCounselling={() => setActiveTab('leads')} />
-            </div>
-          )}
+
 
         </div>
 

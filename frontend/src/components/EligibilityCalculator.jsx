@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Award, CheckCircle2, AlertCircle, ArrowRight, DollarSign, BookOpen, Utensils, CloudSun } from 'lucide-react';
 import { useLanguage } from '../utils/languageContext';
 
-const EligibilityCalculator = ({ onRequestCounselling }) => {
+const EligibilityCalculator = ({ onRequestCounselling, defaultCountry }) => {
   const { lang } = useLanguage();
   const [category, setCategory] = useState('General');
   const [neetScore, setNeetScore] = useState(240);
@@ -113,6 +113,15 @@ const EligibilityCalculator = ({ onRequestCounselling }) => {
     if (budgetFilter === 'Low' && u.categoryTag !== 'Low') return false;
     if (budgetFilter === 'High' && u.categoryTag !== 'High') return false;
     return true;
+  }).sort((a, b) => {
+    if (defaultCountry) {
+      const target = defaultCountry.toLowerCase();
+      const aMatch = a.country.toLowerCase() === target;
+      const bMatch = b.country.toLowerCase() === target;
+      if (aMatch && !bMatch) return -1;
+      if (!aMatch && bMatch) return 1;
+    }
+    return 0;
   });
 
   return (
@@ -278,7 +287,7 @@ const EligibilityCalculator = ({ onRequestCounselling }) => {
 
         {onRequestCounselling && (
           <button
-            onClick={() => onRequestCounselling()}
+            onClick={() => onRequestCounselling(defaultCountry || '')}
             className="btn-primary"
             style={{ padding: '10px 20px', fontSize: '13px', borderRadius: '20px', background: isOverallEligible ? '#059669' : '#dc2626' }}
           >
@@ -295,39 +304,61 @@ const EligibilityCalculator = ({ onRequestCounselling }) => {
         </h3>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '18px' }}>
-          {filteredUniversities.map((u, idx) => (
-            <div key={idx} style={{ background: '#f8fafc', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '18px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', transition: 'all 0.3s ease' }}>
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <span style={{ fontSize: '20px' }}>{u.flag}</span>
-                  <span style={{ background: 'rgba(225, 91, 63, 0.12)', color: 'var(--coral-accent)', fontSize: '11px', fontWeight: '800', padding: '3px 9px', borderRadius: '10px' }}>
-                    {u.duration} MBBS
-                  </span>
-                </div>
-
-                <h4 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--navy-primary)', margin: '0 0 6px 0' }}>
-                  {lang === 'hi' ? u.country_hi : u.country} - {u.college}
-                </h4>
-
-                <div style={{ fontSize: '13px', fontWeight: '800', color: '#16a34a', marginBottom: '10px' }}>
-                  Tuition: {u.feeYear} ({u.totalPackage})
-                </div>
-
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '12px', color: '#475569', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                  <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><CheckCircle2 size={13} color="#10b981" /> FMGE Pass Rate: {u.fmgePassRate}</li>
-                  <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Utensils size={13} color="#f97316" /> Mess: {u.mess}</li>
-                  <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><CloudSun size={13} color="#0ea5e9" /> Climate: {u.climate}</li>
-                </ul>
-              </div>
-
-              <button
-                onClick={() => onRequestCounselling && onRequestCounselling()}
-                style={{ marginTop: '14px', width: '100%', padding: '8px', background: 'var(--navy-primary)', color: '#ffffff', border: 'none', borderRadius: '10px', fontWeight: '700', fontSize: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}
+          {filteredUniversities.map((u, idx) => {
+            const isTargetMatched = defaultCountry && u.country.toLowerCase() === defaultCountry.toLowerCase();
+            return (
+              <div 
+                key={idx} 
+                style={{ 
+                  background: isTargetMatched ? '#fffdfa' : '#f8fafc', 
+                  borderRadius: '16px', 
+                  border: isTargetMatched ? '2px solid #f97316' : '1px solid #e2e8f0', 
+                  padding: '18px', 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  justifyContent: 'space-between', 
+                  transition: 'all 0.3s ease',
+                  boxShadow: isTargetMatched ? '0 10px 30px rgba(249, 115, 22, 0.15)' : 'none'
+                }}
               >
-                {lang === 'hi' ? 'प्रवेश विवरण प्राप्त करें' : 'Get Complete Fee Details'} <ArrowRight size={14} />
-              </button>
-            </div>
-          ))}
+                <div>
+                  {isTargetMatched && (
+                    <div style={{ background: '#f97316', color: '#ffffff', fontSize: '10px', fontWeight: '900', textTransform: 'uppercase', padding: '3px 8px', borderRadius: '6px', width: 'fit-content', marginBottom: '8px', letterSpacing: '0.5px' }}>
+                      🌟 Selected Destination Details
+                    </div>
+                  )}
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <span style={{ fontSize: '24px' }}>{u.flag}</span>
+                    <span style={{ background: 'rgba(225, 91, 63, 0.12)', color: 'var(--coral-accent)', fontSize: '11px', fontWeight: '800', padding: '3px 9px', borderRadius: '10px' }}>
+                      {u.duration} MBBS
+                    </span>
+                  </div>
+
+                  <h4 style={{ fontSize: '16px', fontWeight: '800', color: 'var(--navy-primary)', margin: '0 0 6px 0' }}>
+                    {lang === 'hi' ? u.country_hi : u.country} - {u.college}
+                  </h4>
+
+                  <div style={{ fontSize: '13.5px', fontWeight: '800', color: '#16a34a', marginBottom: '10px' }}>
+                    Tuition: {u.feeYear} ({u.totalPackage})
+                  </div>
+
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '12px', color: '#475569', display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><CheckCircle2 size={13} color="#10b981" /> FMGE Pass Rate: {u.fmgePassRate}</li>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Utensils size={13} color="#f97316" /> Mess: {u.mess}</li>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><CloudSun size={13} color="#0ea5e9" /> Climate: {u.climate}</li>
+                  </ul>
+                </div>
+
+                <button
+                  onClick={() => onRequestCounselling && onRequestCounselling(u.country)}
+                  style={{ marginTop: '14px', width: '100%', padding: '9px', background: isTargetMatched ? 'linear-gradient(135deg, #e15b3f 0%, #c84327 100%)' : 'var(--navy-primary)', color: '#ffffff', border: 'none', borderRadius: '10px', fontWeight: '700', fontSize: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', boxShadow: isTargetMatched ? '0 6px 18px rgba(225,91,63,0.3)' : 'none' }}
+                >
+                  {lang === 'hi' ? 'प्रवेश विवरण प्राप्त करें' : 'Get Complete Fee Details'} <ArrowRight size={14} />
+                </button>
+              </div>
+            );
+          })}
         </div>
       </div>
 

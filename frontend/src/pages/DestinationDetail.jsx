@@ -8,6 +8,7 @@ import {
   BookOpen, HeartPulse, Calendar, Users, Check
 } from 'lucide-react';
 import SEO from '../components/SEO';
+import EligibilityCalculator from '../components/EligibilityCalculator';
 
 const DestinationDetail = ({ onRequestCounselling }) => {
   const { countrySlug } = useParams();
@@ -325,6 +326,12 @@ const DestinationDetail = ({ onRequestCounselling }) => {
                 </div>
               )}
             </div>
+
+            {/* EMBEDDED ELIGIBILITY & BUDGET CALCULATOR FOR DESTINATION */}
+            <EligibilityCalculator 
+              onRequestCounselling={onRequestCounselling} 
+              defaultCountry={country.name} 
+            />
 
             {/* SECTION 5: ADMISSION PROCESS & REQUIRED DOCUMENTS CHECKLIST */}
             <div className="glass-card" style={{ padding: '40px', borderRadius: '24px', background: '#ffffff', border: '1px solid #e2e8f0', boxShadow: '0 10px 30px rgba(15, 23, 42, 0.04)' }}>
