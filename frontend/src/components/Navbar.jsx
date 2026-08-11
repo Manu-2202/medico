@@ -77,7 +77,7 @@ const Navbar = ({ onRequestCounselling }) => {
   });
 
   return (
-    <header style={{ position: 'sticky', top: 0, zIndex: 1000, background: 'whitesmoke', borderBottom: '1px solid #e2e8f0', boxShadow: isScrolled ? '0 6px 24px rgba(31, 56, 100, 0.12)' : '0 2px 12px rgba(0,0,0,0.04)', transition: 'all 0.3s ease' }}>
+    <header style={{ position: 'sticky', top: 0, zIndex: 1000, background: 'whitesmoke', boxShadow: isScrolled ? '0 6px 24px rgba(31, 56, 100, 0.12)' : '0 2px 8px rgba(0,0,0,0.06)', transition: 'all 0.3s ease', overflow: 'visible' }}>
       
       {/* Top Utility Contact Bar */}
       <div style={{ background: '#eef2f6', color: '#1e3a8a', fontSize: '11px', padding: '5px 0', borderBottom: '1px solid #e2e8f0' }}>
@@ -116,17 +116,6 @@ const Navbar = ({ onRequestCounselling }) => {
             src="/logo.png" 
             alt="Medico Overseas Logo" 
             className="brand-logo-img"
-            style={{ 
-              height: '170px', 
-              width: 'auto', 
-              maxWidth: '360px',
-              objectFit: 'contain',
-              display: 'block',
-              marginTop: '-40px',
-              marginBottom: '-40px',
-              filter: 'drop-shadow(0 4px 14px rgba(31, 56, 100, 0.22))',
-              transition: 'all 0.3s ease'
-            }} 
           />
         </Link>
 

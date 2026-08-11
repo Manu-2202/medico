@@ -54,10 +54,12 @@ html {
 
 body {
   font-family: var(--font-body);
-  background-color: var(--bg-light);
+  background-color: whitesmoke;
   color: var(--text-body);
   line-height: 1.6;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -185,6 +187,25 @@ button {
   background: var(--coral-accent);
   color: #ffffff;
   transform: translateY(-2px);
+}
+
+/* ---- NAVBAR BRAND LOGO ---- */
+.brand-logo-img {
+  height: 170px;
+  width: auto;
+  max-width: 360px;
+  object-fit: contain;
+  display: block;
+  margin-top: -40px;
+  margin-bottom: -40px;
+  filter: drop-shadow(0 4px 14px rgba(31, 56, 100, 0.22));
+  transition: all 0.3s ease;
+}
+
+/* ---- LAYOUT: Remove body bg gap between navbar & hero ---- */
+main {
+  margin-top: 0;
+  padding-top: 0;
 }
 
 /* Animations */
@@ -470,25 +491,20 @@ html, body {
 
 /* Header & Utility Bar Mobile Tweaks */
 @media (max-width: 768px) {
-  .top-utility-bar {
-    display: none !important;
-  }
   .desktop-cta-btn {
     display: none !important;
   }
+  /* Utility bar stays visible on mobile - just wraps */
   .brand-logo-img {
-    height: 95px !important;
-    max-width: 220px !important;
-    margin-top: -20px !important;
-    margin-bottom: -20px !important;
+    height: 120px !important;
+    max-width: 240px !important;
+    margin-top: -30px !important;
+    margin-bottom: -30px !important;
   }
 }
 
-/* Section Spacing & Headers on Mobile */
+/* Section Spacing & Headers on Mobile — only inner page sections, not hero banners */
 @media (max-width: 768px) {
-  section {
-    padding: 40px 0 !important;
-  }
   .section-title {
     font-size: 26px !important;
     line-height: 1.25 !important;
@@ -876,100 +892,4 @@ table {
 .premium-input::placeholder {
   color: #64748b;
   font-weight: 400;
-}
-
-/* ==========================================================================
-   MOBILE & TABLET RESPONSIVE STYLES (@media max-width: 768px)
-   ========================================================================== */
-@media screen and (max-width: 768px) {
-  .glass-card-container {
-    grid-template-columns: 1fr !important;
-    max-width: 100% !important;
-    border-radius: 20px !important;
-  }
-
-  .glass-panel-left {
-    border-right: none !important;
-    border-bottom: 1px solid rgba(226, 232, 240, 0.6) !important;
-    padding: 24px 18px !important;
-  }
-
-  .glass-panel-right {
-    padding: 24px 18px !important;
-  }
-
-  .grid-2col-mobile-1col {
-    grid-template-columns: 1fr !important;
-  }
-
-  h1 {
-    font-size: 26px !important;
-    line-height: 1.25 !important;
-  }
-
-  h2 {
-    font-size: 22px !important;
-    line-height: 1.3 !important;
-  }
-
-  body, html, #root {
-    overflow-x: hidden !important;
-  }
-
-  /* ---- NAVBAR MOBILE FIXES ---- */
-
-  /* Logo size on mobile */
-  .brand-logo-img {
-    height: 110px !important;
-    max-width: 220px !important;
-    margin-top: -25px !important;
-    margin-bottom: -25px !important;
-  }
-
-  /* Hide email on very small screens to save space */
-  .utility-email {
-    display: none !important;
-  }
-
-  /* Compact utility bar on mobile */
-  .utility-nmc {
-    display: none !important;
-  }
-
-  /* Desktop nav hidden on mobile (controlled by JS drawer) */
-  .desktop-nav {
-    display: none !important;
-  }
-
-  /* Desktop CTA button hidden on mobile */
-  .desktop-cta-btn {
-    display: none !important;
-  }
-
-  /* Mobile hamburger always visible */
-  .mobile-toggle {
-    display: flex !important;
-  }
-
-  /* ---- SECTION SPACING REDUCTION ---- */
-  section {
-    padding-top: 36px !important;
-    padding-bottom: 36px !important;
-  }
-
-  .container {
-    padding-left: 14px !important;
-    padding-right: 14px !important;
-  }
-}
-
-/* Desktop: Hide mobile toggle */
-@media screen and (min-width: 769px) {
-  .mobile-toggle {
-    display: none !important;
-  }
-
-  .desktop-nav {
-    display: flex !important;
-  }
 }
