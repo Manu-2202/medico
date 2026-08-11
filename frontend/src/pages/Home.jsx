@@ -377,7 +377,7 @@ const Home = ({ onRequestCounselling }) => {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [isTestimonialPaused, setIsTestimonialPaused] = useState(false);
 
-  const testimonials = [
+  const defaultTestimonials = [
     {
       name: 'Dr. Rohan Deshmukh',
       role: 'Practicing Physician (FMGE Cleared)',
@@ -451,6 +451,30 @@ const Home = ({ onRequestCounselling }) => {
       avatar: 'https://randomuser.me/api/portraits/women/65.jpg'
     }
   ];
+
+  const [dynamicTestimonials, setDynamicTestimonials] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/testimonials')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.success && Array.isArray(data.data) && data.data.length > 0) {
+          const apiItems = data.data.map(item => ({
+            name: item.name || 'Dr. Medical Student',
+            role: item.role || 'MBBS Student',
+            college: item.university || 'Medical University',
+            year: 'Batch of 2026',
+            text: item.quote || item.content || 'Great experience studying MBBS abroad with Medico Overseas.',
+            rating: item.rating || 5,
+            avatar: item.avatar || item.image || 'https://randomuser.me/api/portraits/men/45.jpg'
+          }));
+          setDynamicTestimonials(apiItems);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const testimonials = [...dynamicTestimonials, ...defaultTestimonials];
 
   // Auto slide testimonials carousel every 2.5 seconds moving 1-by-1 unless hovered
   useEffect(() => {
