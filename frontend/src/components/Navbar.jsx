@@ -77,33 +77,33 @@ const Navbar = ({ onRequestCounselling }) => {
   });
 
   return (
-    <header style={{ position: 'sticky', top: 0, zIndex: 1000, background: '#ffffff', boxShadow: isScrolled ? '0 6px 24px rgba(31, 56, 100, 0.15)' : '0 2px 12px rgba(0,0,0,0.06)', transition: 'all 0.3s ease' }}>
+    <header style={{ position: 'sticky', top: 0, zIndex: 1000, background: 'whitesmoke', boxShadow: isScrolled ? '0 6px 24px rgba(31, 56, 100, 0.12)' : '0 2px 12px rgba(0,0,0,0.04)', transition: 'all 0.3s ease' }}>
       
       {/* Top Utility Contact Bar */}
-      <div className="top-utility-bar" style={{ background: 'var(--navy-primary)', color: '#ffffff', fontSize: '11px', padding: '6px 0', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+      <div className="top-utility-bar" style={{ background: 'whitesmoke', color: '#1e3a8a', fontSize: '11px', padding: '6px 0', borderBottom: '1px solid #e2e8f0' }}>
         <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'nowrap', overflowX: 'auto', gap: '12px' }}>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexShrink: 0 }}>
-            <a href={`tel:${siteSettings.helplinePhone}`} style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#e2e8f0', fontWeight: '600', whiteSpace: 'nowrap' }}>
+            <a href={`tel:${siteSettings.helplinePhone}`} style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#1e3a8a', fontWeight: '700', whiteSpace: 'nowrap' }}>
               <Phone size={12} color="var(--coral-accent)" /> {lang === 'hi' ? 'हेल्पलाइन:' : 'Helpline:'} {siteSettings.helplinePhone}
             </a>
-            <a href={`mailto:${siteSettings.helplineEmail}`} style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#e2e8f0', fontWeight: '500', whiteSpace: 'nowrap' }}>
+            <a href={`mailto:${siteSettings.helplineEmail}`} style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#1e3a8a', fontWeight: '600', whiteSpace: 'nowrap' }}>
               <Mail size={12} color="var(--coral-accent)" /> {siteSettings.helplineEmail}
             </a>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#cbd5e1', whiteSpace: 'nowrap', fontWeight: '600' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#475569', whiteSpace: 'nowrap', fontWeight: '700' }}>
               {lang === 'hi' ? '🏆 आईएसओ 9001:2015 प्रमाणित परामर्श' : '🏆 ISO 9001:2015 Certified Consultancy'}
             </span>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(225, 91, 63, 0.25)', color: 'var(--coral-accent)', padding: '2px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: '700', whiteSpace: 'nowrap' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(225, 91, 63, 0.12)', color: 'var(--coral-accent)', border: '1px solid rgba(225, 91, 63, 0.25)', padding: '2px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: '700', whiteSpace: 'nowrap' }}>
               <ShieldCheck size={12} /> {lang === 'hi' ? '100% एनएमसी एवं डब्ल्यूएचओ मान्यता प्राप्त' : '100% NMC & WHO Recognized Universities'}
             </span>
             <button 
               onClick={toggleLanguage} 
-              style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)', color: '#ffffff', borderRadius: '4px', padding: '2px 8px', fontSize: '11px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+              style={{ background: '#ffffff', border: '1px solid #cbd5e1', color: '#1e3a8a', borderRadius: '4px', padding: '2px 8px', fontSize: '11px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
             >
-              <Globe size={11} /> {lang === 'en' ? 'हिंदी' : 'English'}
+              <Globe size={11} color="var(--coral-accent)" /> {lang === 'en' ? 'हिंदी' : 'English'}
             </button>
           </div>
 
