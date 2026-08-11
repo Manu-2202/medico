@@ -1443,11 +1443,40 @@ const AdminDashboard = () => {
           {activeTab === 'testimonials' && (
             <div style={{ background: '#111827', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '20px', padding: '28px', maxWidth: '800px' }}>
               <h2 style={{ color: '#ffffff', fontSize: '22px', fontWeight: '800', marginBottom: '8px' }}>Student Testimonials CMS</h2>
-              <p style={{ color: '#94a3b8', fontSize: '13px', marginBottom: '20px' }}>Manage student reviews and testimonials displayed on the homepage.</p>
+              <p style={{ color: '#94a3b8', fontSize: '13px', marginBottom: '20px' }}>Manage student reviews and star ratings displayed on the homepage.</p>
               {testimonialStatusMsg && <div style={{ color: '#34d399', marginBottom: '16px', fontWeight: '600' }}>{testimonialStatusMsg}</div>}
               <form onSubmit={handleCreateTestimonial} style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '24px' }}>
                 <input placeholder="Student Name (e.g. Ananya Roy)" required value={newTestimonial.name} onChange={e => setNewTestimonial({...newTestimonial, name: e.target.value})} style={{ background: '#0b0f19', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px', color: '#fff' }} />
                 <input placeholder="University Name & Country (e.g. Kazan Federal University, Russia)" required value={newTestimonial.university} onChange={e => setNewTestimonial({...newTestimonial, university: e.target.value})} style={{ background: '#0b0f19', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px', color: '#fff' }} />
+                
+                {/* Star Rating Picker */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: '#0b0f19', padding: '10px 14px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <span style={{ color: '#cbd5e1', fontSize: '13px', fontWeight: '700' }}>Student Rating ⭐:</span>
+                  <div style={{ display: 'flex', gap: '4px' }}>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setNewTestimonial({ ...newTestimonial, rating: star })}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          cursor: 'pointer',
+                          fontSize: '22px',
+                          color: star <= (newTestimonial.rating || 5) ? '#f59e0b' : '#475569',
+                          padding: 0,
+                          lineHeight: 1
+                        }}
+                      >
+                        ★
+                      </button>
+                    ))}
+                  </div>
+                  <span style={{ color: '#f59e0b', fontWeight: '800', fontSize: '13px', marginLeft: '6px' }}>
+                    {newTestimonial.rating || 5} Stars
+                  </span>
+                </div>
+
                 <textarea placeholder="Student Review / Experience quote..." rows="3" required value={newTestimonial.quote} onChange={e => setNewTestimonial({...newTestimonial, quote: e.target.value})} style={{ background: '#0b0f19', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', padding: '12px', color: '#fff' }}></textarea>
                 <button type="submit" style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '12px 20px', borderRadius: '10px', fontWeight: '700', width: 'fit-content', cursor: 'pointer' }}>Publish Student Testimonial</button>
               </form>
@@ -1457,7 +1486,10 @@ const AdminDashboard = () => {
                 {testimonials.map(t => (
                   <div key={t._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.06)' }}>
                     <div>
-                      <div style={{ color: '#fff', fontWeight: '700', fontSize: '13.5px' }}>{t.name}</div>
+                      <div style={{ color: '#fff', fontWeight: '700', fontSize: '13.5px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span>{t.name}</span>
+                        <span style={{ color: '#f59e0b', fontSize: '12px' }}>{'★'.repeat(t.rating || 5)}</span>
+                      </div>
                       <div style={{ color: '#94a3b8', fontSize: '12px' }}>{t.university} — "{t.quote}"</div>
                     </div>
                     <button onClick={() => handleDeleteTestimonial(t._id)} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '6px' }} title="Delete Testimonial">

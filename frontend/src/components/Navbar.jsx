@@ -60,16 +60,17 @@ const Navbar = ({ onRequestCounselling }) => {
   );
 
   const getNavTabStyle = (isActive) => ({
-    fontWeight: isActive ? '800' : '600',
-    color: isActive ? 'var(--coral-accent)' : 'var(--navy-primary)',
+    fontWeight: isActive ? '800' : '700',
+    color: isActive ? 'var(--coral-accent)' : '#1e3a8a',
     background: isActive ? 'rgba(225, 91, 63, 0.12)' : 'transparent',
     border: isActive ? '1px solid rgba(225, 91, 63, 0.22)' : '1px solid transparent',
-    padding: '6px 14px',
-    borderRadius: '20px',
+    padding: '7px 16px',
+    borderRadius: '24px',
     fontSize: '14.5px',
     display: 'inline-flex',
     alignItems: 'center',
-    gap: '4px',
+    gap: '6px',
+    whiteSpace: 'nowrap',
     textDecoration: 'none',
     transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
     boxShadow: isActive ? '0 2px 8px rgba(225, 91, 63, 0.12)' : 'none'
@@ -110,7 +111,7 @@ const Navbar = ({ onRequestCounselling }) => {
       </div>
 
       {/* Main Header Container */}
-      <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0px 16px', height: '64px' }}>
+      <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 16px', height: '72px' }}>
         
         {/* Brand Logo */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', zIndex: 10 }}>
@@ -119,20 +120,19 @@ const Navbar = ({ onRequestCounselling }) => {
             alt="Medico Overseas Logo" 
             className="brand-logo-img"
             style={{ 
-              height: '165px', 
+              height: '58px', 
               width: 'auto', 
-              maxWidth: '360px',
+              maxWidth: '240px',
               objectFit: 'contain',
-              marginTop: '-40px',
-              marginBottom: '-40px',
-              filter: 'drop-shadow(0 4px 14px rgba(31, 56, 100, 0.22))',
+              display: 'block',
+              filter: 'drop-shadow(0 2px 8px rgba(31, 56, 100, 0.15))',
               transition: 'all 0.3s ease'
             }} 
           />
         </Link>
 
         {/* Desktop Navigation Links */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '10px' }} className="desktop-nav">
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '8px' }} className="desktop-nav">
           <Link to="/" style={getNavTabStyle(location.pathname === '/')}>
             {t('navHome')}
           </Link>
@@ -202,10 +202,6 @@ const Navbar = ({ onRequestCounselling }) => {
 
           <Link to="/blogs" style={getNavTabStyle(location.pathname.startsWith('/blogs'))}>
             {t('navBlogs')}
-          </Link>
-
-          <Link to="/faqs" style={getNavTabStyle(location.pathname === '/faqs')}>
-            {t('navFaqs')}
           </Link>
 
           <Link to="/contact" style={getNavTabStyle(location.pathname === '/contact')}>
@@ -322,7 +318,6 @@ const Navbar = ({ onRequestCounselling }) => {
             </div>
           </div>
 
-          <Link to="/faqs" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '17px', fontWeight: location.pathname === '/faqs' ? '800' : '700', color: location.pathname === '/faqs' ? 'var(--coral-accent)' : '#1e3a8a', background: location.pathname === '/faqs' ? 'rgba(225, 91, 63, 0.1)' : '#f8fafc', padding: '12px 18px', borderRadius: '12px', textDecoration: 'none', display: 'block' }}>{t('navFaqs')}</Link>
           <Link to="/blogs" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '17px', fontWeight: location.pathname.startsWith('/blogs') ? '800' : '700', color: location.pathname.startsWith('/blogs') ? 'var(--coral-accent)' : '#1e3a8a', background: location.pathname.startsWith('/blogs') ? 'rgba(225, 91, 63, 0.1)' : '#f8fafc', padding: '12px 18px', borderRadius: '12px', textDecoration: 'none', display: 'block' }}>{t('navBlogs')}</Link>
           <Link to="/contact" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '17px', fontWeight: location.pathname === '/contact' ? '800' : '700', color: location.pathname === '/contact' ? 'var(--coral-accent)' : '#1e3a8a', background: location.pathname === '/contact' ? 'rgba(225, 91, 63, 0.1)' : '#f8fafc', padding: '12px 18px', borderRadius: '12px', textDecoration: 'none', display: 'block' }}>{t('navContact')}</Link>
           
