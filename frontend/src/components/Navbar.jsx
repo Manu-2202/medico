@@ -104,9 +104,6 @@ const Navbar = ({ onRequestCounselling }) => {
             >
               <Globe size={11} /> {lang === 'en' ? 'हिंदी' : 'English'}
             </button>
-            <Link to="/admin" style={{ color: '#cbd5e1', fontSize: '11px', fontWeight: '600', textDecoration: 'underline', whiteSpace: 'nowrap' }}>
-              {lang === 'hi' ? 'एडमिन पोर्टल' : 'Admin Portal'}
-            </Link>
           </div>
 
         </div>

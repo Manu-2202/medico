@@ -167,35 +167,6 @@ const AdminDashboard = () => {
     return () => clearInterval(interval);
   }, [isAuthenticated]);
 
-  // 5-Minute Inactivity Auto-Lock Timer (Resets on cursor movement, mouse click, scroll, or keypress)
-  useEffect(() => {
-    if (!isAuthenticated) return;
-
-    let inactivityTimeout;
-    const FIVE_MINUTES_MS = 5 * 60 * 1000; // 5 Minutes (300 seconds)
-
-    const resetInactivityTimer = () => {
-      if (inactivityTimeout) clearTimeout(inactivityTimeout);
-      inactivityTimeout = setTimeout(() => {
-        // Auto lock admin session after 5 minutes of zero cursor/user activity
-        localStorage.removeItem('adminToken');
-        setIsAuthenticated(false);
-        setLoginError('🔒 Session locked due to 5 minutes of inactivity without cursor movement. Please log in again.');
-      }, FIVE_MINUTES_MS);
-    };
-
-    // Initial timer start
-    resetInactivityTimer();
-
-    // Listen to all active user interaction events
-    const events = ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll', 'click'];
-    events.forEach(ev => window.addEventListener(ev, resetInactivityTimer));
-
-    return () => {
-      if (inactivityTimeout) clearTimeout(inactivityTimeout);
-      events.forEach(ev => window.removeEventListener(ev, resetInactivityTimer));
-    };
-  }, [isAuthenticated]);
 
   const handleAdminLogin = async (e) => {
     e.preventDefault();
@@ -645,40 +616,6 @@ const AdminDashboard = () => {
               </div>
             </div>
 
-            {/* Quick Demo Credentials Helper */}
-            <div style={{ background: 'rgba(59, 130, 246, 0.08)', border: '1px dashed rgba(59, 130, 246, 0.25)', borderRadius: '12px', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ fontSize: '12px', color: '#93c5fd' }}>
-                  Default Login: <strong>admin@medico.com</strong> / <strong>admin123</strong>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setLoginEmail('admin@medico.com');
-                    setLoginPassword('admin123');
-                  }}
-                  style={{ background: '#3b82f6', color: '#ffffff', border: 'none', padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: '700', cursor: 'pointer' }}
-                >
-                  Autofill
-                </button>
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '6px' }}>
-                <div style={{ fontSize: '11px', color: '#94a3b8' }}>
-                  Super Admin: <strong>manukamepalli8399@gmail.com</strong> / <strong>Km@298399</strong>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setLoginEmail('manukamepalli8399@gmail.com');
-                    setLoginPassword('Km@298399');
-                  }}
-                  style={{ background: 'rgba(255,255,255,0.1)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.2)', padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: '700', cursor: 'pointer' }}
-                >
-                  Autofill
-                </button>
-              </div>
-            </div>
 
             <button
               type="submit"
