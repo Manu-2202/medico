@@ -541,7 +541,7 @@ const Home = ({ onRequestCounselling }) => {
     <div>
 
       {/* 1. HERO BANNER SLIDER WITH REAL DOCTOR PHOTOS (FULL SCREEN WIDTH) */}
-      <section style={{ padding: '0', background: '#f8fafc', position: 'relative', width: '100%', overflow: 'hidden' }}>
+      <section className="hero-section" style={{ margin: 0, padding: 0, background: '#f8fafc', position: 'relative', width: '100%', overflow: 'hidden' }}>
         <div style={{ position: 'relative', width: '100%', overflow: 'hidden', boxShadow: '0 10px 30px rgba(15, 23, 42, 0.08)' }}>
 
           {/* SLIDE 1: Deep Navy Mesh Gradient with Floating Orbs */}

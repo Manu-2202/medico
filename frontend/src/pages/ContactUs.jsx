@@ -104,7 +104,7 @@ const ContactUs = () => {
       />
 
       {/* Contact Header */}
-      <section style={{ background: 'linear-gradient(135deg, var(--navy-dark), var(--navy-primary))', color: '#ffffff', padding: '36px 0 28px 0', textAlign: 'center' }}>
+      <section className="hero-section" style={{ background: 'linear-gradient(135deg, var(--navy-dark), var(--navy-primary))', color: '#ffffff', padding: '36px 0 28px 0', textAlign: 'center' }}>
         <div className="container">
           <span className="badge-coral" style={{ marginBottom: '12px' }}>
             {lang === 'hi' ? 'संपर्क करें' : 'Get in Touch'}

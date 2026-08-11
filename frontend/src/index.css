@@ -364,9 +364,14 @@ main {
   padding: 0 24px;
 }
 
-section {
-  padding-top: clamp(24px, 4vw, 36px) !important;
-  padding-bottom: clamp(24px, 4vw, 36px) !important;
+section:not(.hero-section) {
+  padding-top: clamp(20px, 3.5vw, 32px) !important;
+  padding-bottom: clamp(20px, 3.5vw, 32px) !important;
+}
+
+section.hero-section {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
 }
 
 .section-header {

@@ -53,11 +53,11 @@ const DestinationDetail = ({ onRequestCounselling }) => {
       />
 
       {/* 1. HERO HEADER BANNER */}
-      <section style={{ 
+      <section className="hero-section" style={{ 
         position: 'relative', 
         background: `linear-gradient(135deg, rgba(11, 19, 43, 0.9) 0%, rgba(31, 56, 100, 0.92) 100%), url(${country.bannerImg}) center/cover no-repeat`, 
         color: '#ffffff', 
-        padding: '85px 0 65px 0' 
+        padding: '40px 0 32px 0' 
       }}>
         <div className="container" style={{ maxWidth: '1140px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '18px', flexWrap: 'wrap' }}>

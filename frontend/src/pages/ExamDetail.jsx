@@ -21,7 +21,7 @@ const ExamDetail = ({ onRequestCounselling }) => {
         keywords={seoKeywords}
       />
       {/* Exam Hero Banner */}
-      <section style={{ position: 'relative', background: `linear-gradient(rgba(15, 29, 54, 0.88), rgba(31, 56, 100, 0.95)), url(${exam.bannerImg}) center/cover no-repeat`, color: '#ffffff', padding: '40px 0 32px 0' }}>
+      <section className="hero-section" style={{ position: 'relative', background: `linear-gradient(rgba(15, 29, 54, 0.88), rgba(31, 56, 100, 0.95)), url(${exam.bannerImg}) center/cover no-repeat`, color: '#ffffff', padding: '40px 0 32px 0' }}>
         <div className="container">
           <span className="badge-coral" style={{ marginBottom: '16px' }}>{exam.badge}</span>
           <h1 style={{ color: '#ffffff', fontSize: '36px', fontWeight: '800', marginBottom: '12px' }}>

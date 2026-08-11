@@ -24,7 +24,7 @@ const Gallery = ({ onRequestCounselling }) => {
   return (
     <div>
       {/* Gallery Hero Banner */}
-      <section style={{ background: 'linear-gradient(135deg, var(--navy-dark), var(--navy-primary))', color: '#ffffff', padding: '36px 0 28px 0', textAlign: 'center' }}>
+      <section className="hero-section" style={{ background: 'linear-gradient(135deg, var(--navy-dark), var(--navy-primary))', color: '#ffffff', padding: '36px 0 28px 0', textAlign: 'center' }}>
         <div className="container">
           <span className="badge-coral" style={{ marginBottom: '12px' }}><Camera size={14} /> Campus & Student Life</span>
           <h1 style={{ color: '#ffffff', fontSize: '40px', marginBottom: '14px' }}>Medico Overseas Photo Gallery</h1>

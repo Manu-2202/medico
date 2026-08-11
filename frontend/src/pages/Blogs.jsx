@@ -94,7 +94,7 @@ const Blogs = () => {
       `}</style>
       
       {/* 1. MAGAZINE HERO HEADER */}
-      <section style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%)', color: '#ffffff', padding: '36px 0 32px 0', position: 'relative', overflow: 'hidden' }}>
+      <section className="hero-section" style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%)', color: '#ffffff', padding: '36px 0 32px 0', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '-100px', right: '-100px', width: '450px', height: '450px', background: 'radial-gradient(circle, rgba(225, 91, 63, 0.3) 0%, transparent 70%)', pointerEvents: 'none' }}></div>
         <div style={{ position: 'absolute', bottom: '-50px', left: '-50px', width: '350px', height: '350px', background: 'radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, transparent 70%)', pointerEvents: 'none' }}></div>
 

@@ -210,7 +210,7 @@ const AboutUs = ({ onRequestCounselling }) => {
       />
 
       {/* 1. HERO HEADER BANNER */}
-      <section style={{
+      <section className="hero-section" style={{
         background: 'linear-gradient(135deg, #0b132b 0%, #1f3864 50%, #0f172a 100%)',
         color: '#ffffff',
         padding: '40px 0 32px 0',
