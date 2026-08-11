@@ -204,6 +204,10 @@ const Navbar = ({ onRequestCounselling }) => {
             {t('navBlogs')}
           </Link>
 
+          <Link to="/faqs" style={getNavTabStyle(location.pathname === '/faqs')}>
+            {t('navFaqs')}
+          </Link>
+
           <Link to="/contact" style={getNavTabStyle(location.pathname === '/contact')}>
             {t('navContact')}
           </Link>

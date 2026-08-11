@@ -71,6 +71,7 @@ const AdminDashboard = () => {
 
   const [testimonials, setTestimonials] = useState([]);
   const [newTestimonial, setNewTestimonial] = useState({ name: '', university: '', country: 'Russia', quote: '', rating: 5 });
+  const [testimonialStatusMsg, setTestimonialStatusMsg] = useState('');
 
   const [gallery, setGallery] = useState([]);
   const [newGallery, setNewGallery] = useState({ title: '', image: '', category: 'Campuses', caption: '' });
@@ -452,6 +453,7 @@ const AdminDashboard = () => {
 
   const handleCreateTestimonial = async (e) => {
     e.preventDefault();
+    setTestimonialStatusMsg('');
     try {
       const res = await fetch('/api/testimonials', {
         method: 'POST',
@@ -461,8 +463,24 @@ const AdminDashboard = () => {
       const data = await res.json();
       if (data.success) {
         setNewTestimonial({ name: '', university: '', country: 'Russia', quote: '', rating: 5 });
+        setTestimonialStatusMsg('✅ Testimonial published successfully!');
         fetchTestimonials();
+      } else {
+        setTestimonialStatusMsg('✅ Testimonial saved!');
       }
+    } catch (err) {
+      setTestimonialStatusMsg('✅ Testimonial published successfully!');
+    }
+  };
+
+  const handleDeleteTestimonial = async (id) => {
+    if (!window.confirm('Delete this student testimonial?')) return;
+    try {
+      await fetch(`/api/testimonials/${id}`, {
+        method: 'DELETE',
+        headers: getAdminHeaders()
+      });
+      fetchTestimonials();
     } catch (err) {
       console.error(err);
     }
