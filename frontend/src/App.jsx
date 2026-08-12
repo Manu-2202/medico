@@ -31,14 +31,18 @@ function ScrollToTop() {
       window.history.scrollRestoration = 'manual';
     }
     const forceScrollTop = () => {
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      try {
+        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      } catch (e) {}
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
     };
 
     forceScrollTop();
-    const timer1 = setTimeout(forceScrollTop, 20);
-    const timer2 = setTimeout(forceScrollTop, 100);
+    requestAnimationFrame(forceScrollTop);
+    const timer1 = setTimeout(forceScrollTop, 50);
+    const timer2 = setTimeout(forceScrollTop, 150);
 
     trackPageView(window.location.href, document.title);
     return () => {
