@@ -7,43 +7,34 @@ const Navbar = ({ onRequestCounselling }) => {
   const { lang, toggleLanguage, t } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [destinationsOpen, setDestinationsOpen] = useState(false);
-  const [examsOpen, setExamsOpen] = useState(false);
-  const [siteSettings, setSiteSettings] = useState({
-    helplinePhone: '+91 98765 43210',
-    helplineEmail: 'info@medicooverseas.com'
-  });
-
-  const [searchModalOpen, setSearchModalOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const location = useLocation();
+  const lastScrollYRef = React.useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      setIsScrolled(currentScrollY > 40);
+      
+      const shouldBeScrolled = currentScrollY > 40;
+      setIsScrolled(prev => (prev !== shouldBeScrolled ? shouldBeScrolled : prev));
 
       if (currentScrollY <= 80) {
         setIsHeaderVisible(true);
       } else {
-        if (currentScrollY < lastScrollY - 3) {
-          // Scrolling UP -> Reveal sticky navbar!
+        const diff = currentScrollY - lastScrollYRef.current;
+        if (diff < -4) {
+          // Scrolling UP -> Reveal sticky navbar immediately!
           setIsHeaderVisible(true);
-        } else if (currentScrollY > lastScrollY + 3) {
+        } else if (diff > 4) {
           // Scrolling DOWN -> Hide navbar
           setIsHeaderVisible(false);
         }
       }
 
-      setLastScrollY(currentScrollY);
+      lastScrollYRef.current = currentScrollY;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
   useEffect(() => {
     fetch('/api/site-settings')
