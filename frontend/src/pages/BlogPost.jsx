@@ -62,20 +62,13 @@ const BlogPost = ({ onRequestCounselling }) => {
 
   // Scroll Progress Bar Tracker
   useEffect(() => {
-    let ticking = false;
     const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-          if (totalHeight > 0) {
-            setScrollProgress((window.scrollY / totalHeight) * 100);
-          }
-          ticking = false;
-        });
-        ticking = true;
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        setScrollProgress((window.scrollY / totalHeight) * 100);
       }
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
