@@ -43,14 +43,39 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
     scrollToBottom();
   }, [messages, isOpen, isLoading]);
 
+  const isFormKeyword = (text) => {
+    if (!text) return false;
+    const lower = text.toLowerCase();
+    return (
+      lower.includes('form') ||
+      lower.includes('fill') ||
+      lower.includes('apply') ||
+      lower.includes('register') ||
+      lower.includes('counsell') ||
+      lower.includes('counsel') ||
+      lower.includes('book') ||
+      lower.includes('seat') ||
+      lower.includes('contact') ||
+      lower.includes('admission')
+    );
+  };
+
   const handleSend = async (text) => {
     const q = (text || inputMsg).trim();
     if (!q || isLoading) return;
 
+    const userWantsForm = isFormKeyword(q);
     const userMsg = { sender: 'user', text: q };
     setMessages(prev => [...prev, userMsg]);
     if (!text) setInputMsg('');
     setIsLoading(true);
+
+    // If user asked to fill form or apply, automatically trigger lead form modal!
+    if (userWantsForm && onRequestCounselling) {
+      setTimeout(() => {
+        onRequestCounselling();
+      }, 400);
+    }
 
     try {
       const response = await fetch('/api/chat', {
@@ -61,19 +86,26 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
       const data = await response.json();
 
       if (data && data.success && data.aiAvailable && data.reply) {
-        setMessages(prev => [...prev, { sender: 'ai', text: data.reply }]);
+        setMessages(prev => [
+          ...prev, 
+          { sender: 'ai', text: data.reply, showFormButton: userWantsForm || isFormKeyword(data.reply) }
+        ]);
       } else {
         // Fallback to local knowledge base
         const qLower = q.toLowerCase();
         let matchedReply = knowledgeBase.find(kb => kb.keywords.some(kw => qLower.includes(kw)));
         if (matchedReply) {
-          setMessages(prev => [...prev, { sender: 'ai', text: matchedReply.reply }]);
+          setMessages(prev => [
+            ...prev, 
+            { sender: 'ai', text: matchedReply.reply, showFormButton: userWantsForm || isFormKeyword(matchedReply.reply) }
+          ]);
         } else {
           setMessages(prev => [...prev, { 
             sender: 'ai', 
             text: lang === 'hi' 
               ? 'आपके प्रश्न का विस्तृत उत्तर देने के लिए हमारे वरिष्ठ चिकित्सा सलाहकार तैयार हैं। 100% सटीक मार्गदर्शन प्राप्त करें!' 
-              : 'For detailed personalized guidance on your NEET score & budget, our senior counselor will guide you directly! Shall I connect you with a counselor?' 
+              : 'For detailed personalized guidance on your NEET score & budget, our senior counselor will guide you directly! Click below to open the official admission form:',
+            showFormButton: true
           }]);
         }
       }
@@ -81,13 +113,17 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
       const qLower = q.toLowerCase();
       let matchedReply = knowledgeBase.find(kb => kb.keywords.some(kw => qLower.includes(kw)));
       if (matchedReply) {
-        setMessages(prev => [...prev, { sender: 'ai', text: matchedReply.reply }]);
+        setMessages(prev => [
+          ...prev, 
+          { sender: 'ai', text: matchedReply.reply, showFormButton: userWantsForm }
+        ]);
       } else {
         setMessages(prev => [...prev, { 
           sender: 'ai', 
           text: lang === 'hi' 
-            ? 'हमारे वरिष्ठ चिकित्सा सलाहकार सहायता के लिए उपलब्ध हैं।' 
-            : 'Our senior medical admissions advisor can guide you directly. Would you like a fee breakdown?' 
+            ? 'हमारे वरिष्ठ चिकित्सा सलाहकार सहायता के लिए उपलब्ध हैं। नीचे दिए गए बटन पर क्लिक करें:' 
+            : 'Our senior medical admissions advisor can guide you directly. Click below to open the counselling & admission form:',
+          showFormButton: true
         }]);
       }
     } finally {
@@ -97,17 +133,29 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
 
   return (
     <>
-      {/* Floating AI Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="ai-advisor-trigger-btn"
-        aria-label="Toggle AI Medical Advisor"
-      >
-        <Sparkles size={20} color="#38bdf8" />
-        <span className="ai-advisor-btn-text">
-          {lang === 'hi' ? 'AI मेडिकल सहायक' : 'AI Medical Advisor'}
-        </span>
-      </button>
+      {/* 3D Floating AI Trigger Container */}
+      <div className="ai-trigger-wrapper-3d">
+        {/* Floating "Need Any Help?" 3D Pill Badge */}
+        {!isOpen && (
+          <div className="need-help-pill-3d" onClick={() => setIsOpen(true)}>
+            <span className="pulsing-dot-green"></span>
+            {lang === 'hi' ? 'क्या सहायता चाहिए? 💬' : 'Need Any Help? 💬'}
+          </div>
+        )}
+
+        {/* Floating AI Button with 3D Walking Doctor Avatar */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="ai-advisor-trigger-btn-3d"
+          aria-label="Toggle AI Medical Advisor"
+        >
+          <span className="walking-doctor-avatar">👨‍⚕️</span>
+          <Sparkles size={18} color="#38bdf8" />
+          <span className="ai-advisor-btn-text">
+            {lang === 'hi' ? 'AI मेडिकल सहायक' : 'AI Medical Advisor'}
+          </span>
+        </button>
+      </div>
 
       {/* AI Chat Window */}
       {isOpen && (
@@ -135,7 +183,7 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
           {/* Messages Body */}
           <div style={{ flex: 1, padding: '16px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {messages.map((m, idx) => (
-              <div key={idx} style={{ display: 'flex', justifyContent: m.sender === 'user' ? 'flex-end' : 'flex-start' }}>
+              <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: m.sender === 'user' ? 'flex-end' : 'flex-start' }}>
                 <div style={{
                   maxWidth: '85%',
                   padding: '12px 14px',
@@ -148,6 +196,34 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
                 }}>
                   {m.text}
                 </div>
+
+                {/* Interactive Admission Form Button inside Chat */}
+                {(m.showFormButton || (m.sender === 'ai' && isFormKeyword(m.text))) && (
+                  <button
+                    onClick={() => {
+                      if (onRequestCounselling) onRequestCounselling();
+                    }}
+                    style={{
+                      marginTop: '8px',
+                      background: 'linear-gradient(135deg, #E15B3F, #C9452B)',
+                      color: '#ffffff',
+                      border: 'none',
+                      padding: '8px 16px',
+                      borderRadius: '20px',
+                      fontSize: '12px',
+                      fontWeight: '800',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      boxShadow: '0 4px 12px rgba(225, 91, 63, 0.4)',
+                      transition: 'transform 0.2s ease'
+                    }}
+                    className="chat-form-action-btn"
+                  >
+                    📋 Fill Admission & Counselling Form
+                  </button>
+                )}
               </div>
             ))}
             {isLoading && (
@@ -160,8 +236,17 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Quick Question Chips */}
+          {/* Quick Question & Form Trigger Chips */}
           <div style={{ padding: '8px 12px', borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', gap: '6px', overflowX: 'auto', background: '#0b0f19' }}>
+            <button
+              onClick={() => {
+                handleSend('I want to fill the admission form');
+                if (onRequestCounselling) onRequestCounselling();
+              }}
+              style={{ background: 'linear-gradient(135deg, rgba(225,91,63,0.2), rgba(225,91,63,0.3))', border: '1px solid var(--coral-accent)', color: '#ffedd5', borderRadius: '14px', padding: '5px 12px', fontSize: '11px', fontWeight: '800', whiteSpace: 'nowrap', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+            >
+              📋 Fill Admission Form
+            </button>
             {['Is Russia NMC approved?', 'Georgia 6-year fee?', 'Indian mess available?'].map((q, i) => (
               <button
                 key={i}
@@ -180,7 +265,7 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
               value={inputMsg}
               onChange={(e) => setInputMsg(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-              placeholder="Ask AI about MBBS abroad..."
+              placeholder="Ask AI or type 'fill form'..."
               style={{ flex: 1, padding: '10px 14px', background: '#0b0f19', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '12px', color: '#ffffff', fontSize: '13px', outline: 'none' }}
             />
             <button
@@ -197,11 +282,52 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
 
       {/* Embedded Component Styles */}
       <style>{`
-        .ai-advisor-trigger-btn {
+        .ai-trigger-wrapper-3d {
           position: fixed;
           bottom: 24px;
           right: 24px;
           z-index: 9999;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 8px;
+          perspective: 1000px;
+        }
+        .need-help-pill-3d {
+          background: #ffffff;
+          color: #0f172a;
+          border: 2px solid var(--coral-accent, #E15B3F);
+          padding: 6px 14px;
+          border-radius: 20px;
+          font-size: 12px;
+          font-weight: 800;
+          box-shadow: 0 8px 24px rgba(225, 91, 63, 0.35);
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          cursor: pointer;
+          animation: floatBouncePill 2.5s ease-in-out infinite;
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .need-help-pill-3d:hover {
+          transform: translateY(-4px) scale(1.06);
+          background: #fff4f1;
+        }
+        .pulsing-dot-green {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #10b981;
+          box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+          animation: dotPulse 1.6s infinite;
+        }
+        .walking-doctor-avatar {
+          font-size: 20px;
+          display: inline-block;
+          animation: doctorWalkLegs 1.2s ease-in-out infinite alternate;
+          filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+        }
+        .ai-advisor-trigger-btn-3d {
           background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
           color: #ffffff;
           border: 2px solid #38bdf8;
@@ -213,10 +339,28 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
           gap: 10px;
           cursor: pointer;
           transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          transform-style: preserve-3d;
         }
-        .ai-advisor-trigger-btn:hover {
+        .ai-advisor-trigger-btn-3d:hover {
+          transform: translateY(-4px) rotateY(-10deg) scale(1.05);
+          box-shadow: 0 14px 40px rgba(56, 189, 248, 0.45);
+        }
+        .chat-form-action-btn:hover {
           transform: scale(1.05);
-          box-shadow: 0 12px 36px rgba(56, 189, 248, 0.4);
+        }
+        @keyframes doctorWalkLegs {
+          0% { transform: translateY(0) rotate(-8deg) scale(1); }
+          50% { transform: translateY(-4px) rotate(0deg) scale(1.1); }
+          100% { transform: translateY(0) rotate(8deg) scale(1); }
+        }
+        @keyframes floatBouncePill {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-6px); }
+        }
+        @keyframes dotPulse {
+          0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+          70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+          100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
         .ai-advisor-window {
           position: fixed;
@@ -237,9 +381,11 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
           font-family: 'Inter', sans-serif;
         }
         @media (max-width: 480px) {
-          .ai-advisor-trigger-btn {
+          .ai-trigger-wrapper-3d {
             bottom: 16px;
             right: 16px;
+          }
+          .ai-advisor-trigger-btn-3d {
             padding: 10px 16px;
           }
           .ai-advisor-btn-text {
