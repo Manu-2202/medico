@@ -244,7 +244,7 @@ const BlogPost = ({ onRequestCounselling }) => {
                 {/* Article Body Text */}
                 <div 
                   className="article-body-content"
-                  style={{ fontSize: '16.5px', color: '#334155', lineHeight: '1.85', letterSpacing: '0.1px' }}
+                  style={{ fontSize: '16.5px', color: '#334155', lineHeight: '1.85', letterSpacing: '0.1px', overflowWrap: 'break-word', wordBreak: 'break-word' }}
                   dangerouslySetInnerHTML={{ __html: (post.content || '').includes('<') ? post.content : (post.content || '').replace(/\n/g, '<br/>') }}
                 />
 

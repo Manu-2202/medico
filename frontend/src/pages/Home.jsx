@@ -1157,7 +1157,7 @@ const Home = ({ onRequestCounselling }) => {
                   </div>
 
                   {/* BACK OF FLIP CARD (Revealed on 3D Rotation) */}
-                  <div className="destination-flip-card-back" style={{ height: '280px' }}>
+                  <div className="destination-flip-card-back" style={{ height: '280px', boxSizing: 'border-box', padding: '16px' }}>
                     <div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                         <h3 style={{ fontSize: '19px', color: '#ffffff', fontWeight: '800', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
