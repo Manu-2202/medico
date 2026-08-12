@@ -487,6 +487,17 @@ section.hero-section {
   box-sizing: border-box;
 }
 
+.destination-flip-card:hover .destination-flip-card-front,
+.destination-flip-card:hover .destination-flip-card-front * {
+  pointer-events: none !important;
+}
+
+.destination-flip-card:hover .destination-flip-card-back,
+.destination-flip-card:hover .destination-flip-card-back * {
+  pointer-events: auto !important;
+  z-index: 10;
+}
+
 /* ==========================================================================
    GLOBAL MOBILE RESPONSIVENESS (PHONES, TABLETS & RETINA SCREENS)
    ========================================================================== */

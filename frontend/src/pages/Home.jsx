@@ -1183,10 +1183,13 @@ const Home = ({ onRequestCounselling }) => {
                       </div>
                     </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', position: 'relative', zIndex: 20 }}>
                       <Link
                         to={`/destinations/${d.slug}`}
-                        onClick={() => window.scrollTo({ top: 0, left: 0, behavior: 'instant' })}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                        }}
                         className="btn-primary"
                         style={{
                           width: '100%',
@@ -1201,7 +1204,11 @@ const Home = ({ onRequestCounselling }) => {
                           alignItems: 'center',
                           justifyContent: 'center',
                           gap: '6px',
-                          boxShadow: '0 4px 12px rgba(225, 91, 63, 0.4)'
+                          boxShadow: '0 4px 12px rgba(225, 91, 63, 0.4)',
+                          position: 'relative',
+                          zIndex: 20,
+                          pointerEvents: 'auto',
+                          cursor: 'pointer'
                         }}
                       >
                         {lang === 'hi' ? 'कॉलेज और फीस देखें' : 'Explore Fees & Colleges'} <ArrowRight size={14} />
@@ -1210,15 +1217,16 @@ const Home = ({ onRequestCounselling }) => {
                       <button
                         type="button"
                         onClick={(e) => {
+                          e.preventDefault();
                           e.stopPropagation();
                           setSelectedTourCountry(d.country);
                           setTourModalOpen(true);
                         }}
                         style={{
                           width: '100%',
-                          background: 'rgba(255, 255, 255, 0.12)',
+                          background: 'rgba(255, 255, 255, 0.16)',
                           color: '#ffffff',
-                          border: '1px solid rgba(255, 255, 255, 0.25)',
+                          border: '1px solid rgba(255, 255, 255, 0.35)',
                           padding: '7px',
                           borderRadius: '10px',
                           fontWeight: '700',
@@ -1227,7 +1235,10 @@ const Home = ({ onRequestCounselling }) => {
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          gap: '4px'
+                          gap: '4px',
+                          position: 'relative',
+                          zIndex: 20,
+                          pointerEvents: 'auto'
                         }}
                       >
                         <Globe size={13} /> {lang === 'hi' ? '360° वर्चुअल्व टूर देखें' : 'View 360° Campus Tour'}
