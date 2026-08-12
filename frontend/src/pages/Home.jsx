@@ -1087,65 +1087,93 @@ const Home = ({ onRequestCounselling }) => {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '18px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(310px, 1fr))', gap: '22px' }}>
             {destinations.map((d, idx) => (
-              <div key={idx} className="destination-flip-card">
+              <div key={idx} className="destination-flip-card" style={{ height: '280px' }}>
                 <div className="destination-flip-card-inner">
 
-                  {/* FRONT OF FLIP CARD */}
-                  <div className="destination-flip-card-front">
-                    <div style={{ position: 'relative', height: '140px', overflow: 'hidden' }}>
-                      <img src={d.img} alt={`MBBS in ${d.country}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      <span className="badge-coral" style={{ position: 'absolute', top: '10px', left: '10px', fontSize: '10px', padding: '3px 10px' }}>
+                  {/* FRONT OF FLIP CARD (Full-Bleed Country Landmark Background Image) */}
+                  <div className="destination-flip-card-front" style={{ position: 'relative', height: '280px', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 12px 30px rgba(15, 23, 42, 0.15)', border: '1px solid rgba(255,255,255,0.2)' }}>
+                    <img src={d.img} alt={`MBBS in ${d.country}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.65) 50%, rgba(15, 23, 42, 0.95) 100%)' }}></div>
+
+                    {/* Top Left Badge */}
+                    <div style={{ position: 'absolute', top: '14px', left: '14px', zIndex: 2 }}>
+                      <span style={{
+                        background: d.badge === 'Most Popular' ? '#2563eb' : d.badge === 'Budget Friendly' ? '#10b981' : d.badge === 'Trending' ? '#ea580c' : '#7c3aed',
+                        color: '#ffffff',
+                        padding: '4px 12px',
+                        borderRadius: '20px',
+                        fontSize: '11px',
+                        fontWeight: '800',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+                      }}>
                         {lang === 'hi' ? (d.badge_hi || d.badge) : d.badge}
                       </span>
-                      <div style={{ position: 'absolute', bottom: '8px', right: '8px', background: 'rgba(15,23,42,0.88)', backdropFilter: 'blur(4px)', color: '#ffffff', padding: '4px 10px', borderRadius: '16px', fontSize: '11px', fontWeight: '700' }}>
-                        {lang === 'hi' ? (d.fee_hi || d.fee) : d.fee}
-                      </div>
                     </div>
 
-                    <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'space-between' }}>
-                      <div>
-                        <h3 style={{ fontSize: '18px', color: 'var(--navy-primary)', fontWeight: '800', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <span>{d.flag}</span> {lang === 'hi' ? (d.country_hi || d.country) : `MBBS in ${d.country}`}
-                        </h3>
-                        <p style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: '1.5', marginBottom: '10px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                          {lang === 'hi' ? (d.blurb_hi || d.blurb) : d.blurb}
-                        </p>
-                      </div>
+                    {/* Content Overlay at Bottom */}
+                    <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '20px', zIndex: 2, color: '#ffffff', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      <h3 style={{ fontSize: '22px', fontWeight: '800', color: '#ffffff', margin: 0, display: 'flex', alignItems: 'center', gap: '8px', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
+                        <span>{d.flag}</span> {lang === 'hi' ? (d.country_hi || d.country) : `MBBS in ${d.country}`}
+                      </h3>
+                      
+                      <p style={{ fontSize: '12.5px', color: '#e2e8f0', lineHeight: '1.4', margin: '2px 0 8px 0', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', textShadow: '0 1px 4px rgba(0,0,0,0.6)' }}>
+                        {lang === 'hi' ? (d.blurb_hi || d.blurb) : d.blurb}
+                      </p>
 
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #f1f5f9', paddingTop: '10px' }}>
-                        <span style={{ fontSize: '11px', fontWeight: '800', color: 'var(--navy-primary)' }}>
-                          {lang === 'hi' ? (d.intake_hi || d.intake) : d.intake}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(255,255,255,0.2)', paddingTop: '10px' }}>
+                        <span style={{ fontSize: '13px', fontWeight: '800', color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>
+                          {lang === 'hi' ? (d.fee_hi || d.fee) : d.fee}
                         </span>
-                        <Link 
-                          to={`/destinations/${d.slug}`} 
-                          style={{ fontSize: '12px', fontWeight: '800', color: 'var(--coral-accent)', display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}
+
+                        <Link
+                          to={`/destinations/${d.slug}`}
+                          onClick={() => window.scrollTo({ top: 0, left: 0, behavior: 'instant' })}
+                          style={{
+                            background: 'rgba(15, 23, 42, 0.88)',
+                            backdropFilter: 'blur(8px)',
+                            color: '#ffffff',
+                            padding: '6px 14px',
+                            borderRadius: '20px',
+                            fontSize: '12px',
+                            fontWeight: '800',
+                            border: '1px solid rgba(255,255,255,0.3)',
+                            textDecoration: 'none',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+                            transition: 'all 0.2s ease'
+                          }}
+                          className="explore-btn-pill"
                         >
-                          {lang === 'hi' ? 'अधिक जानें' : 'Learn More'} <ArrowRight size={14} />
+                          {lang === 'hi' ? 'एक्सप्लोर' : 'Explore'} <ArrowRight size={14} />
                         </Link>
                       </div>
                     </div>
                   </div>
 
-                  {/* BACK OF FLIP CARD (REVEALED ON 3D ROTATION) */}
-                  <div className="destination-flip-card-back">
+                  {/* BACK OF FLIP CARD (Revealed on 3D Rotation) */}
+                  <div className="destination-flip-card-back" style={{ height: '280px' }}>
                     <div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                        <h3 style={{ fontSize: '18px', color: '#ffffff', fontWeight: '800', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <span>{d.flag}</span> {lang === 'hi' ? (d.country_hi || d.country) : `${d.country} Details`}
+                        <h3 style={{ fontSize: '19px', color: '#ffffff', fontWeight: '800', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span>{d.flag}</span> {lang === 'hi' ? (d.country_hi || d.country) : `${d.country}`}
                         </h3>
-                        <span style={{ background: '#f97316', color: '#ffffff', padding: '2px 8px', borderRadius: '10px', fontSize: '10px', fontWeight: '800' }}>
-                          NMC OK
+                        <span style={{ background: '#f97316', color: '#ffffff', padding: '3px 8px', borderRadius: '10px', fontSize: '10px', fontWeight: '800' }}>
+                          NMC Gazette
                         </span>
                       </div>
 
-                      <div style={{ fontSize: '11px', color: '#93c5fd', fontWeight: '700', marginBottom: '12px', background: 'rgba(255,255,255,0.08)', padding: '6px 10px', borderRadius: '8px' }}>
+                      <div style={{ fontSize: '11px', color: '#93c5fd', fontWeight: '700', marginBottom: '10px', background: 'rgba(255,255,255,0.08)', padding: '6px 10px', borderRadius: '8px' }}>
                         {lang === 'hi' ? 'अनुमानित बजट:' : 'Est. Budget:'} {lang === 'hi' ? (d.totalPackage_hi || d.totalPackage) : d.totalPackage}
                       </div>
 
-                      <div style={{ marginBottom: '12px' }}>
-                        <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: '#e2e8f0' }}>
+                      <div style={{ marginBottom: '10px' }}>
+                        <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '5px', fontSize: '12px', color: '#e2e8f0' }}>
                           {(lang === 'hi' && d.highlights_hi ? d.highlights_hi : d.highlights).map((h, hIdx) => (
                             <li key={hIdx} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                               <Check size={13} color="#f97316" /> {h}
@@ -1158,21 +1186,22 @@ const Home = ({ onRequestCounselling }) => {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                       <Link
                         to={`/destinations/${d.slug}`}
+                        onClick={() => window.scrollTo({ top: 0, left: 0, behavior: 'instant' })}
                         className="btn-primary"
                         style={{
                           width: '100%',
-                          background: '#f97316',
+                          background: 'linear-gradient(135deg, #E15B3F 0%, #C9452B 100%)',
                           color: '#ffffff',
                           padding: '9px',
-                          borderRadius: '10px',
-                          fontWeight: '700',
+                          borderRadius: '12px',
+                          fontWeight: '800',
                           fontSize: '12px',
                           textDecoration: 'none',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          gap: '4px',
-                          boxShadow: '0 4px 12px rgba(249, 115, 22, 0.4)'
+                          gap: '6px',
+                          boxShadow: '0 4px 12px rgba(225, 91, 63, 0.4)'
                         }}
                       >
                         {lang === 'hi' ? 'कॉलेज और फीस देखें' : 'Explore Fees & Colleges'} <ArrowRight size={14} />
