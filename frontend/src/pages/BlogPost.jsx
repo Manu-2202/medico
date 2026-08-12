@@ -152,7 +152,7 @@ const BlogPost = ({ onRequestCounselling }) => {
       />
 
       {/* Top Reading Progress Bar */}
-      <div style={{ position: 'fixed', top: 0, left: 0, height: '4px', background: 'linear-gradient(90deg, #E15B3F, #25D366)', width: `${scrollProgress}%`, zIndex: 9999, transition: 'width 0.1s linear' }}></div>
+      <div style={{ position: 'fixed', top: 0, left: 0, height: '4px', background: 'linear-gradient(90deg, #E15B3F, #25D366)', width: `${scrollProgress}%`, zIndex: 9999, pointerEvents: 'none', transition: 'width 0.1s linear' }}></div>
 
       {/* Premium Magazine Hero Header */}
       <section style={{ background: 'linear-gradient(135deg, #0b132b 0%, #1F3864 60%, #1e293b 100%)', color: '#ffffff', padding: '60px 0 50px 0', position: 'relative', overflow: 'hidden' }}>

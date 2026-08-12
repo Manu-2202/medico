@@ -35,7 +35,8 @@ const Preloader = () => {
         justifyContent: 'center',
         alignItems: 'center',
         opacity: progress === 100 ? 0 : 1, 
-        transition: 'opacity 0.4s ease-out',
+        pointerEvents: progress === 100 ? 'none' : 'auto',
+        transition: 'opacity 0.3s ease-out',
         padding: '20px'
       }}
     >
