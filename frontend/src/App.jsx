@@ -27,8 +27,24 @@ import Terms from './pages/Terms';
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    const forceScrollTop = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+
+    forceScrollTop();
+    const timer1 = setTimeout(forceScrollTop, 20);
+    const timer2 = setTimeout(forceScrollTop, 100);
+
     trackPageView(window.location.href, document.title);
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
   }, [pathname]);
   return null;
 }

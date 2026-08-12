@@ -230,7 +230,12 @@ const Blogs = () => {
                     </div>
                   </div>
 
-                  <Link to={`/blogs/${featuredPost.slug}`} className="btn-primary" style={{ padding: '12px 24px', fontSize: '14px', borderRadius: '30px' }}>
+                  <Link 
+                    to={`/blogs/${featuredPost.slug}`} 
+                    onClick={() => window.scrollTo({ top: 0, left: 0, behavior: 'instant' })} 
+                    className="btn-primary" 
+                    style={{ padding: '12px 24px', fontSize: '14px', borderRadius: '30px' }}
+                  >
                     {t('blogReadFull')} <ArrowRight size={16} />
                   </Link>
                 </div>
@@ -311,7 +316,11 @@ const Blogs = () => {
                       </div>
 
                       <h3 style={{ fontSize: '18px', color: 'var(--navy-primary)', marginBottom: '10px', lineHeight: '1.4', fontWeight: '700' }}>
-                        <Link to={`/blogs/${post.slug}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                        <Link 
+                          to={`/blogs/${post.slug}`} 
+                          onClick={() => window.scrollTo({ top: 0, left: 0, behavior: 'instant' })} 
+                          style={{ color: 'inherit', textDecoration: 'none' }}
+                        >
                           {post.title}
                         </Link>
                       </h3>
@@ -327,7 +336,11 @@ const Blogs = () => {
                         <User size={14} color="var(--coral-accent)" /> {post.author}
                       </div>
 
-                      <Link to={`/blogs/${post.slug}`} style={{ color: 'var(--coral-accent)', fontWeight: '800', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}>
+                      <Link 
+                        to={`/blogs/${post.slug}`} 
+                        onClick={() => window.scrollTo({ top: 0, left: 0, behavior: 'instant' })} 
+                        style={{ color: 'var(--coral-accent)', fontWeight: '800', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}
+                      >
                         {t('blogReadFull')} <ArrowRight size={14} />
                       </Link>
                     </div>

@@ -17,9 +17,13 @@ const BlogPost = ({ onRequestCounselling }) => {
   const [quickSubmitted, setQuickSubmitted] = useState(false);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
+    const scrollToTopInstant = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+
+    scrollToTopInstant();
     setLoading(true);
 
     const fallbackPost = defaultBlogArticles.find(b => b.slug === slug) || defaultBlogArticles[0];
@@ -49,7 +53,11 @@ const BlogPost = ({ onRequestCounselling }) => {
         setPost(fallbackPost);
         setRelatedPosts(fallbackRelated);
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        scrollToTopInstant();
+        setTimeout(scrollToTopInstant, 50);
+      });
   }, [slug]);
 
   // Scroll Progress Bar Tracker
