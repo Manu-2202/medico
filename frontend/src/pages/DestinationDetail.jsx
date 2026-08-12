@@ -14,6 +14,12 @@ const DestinationDetail = ({ onRequestCounselling }) => {
   const { countrySlug } = useParams();
   const [openFaq, setOpenFaq] = useState(null);
 
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [countrySlug]);
+
   // Match slug to country key (e.g., 'mbbs-in-russia' -> 'russia')
   const countryKey = countrySlug?.replace('mbbs-in-', '') || 'russia';
   const country = countryData[countryKey] || countryData['russia'];
