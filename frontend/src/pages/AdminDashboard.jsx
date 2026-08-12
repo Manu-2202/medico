@@ -692,9 +692,11 @@ const AdminDashboard = () => {
           
           {/* Logo & Security Header */}
           <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-            <div style={{ width: '64px', height: '64px', borderRadius: '20px', background: 'linear-gradient(135deg, #e15b3f 0%, #3b82f6 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto', boxShadow: '0 8px 24px rgba(225, 91, 63, 0.4)' }}>
-              <Shield size={34} color="#ffffff" />
-            </div>
+            <img 
+              src="/logo.png" 
+              alt="Medico Overseas Logo" 
+              style={{ height: '70px', objectFit: 'contain', marginBottom: '16px', filter: 'drop-shadow(0 4px 14px rgba(255,255,255,0.2))' }}
+            />
             <h2 style={{ fontSize: '24px', fontWeight: '800', color: '#ffffff', marginBottom: '4px' }}>Medico Overseas</h2>
             <p style={{ fontSize: '13px', color: '#94a3b8' }}>Executive Admin & Lead CRM Portal</p>
           </div>
