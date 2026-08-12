@@ -135,21 +135,21 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
     <>
       {/* 3D Floating AI Trigger Container */}
       <div className="ai-trigger-wrapper-3d">
-        {/* Floating "Need Any Help?" 3D Pill Badge */}
+        {/* Floating "Need Any Help?" 3D Pill Badge with Walking Doctor Avatar */}
         {!isOpen && (
           <div className="need-help-pill-3d" onClick={() => setIsOpen(true)}>
+            <span className="walking-doctor-avatar">👨‍⚕️</span>
             <span className="pulsing-dot-green"></span>
             {lang === 'hi' ? 'क्या सहायता चाहिए? 💬' : 'Need Any Help? 💬'}
           </div>
         )}
 
-        {/* Floating AI Button with 3D Walking Doctor Avatar */}
+        {/* Floating AI Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="ai-advisor-trigger-btn-3d"
           aria-label="Toggle AI Medical Advisor"
         >
-          <span className="walking-doctor-avatar">👨‍⚕️</span>
           <Sparkles size={18} color="#38bdf8" />
           <span className="ai-advisor-btn-text">
             {lang === 'hi' ? 'AI मेडिकल सहायक' : 'AI Medical Advisor'}
@@ -290,7 +290,7 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
           display: flex;
           flex-direction: column;
           align-items: flex-end;
-          gap: 8px;
+          gap: 72px;
           perspective: 1000px;
         }
         .need-help-pill-3d {
