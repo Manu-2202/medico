@@ -59,7 +59,8 @@ const Blogs = () => {
   );
 
   const featuredPost = blogs.length > 0 ? blogs[0] : null;
-  const regularPosts = blogs.length > 1 ? filteredBlogs.filter(b => b._id !== featuredPost?._id) : filteredBlogs;
+  const showFeaturedBanner = featuredPost && selectedCategory === 'All' && !searchTerm;
+  const regularPosts = showFeaturedBanner ? filteredBlogs.filter(b => b._id !== featuredPost?._id) : filteredBlogs;
 
   return (
     <div style={{ background: '#f8fafc', minHeight: '100vh', paddingBottom: '32px' }}>

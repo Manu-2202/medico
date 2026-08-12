@@ -237,7 +237,7 @@ const BlogPost = ({ onRequestCounselling }) => {
                 <div 
                   className="article-body-content"
                   style={{ fontSize: '16.5px', color: '#334155', lineHeight: '1.85', letterSpacing: '0.1px' }}
-                  dangerouslySetInnerHTML={{ __html: post.content.replace(/\n/g, '<br/>') }}
+                  dangerouslySetInnerHTML={{ __html: (post.content || '').includes('<') ? post.content : (post.content || '').replace(/\n/g, '<br/>') }}
                 />
 
                 {/* Dedicated Action Box: Share & Contact */}

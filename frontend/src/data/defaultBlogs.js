@@ -139,5 +139,92 @@ export const defaultBlogArticles = [
       <h2>Parent Peace of Mind: Student Safety & Indian Food</h2>
       <p>Medico Overseas maintains full-time Indian representatives and Indian mess halls serving vegetarian and non-vegetarian meals in all partner university campuses.</p>
     `
+  },
+  {
+    _id: 'blog-7',
+    title: 'Complete Guide to MBBS in Uzbekistan 2026: Samarkand & Tashkent Medical Universities',
+    title_hi: 'उज्बेकिस्तान में एमबीबीएस पूर्ण गाइड 2026: समरकंद और ताशकंद मेडिकल विश्वविद्यालय',
+    slug: 'complete-guide-to-mbbs-in-uzbekistan-2026',
+    category: 'Uzbekistan',
+    category_hi: 'उज्बेकिस्तान 🇺🇿',
+    author: 'Dr. Ramesh Chandra',
+    readTime: '6 min read',
+    publishedAt: '2026-07-02',
+    views: 3890,
+    image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80',
+    excerpt: 'Discover top government medical universities in Uzbekistan with low fee structures, English medium instruction, and 100% NMC compliance.',
+    excerpt_hi: 'कम फीस संरचना, अंग्रेजी माध्यम की शिक्षा और 100% एनएमसी अनुपालन के साथ उज्बेकिस्तान के शीर्ष सरकारी चिकित्सा विश्वविद्यालयों की खोज करें।',
+    content: `
+      <h2>Why Uzbekistan is Top Destination for Indian Students</h2>
+      <p>Uzbekistan has emerged as one of the most reliable and affordable foreign destinations for Indian medical aspirants. Institutions like Samarkand State Medical University and Tashkent Medical Academy provide 6-year NMC Gazette-compliant MD programs.</p>
+      <h3>Key Highlights:</h3>
+      <ul>
+        <li><strong>Low Annual Budget:</strong> Total 6-year package starts from ₹15 Lakhs to ₹18 Lakhs.</li>
+        <li><strong>Short Flight Distance:</strong> Direct 3-hour flight from New Delhi to Tashkent.</li>
+        <li><strong>On-Campus Indian Mess:</strong> Fresh North & South Indian meals cooked by Indian chefs.</li>
+      </ul>
+    `
+  },
+  {
+    _id: 'blog-8',
+    title: 'MBBS in Kyrgyzstan 2026: Low Cost, High Clinical Exposure & Indian Faculty',
+    title_hi: 'किर्गिस्तान में एमबीबीएस 2026: कम लागत, उच्च नैदानिक प्रदर्शन और भारतीय संकाय',
+    slug: 'mbbs-in-kyrgyzstan-low-cost-high-clinical-exposure',
+    category: 'Kyrgyzstan',
+    category_hi: 'किर्गिस्तान 🇰🇬',
+    author: 'Dr. Ramesh Chandra',
+    readTime: '5 min read',
+    publishedAt: '2026-06-25',
+    views: 2940,
+    image: 'https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&w=800&q=80',
+    excerpt: 'Detailed overview of Bishkek State Medical University and Osh State University for Indian medical students.',
+    excerpt_hi: 'भारतीय चिकित्सा छात्रों के लिए बिश्केक स्टेट मेडिकल यूनिवर्सिटी और ओश स्टेट यूनिवर्सिटी का विस्तृत विवरण।',
+    content: `
+      <h2>Affordable World-Class Medical Education in Bishkek</h2>
+      <p>Kyrgyzstan offers transparent direct admissions into premier government medical universities fully recognized by WHO, NMC, and ECFMG.</p>
+      <h3>Highlights:</h3>
+      <ul>
+        <li>54-Month Course + 12-Month Internship matching NMC rules.</li>
+        <li>Integrated FMGE / NEXT coaching from 1st Year.</li>
+      </ul>
+    `
+  },
+  {
+    _id: 'blog-9',
+    title: 'Study MBBS in Armenia 2026: European Curriculum & World-Class Hospital Exposure',
+    title_hi: 'आर्मेनिया में एमबीबीएस 2026: यूरोपीय पाठ्यक्रम और विश्व स्तरीय अस्पताल का माहौल',
+    slug: 'study-mbbs-in-armenia-european-curriculum',
+    category: 'Armenia',
+    category_hi: 'आर्मेनिया 🇦🇲',
+    author: 'Dr. Ramesh Chandra',
+    readTime: '6 min read',
+    publishedAt: '2026-06-18',
+    views: 2150,
+    image: 'https://images.unsplash.com/photo-1581595220892-b0739db3ba8c?auto=format&fit=crop&w=800&q=80',
+    excerpt: 'Learn about Yerevan State Medical University, European credit system (ECTS), and clinical training in Yerevan.',
+    excerpt_hi: 'येरेवन स्टेट मेडिकल यूनिवर्सिटी, यूरोपीय क्रेडिट प्रणाली (ECTS) और येरेवन में क्लिनिकल प्रशिक्षण के बारे में जानें।',
+    content: `
+      <h2>European Standard Medical Training in Yerevan</h2>
+      <p>Armenia features high safety rankings, modern diagnostic equipment, and English-medium medical degrees valid across Europe and India.</p>
+    `
+  },
+  {
+    _id: 'blog-10',
+    title: 'NMAT Exam Pattern & Preparation Guide for MBBS in Philippines 2026',
+    title_hi: 'फिलिपिंस में एमबीबीएस के लिए एनएमएटी परीक्षा पैटर्न और तैयारी गाइड 2026',
+    slug: 'nmat-exam-pattern-and-philippines-mbbs-admission-guide',
+    category: 'NMAT',
+    category_hi: 'एनएमएटी 📝',
+    author: 'Dr. Ramesh Chandra',
+    readTime: '7 min read',
+    publishedAt: '2026-06-10',
+    views: 3400,
+    image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80',
+    excerpt: 'Complete syllabus, scoring system, and exam dates for NMAT (National Medical Admission Test) for Philippines medical colleges.',
+    excerpt_hi: 'फिलीपिंस मेडिकल कॉलेजों के लिए एनएमएटी (नेशनल मेडिकल एडमिशन टेस्ट) के लिए संपूर्ण पाठ्यक्रम, स्कोरिंग प्रणाली और परीक्षा तिथियां।',
+    content: `
+      <h2>Cracking NMAT for Top Medical Colleges in Philippines</h2>
+      <p>Understanding Part 1 (Mental Ability) and Part 2 (Academic Proficiency) of NMAT to secure seat in top USMD pattern medical colleges.</p>
+    `
   }
 ];
