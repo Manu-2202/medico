@@ -11,7 +11,7 @@ const FloatingActionButtons = () => {
       className="floating-whatsapp-container"
       style={{ 
         position: 'fixed', 
-        bottom: '82px', 
+        bottom: '116px', 
         right: '24px', 
         zIndex: 9998, 
         display: 'flex', 

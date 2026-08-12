@@ -28,8 +28,9 @@ const knowledgeBase = [
 const AiMedicalAdvisor = ({ onRequestCounselling }) => {
   const { lang } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(1);
   const [messages, setMessages] = useState([
-    { sender: 'ai', text: lang === 'hi' ? 'नमस्ते! मैं आपका एआई मेडिकल सलाहकार हूँ। आप एनएमसी नियमों, फीस या यूनिवर्सिटी के बारे में कुछ भी पूछ सकते हैं!' : 'Hello! I am your AI Medical Advisor. Ask me anything about NMC guidelines, 6-year fee packages, or university selection!' }
+    { sender: 'ai', text: lang === 'hi' ? 'नमस्ते! मैं आपकी क्या सहायता कर सकता हूँ?' : 'Hi, how may I help you?' }
   ]);
   const [inputMsg, setInputMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -42,6 +43,11 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
   useEffect(() => {
     scrollToBottom();
   }, [messages, isOpen, isLoading]);
+
+  const handleToggleChat = () => {
+    if (!isOpen) setUnreadCount(0);
+    setIsOpen(!isOpen);
+  };
 
   const isFormKeyword = (text) => {
     if (!text) return false;
@@ -135,26 +141,31 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
     <>
       {/* 3D Floating AI Trigger Container */}
       <div className="ai-trigger-wrapper-3d">
-        {/* Floating "Need Any Help?" 3D Pill Badge with Walking Doctor Avatar */}
+        {/* Floating "Need Help?" 3D Pill Badge */}
         {!isOpen && (
-          <div className="need-help-pill-3d" onClick={() => setIsOpen(true)}>
-            <span className="walking-doctor-avatar">👨‍⚕️</span>
+          <div className="need-help-pill-3d" onClick={handleToggleChat}>
             <span className="pulsing-dot-green"></span>
-            {lang === 'hi' ? 'क्या सहायता चाहिए? 💬' : 'Need Any Help? 💬'}
+            {lang === 'hi' ? 'क्या सहायता चाहिए? 💬' : 'Need Help? 💬'}
           </div>
         )}
 
-        {/* Floating AI Button */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="ai-advisor-trigger-btn-3d"
-          aria-label="Toggle AI Medical Advisor"
-        >
-          <Sparkles size={18} color="#38bdf8" />
-          <span className="ai-advisor-btn-text">
-            {lang === 'hi' ? 'AI मेडिकल सहायक' : 'AI Medical Advisor'}
-          </span>
-        </button>
+        {/* Floating AI Button with Red Notification Badge */}
+        <div style={{ position: 'relative' }}>
+          {unreadCount > 0 && !isOpen && (
+            <span className="unread-notification-badge">1</span>
+          )}
+
+          <button
+            onClick={handleToggleChat}
+            className="ai-advisor-trigger-btn-3d"
+            aria-label="Toggle AI Medical Advisor"
+          >
+            <Sparkles size={18} color="#38bdf8" />
+            <span className="ai-advisor-btn-text">
+              {lang === 'hi' ? 'AI मेडिकल सहायक' : 'AI Medical Advisor'}
+            </span>
+          </button>
+        </div>
       </div>
 
       {/* AI Chat Window */}
@@ -290,8 +301,31 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
           display: flex;
           flex-direction: column;
           align-items: flex-end;
-          gap: 72px;
+          gap: 6px;
           perspective: 1000px;
+        }
+        .unread-notification-badge {
+          position: absolute;
+          top: -8px;
+          right: -6px;
+          background: #ef4444;
+          color: #ffffff;
+          font-size: 11px;
+          font-weight: 900;
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 2px solid #ffffff;
+          box-shadow: 0 4px 12px rgba(239, 68, 68, 0.6);
+          animation: badgePulse 1.5s infinite;
+          z-index: 10;
+        }
+        @keyframes badgePulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.18); }
         }
         .need-help-pill-3d {
           background: #ffffff;
@@ -320,12 +354,6 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
           background: #10b981;
           box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
           animation: dotPulse 1.6s infinite;
-        }
-        .walking-doctor-avatar {
-          font-size: 20px;
-          display: inline-block;
-          animation: doctorWalkLegs 1.2s ease-in-out infinite alternate;
-          filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
         }
         .ai-advisor-trigger-btn-3d {
           background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
