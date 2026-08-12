@@ -42,12 +42,14 @@ const AdminLogin = () => {
       <SEO title="Admin Login | Medico Overseas" />
       
       <div style={{ background: '#ffffff', padding: '40px', borderRadius: '16px', boxShadow: '0 10px 25px rgba(0,0,0,0.05)', width: '100%', maxWidth: '400px', border: '1px solid #e2e8f0' }}>
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <div style={{ width: '56px', height: '56px', background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
-            <Shield size={28} />
-          </div>
-          <h1 style={{ fontSize: '24px', fontWeight: '800', color: '#0f172a', marginBottom: '8px' }}>Admin Portal</h1>
-          <p style={{ color: '#64748b', fontSize: '14px' }}>Sign in to manage inquiries and content</p>
+        <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+          <img 
+            src="/logo.png" 
+            alt="Medico Overseas Logo" 
+            style={{ height: '60px', objectFit: 'contain', marginBottom: '16px' }}
+          />
+          <h1 style={{ fontSize: '24px', fontWeight: '800', color: '#0f172a', marginBottom: '6px' }}>Admin Portal</h1>
+          <p style={{ color: '#64748b', fontSize: '14px', margin: 0 }}>Sign in to manage inquiries and content</p>
         </div>
 
         <form onSubmit={handleLogin}>
