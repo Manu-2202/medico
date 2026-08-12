@@ -141,14 +141,11 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
     <>
       {/* 3D Floating AI Trigger Container */}
       <div className="ai-trigger-wrapper-3d">
-        {/* Floating "Need Help?" 3D Pill Badge with Walking Doctor Character */}
+        {/* Floating "Need Help?" 3D Pill Badge */}
         {!isOpen && (
-          <div className="doctor-walking-stage" onClick={handleToggleChat}>
-            <div className="walking-doctor-character">👨‍⚕️</div>
-            <div className="need-help-pill-3d">
-              <span className="pulsing-dot-green"></span>
-              {lang === 'hi' ? 'क्या सहायता चाहिए? 💬' : 'Need Help? 💬'}
-            </div>
+          <div className="need-help-pill-3d" onClick={handleToggleChat}>
+            <span className="pulsing-dot-green"></span>
+            {lang === 'hi' ? 'क्या सहायता चाहिए? 💬' : 'Need Help? 💬'}
           </div>
         )}
 
@@ -329,40 +326,6 @@ const AiMedicalAdvisor = ({ onRequestCounselling }) => {
         @keyframes badgePulse {
           0%, 100% { transform: scale(1); }
           50% { transform: scale(1.18); }
-        }
-        .doctor-walking-stage {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-end;
-          cursor: pointer;
-        }
-        .walking-doctor-character {
-          font-size: 26px;
-          display: inline-block;
-          animation: doctorWalkMove 3.5s ease-in-out infinite alternate;
-          filter: drop-shadow(0 6px 10px rgba(0,0,0,0.35));
-          margin-bottom: 2px;
-          margin-right: 12px;
-        }
-        @keyframes doctorWalkMove {
-          0% {
-            transform: translateX(0px) scaleX(1) translateY(0) rotate(-6deg);
-          }
-          25% {
-            transform: translateX(-20px) scaleX(1) translateY(-4px) rotate(4deg);
-          }
-          49% {
-            transform: translateX(-40px) scaleX(1) translateY(0) rotate(-6deg);
-          }
-          50% {
-            transform: translateX(-40px) scaleX(-1) translateY(0) rotate(-6deg);
-          }
-          75% {
-            transform: translateX(-20px) scaleX(-1) translateY(-4px) rotate(4deg);
-          }
-          100% {
-            transform: translateX(0px) scaleX(-1) translateY(0) rotate(-6deg);
-          }
         }
         .need-help-pill-3d {
           background: #ffffff;
